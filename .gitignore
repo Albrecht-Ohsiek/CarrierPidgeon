@@ -1,2 +1,6 @@
+## IDE and Virtual Enviroment Files
 venv/
 .vscode/
+
+## Envirromental Variables
+.env

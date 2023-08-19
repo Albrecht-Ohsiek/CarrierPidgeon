@@ -26,6 +26,9 @@
                         - Type "Y" and hit Enter
                     - Retry ".\venv\Scripts\activate" in the VSCode terminal
 
+    Now Install python-dotenv
+        - Type "pip install python-dotenv"
+
     Now Install DroneBlocksTelloSimulator
         - Type "pip install DroneBlocksTelloSimulator" in the integrated terminal
         - Open "http://coding-sim.droneblocks.io/"
@@ -42,7 +45,9 @@
 
             You can now move onto programming the simulated drone mission in Python!
             Click the button in the top left of the DroneBlocks simulator that says "Get Drone Simulator Key".
-            Copy this unique key to your clipboard as it will be used in your mission code.
+            Copy this unique key to your clipboard and add it to a new locally created .env file as follows.
+                - SIM_KEY = YOUR_SIM_KEY_HERE
+
 
 # flying a drone
 
