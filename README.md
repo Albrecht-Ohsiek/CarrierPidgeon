@@ -30,14 +30,19 @@
         - Type "pip install DroneBlocksTelloSimulator" in the integrated terminal
         - Open "http://coding-sim.droneblocks.io/"
 
-            You might need to configure Chrome to "Allow Insecure Content" for the simulator. This is not a security risk and will only be done for this domain. This will allow the DroneBlocks simulator to receive commands from Python. Follow these steps:
+            You might need to configure Chrome to "Allow Insecure Content" for the simulator.
+            This is not a security risk and will only be done for this domain.
+            This will allow the DroneBlocks simulator to receive commands from Python.
+            Follow these steps:
                 1. Click on the lock icon next to the web address
                 2. Click on "Site settings"
                 3. Scroll to the bottom and look for "Insecure content"
                 4. Change "Block" to "Allow"
                 5. Close the tab and refresh the simulator
 
-            You can now move onto programming the simulated drone mission in Python! Click the button in the top left of the DroneBlocks simulator that says "Get Drone Simulator Key". Copy this unique key to your clipboard as it will be used in your mission code.
+            You can now move onto programming the simulated drone mission in Python!
+            Click the button in the top left of the DroneBlocks simulator that says "Get Drone Simulator Key".
+            Copy this unique key to your clipboard as it will be used in your mission code.
 
 # flying a drone
 
