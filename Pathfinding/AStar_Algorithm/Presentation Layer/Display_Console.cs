@@ -15,9 +15,8 @@ class Display_Console{
         int width = nodes.GetLength(0);
         int bredth = nodes.GetLength(1);
 
-        Console.WriteLine("", width, bredth);
+        for (int i = 0; i < width; i++){
 
-        for (int i = 0; i < width; i++)
             for (int j = 0; j < bredth; j++)
             {
                 if (!nodes[i, j].accessible())
@@ -41,6 +40,7 @@ class Display_Console{
                     Console.Write(end);
                 }
             }
-        Console.WriteLine("");
+            Console.Write('\n');
+        }
     }
 }

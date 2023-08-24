@@ -27,6 +27,18 @@ public class Node : INode
         this.properties = properties;
     }
 
+    public static Node[,] initNodes(int width, int bredth)
+    {
+        Node[,] nodes = new Node[width,bredth];
+        for(int i=0; i < width; i++)
+            for(int j=0; j < bredth; j++)
+            {
+                nodes[i,j] = new Node();
+            }
+
+        return nodes;
+    }
+
     public bool accessible()
     {
         return isAccessible;
