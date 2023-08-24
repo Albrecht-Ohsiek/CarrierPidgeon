@@ -1,0 +1,17 @@
+# Visual Studio Code
+.vscode/
+
+# .NET
+bin/
+obj/
+.vs/
+
+# NuGet
+*.nuget.props
+*.nuget.targets
+
+# User-specific files
+*.suo
+*.user
+*.userprefs
+*.sln.docstates
