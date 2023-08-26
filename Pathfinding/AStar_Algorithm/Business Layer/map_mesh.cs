@@ -1,11 +1,17 @@
 using System.Collections.Generic;
 
-public class map_mesh{
-    
-    public INode[,] nodes;
+namespace AStart_Algorithm
+{
+    public class map_mesh
+    {
 
-    public map_mesh(INode[,] nodes){
-        this.nodes = nodes;
+        public INode[,] nodes;
+
+        public map_mesh(INode[,] nodes)
+        {
+            this.nodes = nodes;
+
+        }
 
     }
 

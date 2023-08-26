@@ -1,48 +1,53 @@
 using System.Collections.Generic;
+using AStart_Algorithm.Business_Layer;
 
-class Display_Console
+namespace AStart_Algorithm
 {
-    // Console Display Symbols
-    private static char occupied = 'x';
-    private static char accessible = '-';
-    private static char notAccesible = 'x';
-    private static char start = 'S';
-    private static char end = '#';
-
-
-    public static void Display(Node[,] nodes)
+    class Display_Console
     {
-        // Dimenstions of INode mesh
-        int width = nodes.GetLength(0);
-        int bredth = nodes.GetLength(1);
+        // Console Display Symbols
+        private static char occupied = 'x';
+        private static char accessible = '-';
+        private static char notAccesible = 'x';
+        private static char start = 'S';
+        private static char end = '#';
 
-        Console.Clear();
-        for (int i = 0; i < width; i++)
+
+        public static void Display(Node[,] nodes)
         {
-            for (int j = 0; j < bredth; j++)
+            // Dimenstions of INode mesh
+            int width = nodes.GetLength(0);
+            int bredth = nodes.GetLength(1);
+
+            Console.Clear();
+            for (int i = 0; i < width; i++)
             {
-                if (nodes[i, j].occupied() && nodes[i,j].nodeProperties().ToLower() == "obstacle")
+                for (int j = 0; j < bredth; j++)
                 {
-                    Console.Write(occupied);
+                    if (nodes[i, j].occupied && nodes[i, j].properties.Contains(node_properties.Obstacle))
+                    {
+                        Console.Write(occupied);
+                    }
+                    else if (nodes[i, j].properties.Contains(unique_node_properties.Start))
+                    {
+                        Console.Write(start);
+                    }
+                    else if (nodes[i, j].properties.Contains(unique_node_properties.End))
+                    {
+                        Console.Write(end);
+                    }
+                    else if (nodes[i, j].accessible && !nodes[i, j].occupied)
+                    {
+                        Console.Write(accessible);
+                    }
+                    else if (!nodes[i, j].accessible)
+                    {
+                        Console.Write(notAccesible);
+                    }
                 }
-                else if (nodes[i, j].nodeProperties().ToLower() == "start")
-                {
-                    Console.Write(start);
-                }
-                else if (nodes[i, j].nodeProperties().ToLower() == "end")
-                {
-                    Console.Write(end);
-                }
-                else if (nodes[i, j].accessible() && !nodes[i, j].occupied())
-                {
-                    Console.Write(accessible);
-                }
-                else if (!nodes[i, j].accessible())
-                {
-                    Console.Write(notAccesible);
-                }
+                Console.Write('\n');
             }
-            Console.Write('\n');
         }
     }
+
 }
