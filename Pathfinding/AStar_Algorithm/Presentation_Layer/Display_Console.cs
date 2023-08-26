@@ -8,7 +8,7 @@ namespace AStart_Algorithm
         // Console Display Symbols
         private static char occupied = 'x';
         private static char accessible = '-';
-        private static char notAccesible = 'x';
+        private static char notAccesible = 'y';
         private static char start = 'S';
         private static char end = '#';
 
