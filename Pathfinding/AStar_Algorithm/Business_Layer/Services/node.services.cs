@@ -2,11 +2,13 @@ using System.Collections.Generic;
 using AStart_Algorithm.Business_Layer;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Numerics;
 
 namespace AStart_Algorithm
 {
     public class node_services
     {
+        // Create board
         public static Node[,] initNodes(int width, int bredth)
         {
             Node[,] nodes = new Node[width, bredth];
@@ -19,6 +21,13 @@ namespace AStart_Algorithm
             return nodes;
         }
 
+        // Calculate costs
+        public static int getDistance(Vector2 node1, Vector2 node2)
+        {
+            return (int)(Vector2.Distance(node1, node2) * 10);
+        }
+
+        // set node properties
         public static Node placeObstacle(Node node)
         {
             try
