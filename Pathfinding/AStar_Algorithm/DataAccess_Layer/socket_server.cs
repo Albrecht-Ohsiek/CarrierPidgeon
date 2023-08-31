@@ -54,6 +54,8 @@ namespace AStart_Algorithm
             int bytes_read = networkStream.Read(data, 0, data.Length);
             String received_data = Encoding.ASCII.GetString(data, 0, bytes_read);
 
+            Console.WriteLine(received_data); //Confirmation
+
             networkStream.Close();
         }
 
