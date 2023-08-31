@@ -18,6 +18,10 @@ namespace AStart_Algorithm
 
             Display_Console.Display(nodes);
 
+            Socket_Server socket_Server= new Socket_Server();
+            socket_Server.Start();
+            socket_Server.Stop();
+
         }
     }
 
