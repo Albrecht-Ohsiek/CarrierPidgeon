@@ -1,0 +1,14 @@
+/Users/albrechtohsiek/University/FinalYearProject/Final_Year_Project_Group3/socket_tests/bin/Debug/net7.0/socket_tests
+/Users/albrechtohsiek/University/FinalYearProject/Final_Year_Project_Group3/socket_tests/bin/Debug/net7.0/socket_tests.deps.json
+/Users/albrechtohsiek/University/FinalYearProject/Final_Year_Project_Group3/socket_tests/bin/Debug/net7.0/socket_tests.runtimeconfig.json
+/Users/albrechtohsiek/University/FinalYearProject/Final_Year_Project_Group3/socket_tests/bin/Debug/net7.0/socket_tests.dll
+/Users/albrechtohsiek/University/FinalYearProject/Final_Year_Project_Group3/socket_tests/bin/Debug/net7.0/socket_tests.pdb
+/Users/albrechtohsiek/University/FinalYearProject/Final_Year_Project_Group3/socket_tests/obj/Debug/net7.0/socket_tests.GeneratedMSBuildEditorConfig.editorconfig
+/Users/albrechtohsiek/University/FinalYearProject/Final_Year_Project_Group3/socket_tests/obj/Debug/net7.0/socket_tests.AssemblyInfoInputs.cache
+/Users/albrechtohsiek/University/FinalYearProject/Final_Year_Project_Group3/socket_tests/obj/Debug/net7.0/socket_tests.AssemblyInfo.cs
+/Users/albrechtohsiek/University/FinalYearProject/Final_Year_Project_Group3/socket_tests/obj/Debug/net7.0/socket_tests.csproj.CoreCompileInputs.cache
+/Users/albrechtohsiek/University/FinalYearProject/Final_Year_Project_Group3/socket_tests/obj/Debug/net7.0/socket_tests.dll
+/Users/albrechtohsiek/University/FinalYearProject/Final_Year_Project_Group3/socket_tests/obj/Debug/net7.0/refint/socket_tests.dll
+/Users/albrechtohsiek/University/FinalYearProject/Final_Year_Project_Group3/socket_tests/obj/Debug/net7.0/socket_tests.pdb
+/Users/albrechtohsiek/University/FinalYearProject/Final_Year_Project_Group3/socket_tests/obj/Debug/net7.0/socket_tests.genruntimeconfig.cache
+/Users/albrechtohsiek/University/FinalYearProject/Final_Year_Project_Group3/socket_tests/obj/Debug/net7.0/ref/socket_tests.dll
