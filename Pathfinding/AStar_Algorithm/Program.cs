@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Sockets;
 
 namespace AStart_Algorithm
 {
@@ -20,6 +21,8 @@ namespace AStart_Algorithm
 
             Socket_Server socket_Server= new Socket_Server();
             socket_Server.Start();
+            TcpClient client = socket_Server.WaitForClient();
+            socket_Server.processClient(client);
             socket_Server.Stop();
 
         }

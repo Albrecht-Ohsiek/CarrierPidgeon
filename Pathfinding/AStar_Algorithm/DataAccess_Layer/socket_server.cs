@@ -40,7 +40,22 @@ namespace AStart_Algorithm
             }
         }
 
+        public TcpClient WaitForClient()
+        {
+            TcpClient client = server.AcceptTcpClient();
+            Console.WriteLine("Client connected: " + ((IPEndPoint)client.Client.RemoteEndPoint).Address);
+            return client;
+        }
 
+        public void processClient(TcpClient client)
+        {
+            NetworkStream networkStream = client.GetStream();
+            byte[] data = new byte[1024];
+            int bytes_read = networkStream.Read(data, 0, data.Length);
+            String received_data = Encoding.ASCII.GetString(data, 0, bytes_read);
+
+            networkStream.Close();
+        }
 
     }
 }
