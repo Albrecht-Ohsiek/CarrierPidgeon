@@ -3,6 +3,8 @@ using AStart_Algorithm.Business_Layer;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Numerics;
+using System.Linq.Expressions;
+using System.Drawing;
 
 namespace AStart_Algorithm
 {
@@ -15,16 +17,48 @@ namespace AStart_Algorithm
             for (int i = 0; i < width; i++)
                 for (int j = 0; j < bredth; j++)
                 {
-                    nodes[i, j] = new Node();
+                    nodes[i, j] = new Node(i, j);
                 }
 
             return nodes;
         }
 
-        // Calculate costs
-        public static int getDistance(Vector2 node1, Vector2 node2)
+        public static Node[,] initNodesFromList(List<string> data)
         {
-            return (int)(Vector2.Distance(node1, node2) * 10);
+            return null;
+        }
+
+        // Calculate costs
+        public static int getDistance(Node node1, Node node2)
+        {
+            Vector2 start = new Vector2(node1.posX, node1.posY);
+            Vector2 end = new Vector2(node2.posX, node2.posY);
+
+            return (int)(Vector2.Distance(start, end) * 10);
+        }
+
+        public static int calculateGCost(Node[,] nodes, Node currentNode)
+        {
+            if (currentNode.origin != null){
+                Node previousNode = currentNode.origin.Last();
+                return getDistance(previousNode, currentNode) + previousNode.gCost;
+            }    
+            return currentNode.gCost;
+        }
+
+        public static int calculateGCost(Node startNode, Node currentNode)
+        {
+            return getDistance(startNode, currentNode);
+        }
+
+        public static int calculateHCost(Node endNode, Node currentNode)
+        {
+            return getDistance(endNode, currentNode);
+        }
+
+        public static int calculateFCost(int gCost, int hCost)
+        {
+            return gCost + hCost;
         }
 
         // set node properties
@@ -51,6 +85,48 @@ namespace AStart_Algorithm
             return setUniqueProperty(nodes, node, unique_node_properties.Start);
         }
 
+        public static Point getStartCordinates(Node[,] nodes)
+        {
+            try
+            {
+                foreach (Node node in nodes)
+                {
+                    if (node.properties.Contains(unique_node_properties.Start)) ;
+                    {
+                        Point cordinates = new Point(node.posX, node.posY);
+                        return cordinates;
+                    }
+                }
+                throw new Exception("Start Node does not Exist");
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e.Message);
+                return new Point();
+            }
+        }
+
+        public static Point getEndCordinates(Node[,] nodes)
+        {
+            try
+            {
+                foreach (Node node in nodes)
+                {
+                    if (node.properties.Contains(unique_node_properties.End)) ;
+                    {
+                        Point cordinates = new Point(node.posX, node.posY);
+                        return cordinates;
+                    }
+                }
+                throw new Exception("End Node does not Exist");
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e.Message);
+                return new Point();
+            }
+        }
+
         public static Node setEnd(Node[,] nodes, Node node)
         {
             return setUniqueProperty(nodes, node, unique_node_properties.End);
@@ -73,7 +149,8 @@ namespace AStart_Algorithm
                     node.properties.Add(unique);
                     return node;
                 }
-                else {
+                else
+                {
                     throw new Exception("Unable to assign unique property");
                 }
 
@@ -86,6 +163,7 @@ namespace AStart_Algorithm
 
         }
 
+        
     }
 
 }

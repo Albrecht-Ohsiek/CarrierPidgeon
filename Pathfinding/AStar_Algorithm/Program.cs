@@ -9,7 +9,7 @@ namespace AStart_Algorithm
         static void Main(string[] args)
         {
 
-            // Initialise Map Mesh
+            // Initialise Map Mesh -- temp
             Node[,] nodes = Node.initNodes(5, 5);
             nodes[1, 4] = Node.placeObstacle(nodes[1, 4]);
             nodes[4, 1] = Node.placeObstacle(nodes[4, 1]);
@@ -19,11 +19,29 @@ namespace AStart_Algorithm
 
             Display_Console.Display(nodes);
 
-            Socket_Server socket_Server= new Socket_Server();
-            socket_Server.Start();
-            TcpClient client = socket_Server.WaitForClient();
-            socket_Server.processClient(client);
-            socket_Server.Stop();
+            // List<Node> route = Path.calculatePath(nodes, nodes[2, 3], nodes[0, 0]);
+            // foreach(Node node in route){
+            //     Console.WriteLine(node.posX + " " + node.posY);
+            // }
+
+            List<String> data = new List<String>();
+            while (true)
+            {
+                Socket_Server socket_Server = new Socket_Server();
+                socket_Server.Start();
+                TcpClient client = socket_Server.WaitForClient();
+
+                // saves recieved input into list
+                data = data_processing_services.processResponseToList(socket_Server.getClientResponse(client));
+
+                foreach (var item in data)
+                {
+                    Console.WriteLine(item);
+                }
+
+                socket_Server.Stop();
+            }
+
 
         }
     }
