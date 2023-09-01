@@ -47,16 +47,17 @@ namespace AStart_Algorithm
             return client;
         }
 
-        public void processClient(TcpClient client)
+        public string getClientResponse(TcpClient client)
         {
             NetworkStream networkStream = client.GetStream();
+            
             byte[] data = new byte[1024];
             int bytes_read = networkStream.Read(data, 0, data.Length);
             String received_data = Encoding.ASCII.GetString(data, 0, bytes_read);
 
-            Console.WriteLine(received_data); //Confirmation
-
             networkStream.Close();
+
+            return received_data;
         }
 
     }

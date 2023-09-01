@@ -17,12 +17,12 @@ namespace socket_tests
 
             NetworkStream stream = client.GetStream();
 
-            string requestData = "Hello, server!"; // Your request data
-            byte[] data = Encoding.ASCII.GetBytes(requestData);
+            string inputData = "init grid 10 10\nadd o 2 2\nadd o 5 5\nadd s 1 1\nadd o 8 8";
+            //string inputData = "add e 3 4";
 
-            stream.Write(data, 0, data.Length);
+            byte[] requestData = Encoding.ASCII.GetBytes(inputData);
+            stream.Write(requestData, 0, requestData.Length);
 
-            // Receive response (for simplicity, we'll just print it)
             byte[] responseBytes = new byte[1024];
             int bytesRead = stream.Read(responseBytes, 0, responseBytes.Length);
             string response = Encoding.ASCII.GetString(responseBytes, 0, bytesRead);
