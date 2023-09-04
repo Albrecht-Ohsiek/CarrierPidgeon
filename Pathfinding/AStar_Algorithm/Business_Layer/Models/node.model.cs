@@ -1,7 +1,3 @@
-using System.Collections.Generic;
-using System.Drawing;
-using System.Runtime.InteropServices;
-
 namespace AStart_Algorithm
 {
     public class Node : INode
@@ -26,6 +22,7 @@ namespace AStart_Algorithm
             this.hCost = 0;
             this.fCost = 0;
             this.properties = new List<Enum>();
+            this.origin = new List<Node>();
         }
 
         public Node(bool isOccupied, bool isAccessible, int calculatedFCost, int calculatedGCost, int calculatedHCost, List<Enum> properties)

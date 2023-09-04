@@ -1,5 +1,3 @@
-using System;
-using System.Drawing;
 using AStart_Algorithm.Business_Layer;
 
 namespace AStart_Algorithm
@@ -11,7 +9,7 @@ namespace AStart_Algorithm
             List<Node> openNodes = new List<Node>();
             List<Node> closedNodes = new List<Node>();
 
-            startNode = initNodeCosts(startNode, startNode, endNode);
+            startNode = node_services.getNodeCosts(startNode, startNode, endNode);
 
             openNodes.Add(nodes[startNode.posX, startNode.posY]);
 
@@ -42,7 +40,7 @@ namespace AStart_Algorithm
                             continue;
                         }
 
-                        int gCost = node_services.calculateGCost(nodes, neighbor);
+                        int gCost = node_services.calculateGCost(startNode, neighbor);
 
                         if(!openNodes.Contains(neighbor) || gCost < neighbor.gCost)
                         {
@@ -124,13 +122,7 @@ namespace AStart_Algorithm
             return neighbors;
         }
 
-        private static Node initNodeCosts(Node currentNode, Node startNode, Node endNode){
-            currentNode.gCost = node_services.calculateGCost(startNode, currentNode);
-            currentNode.hCost = node_services.calculateHCost(endNode, currentNode);
-            currentNode.fCost = node_services.calculateFCost(startNode.gCost, startNode.hCost);
 
-            return currentNode;
-        }
 
     }
 

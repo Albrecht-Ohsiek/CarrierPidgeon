@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Net;
 using System.Net.Sockets;
 
 namespace AStart_Algorithm
@@ -27,7 +27,7 @@ namespace AStart_Algorithm
             List<String> data = new List<String>();
             while (true)
             {
-                Socket_Server socket_Server = new Socket_Server();
+                Socket_Server socket_Server = new Socket_Server(IPAddress.Parse("127.0.0.1"), 8000);
                 socket_Server.Start();
                 TcpClient client = socket_Server.WaitForClient();
 

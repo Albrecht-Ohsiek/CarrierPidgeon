@@ -1,9 +1,5 @@
-using System.Collections.Generic;
 using AStart_Algorithm.Business_Layer;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Numerics;
-using System.Linq.Expressions;
 using System.Drawing;
 
 namespace AStart_Algorithm
@@ -23,11 +19,6 @@ namespace AStart_Algorithm
             return nodes;
         }
 
-        public static Node[,] initNodesFromList(List<string> data)
-        {
-            return null;
-        }
-
         // Calculate costs
         public static int getDistance(Node node1, Node node2)
         {
@@ -37,18 +28,17 @@ namespace AStart_Algorithm
             return (int)(Vector2.Distance(start, end) * 10);
         }
 
-        public static int calculateGCost(Node[,] nodes, Node currentNode)
-        {
-            if (currentNode.origin != null){
-                Node previousNode = currentNode.origin.Last();
-                return getDistance(previousNode, currentNode) + previousNode.gCost;
-            }    
-            return currentNode.gCost;
-        }
-
         public static int calculateGCost(Node startNode, Node currentNode)
         {
-            return getDistance(startNode, currentNode);
+            if (currentNode.origin != null)
+            {
+                Node previousNode = currentNode.origin.Last();
+                return getDistance(previousNode, currentNode) + previousNode.gCost;
+            }
+            else
+            {
+                return getDistance(startNode, currentNode);
+            }
         }
 
         public static int calculateHCost(Node endNode, Node currentNode)
@@ -59,6 +49,15 @@ namespace AStart_Algorithm
         public static int calculateFCost(int gCost, int hCost)
         {
             return gCost + hCost;
+        }
+
+        public static Node getNodeCosts(Node currentNode, Node startNode, Node endNode)
+        {
+            currentNode.gCost = calculateGCost(startNode, currentNode);
+            currentNode.hCost = calculateHCost(endNode, currentNode);
+            currentNode.fCost = calculateFCost(startNode.gCost, startNode.hCost);
+
+            return currentNode;
         }
 
         // set node properties
@@ -85,6 +84,42 @@ namespace AStart_Algorithm
             return setUniqueProperty(nodes, node, unique_node_properties.Start);
         }
 
+        public static Node setEnd(Node[,] nodes, Node node)
+        {
+            return setUniqueProperty(nodes, node, unique_node_properties.End);
+        }
+
+        public static Node setUniqueProperty(Node[,] nodes, Node node, Enum unique)
+        {
+            try
+            {
+                foreach (Node item in nodes)
+                {
+                    if (item.properties.Contains(unique))
+                    {
+                        throw new Exception("The Unique property already exists");
+                    }
+                }
+
+                if (!node.properties.Contains(node_properties.Obstacle) && !node.properties.Any(prop => prop.GetType() == typeof(unique_node_properties)))
+                {
+                    node.properties.Add(unique);
+                    return node;
+                }
+                else
+                {
+                    throw new Exception("Unable to assign unique property");
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e.Message);
+                return node;
+            }
+
+        }
+        
         public static Point getStartCordinates(Node[,] nodes)
         {
             try
@@ -127,43 +162,7 @@ namespace AStart_Algorithm
             }
         }
 
-        public static Node setEnd(Node[,] nodes, Node node)
-        {
-            return setUniqueProperty(nodes, node, unique_node_properties.End);
-        }
 
-        public static Node setUniqueProperty(Node[,] nodes, Node node, Enum unique)
-        {
-            try
-            {
-                foreach (Node item in nodes)
-                {
-                    if (item.properties.Contains(unique))
-                    {
-                        throw new Exception("The Unique property already exists");
-                    }
-                }
-
-                if (!node.properties.Contains(node_properties.Obstacle) && !node.properties.Any(prop => prop.GetType() == typeof(unique_node_properties)))
-                {
-                    node.properties.Add(unique);
-                    return node;
-                }
-                else
-                {
-                    throw new Exception("Unable to assign unique property");
-                }
-
-            }
-            catch (Exception e)
-            {
-                Console.Error.WriteLine(e.Message);
-                return node;
-            }
-
-        }
-
-        
     }
 
 }
