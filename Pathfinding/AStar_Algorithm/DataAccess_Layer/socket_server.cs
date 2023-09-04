@@ -8,13 +8,17 @@ namespace AStart_Algorithm
     public class Socket_Server
     {
         private TcpListener server;
+        private int serverPort;
+        private IPAddress serverAddress;
+
+        public Socket_Server(IPAddress iPAddress, int port){
+            this.serverPort = port;
+            this.serverAddress = iPAddress;
+        }
 
         public void Start()
         {
-            IPAddress serverAddress = IPAddress.Parse("127.0.0.1");
-            int serverPort = 8000;
-
-            server = new TcpListener(serverAddress, serverPort);
+            server = new TcpListener(serverAddress, this.serverPort);
 
             try
             {
