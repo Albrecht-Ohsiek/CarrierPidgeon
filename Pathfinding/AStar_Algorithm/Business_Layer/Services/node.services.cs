@@ -30,7 +30,7 @@ namespace AStart_Algorithm
 
         public static int calculateGCost(Node startNode, Node currentNode)
         {
-            if (currentNode.origin != null)
+            if (currentNode.origin.Count > 0)
             {
                 Node previousNode = currentNode.origin.Last();
                 return getDistance(previousNode, currentNode) + previousNode.gCost;
@@ -126,7 +126,7 @@ namespace AStart_Algorithm
             {
                 foreach (Node node in nodes)
                 {
-                    if (node.properties.Contains(unique_node_properties.Start)) ;
+                    if (node.properties.Contains(unique_node_properties.Start))
                     {
                         Point cordinates = new Point(node.posX, node.posY);
                         return cordinates;
@@ -147,7 +147,7 @@ namespace AStart_Algorithm
             {
                 foreach (Node node in nodes)
                 {
-                    if (node.properties.Contains(unique_node_properties.End)) ;
+                    if (node.properties.Contains(unique_node_properties.End))
                     {
                         Point cordinates = new Point(node.posX, node.posY);
                         return cordinates;

@@ -15,20 +15,17 @@ namespace AStart_Algorithm
 
             try
             {
-                do
-                {
-                    if (openNodes.Count == 0)
-                    {
-                        throw new Exception("No path found");
-                    }
+                Node currentNode = getNextNode(openNodes);
 
-                    Node currentNode = getNextNode(openNodes);
+                while (pathPossible(openNodes) || pathFound(currentNode))
+                {
+                    currentNode = getNextNode(openNodes);
                     openNodes.Remove(currentNode);
                     closedNodes.Add(currentNode);
 
                     if (currentNode.properties.Contains(unique_node_properties.End))
                     {
-                        return currentNode.origin;
+                        return currentNode.origin!;
                     }
 
                     List<Node> neighbors = getNeighbors(nodes, currentNode);
@@ -42,21 +39,22 @@ namespace AStart_Algorithm
 
                         int gCost = node_services.calculateGCost(startNode, neighbor);
 
-                        if(!openNodes.Contains(neighbor) || gCost < neighbor.gCost)
+                        if (!openNodes.Contains(neighbor) || gCost < neighbor.gCost)
                         {
                             neighbor.gCost = gCost;
                             neighbor.hCost = node_services.calculateHCost(nodes[endNode.posX, endNode.posY], neighbor);
                             neighbor.fCost = node_services.calculateFCost(neighbor.gCost, neighbor.hCost);
-                            neighbor.origin.Add(currentNode);
+                            neighbor.origin = currentNode.origin;
+                            neighbor.origin!.Add(currentNode);
 
-                            if(!openNodes.Contains(neighbor))
+                            if (!openNodes.Contains(neighbor))
                             {
                                 openNodes.Add(neighbor);
                             }
-                        }               
+                        }
                     }
 
-                } while (true);
+                }
 
             }
             catch (Exception e)
@@ -64,32 +62,44 @@ namespace AStart_Algorithm
                 Console.Error.WriteLine(e.Message);
                 return new List<Node>();
             }
-            
+            finally
+            {
+            }
+            return new List<Node>();
+        }
+
+        private static bool pathFound(Node currentNode)
+        {
+            if (currentNode.properties.Contains(unique_node_properties.End))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private static bool pathPossible(List<Node> openNodes)
+        {
+            if (openNodes.Count == 0)
+            {
+                return false;
+            }
+            return true;
         }
 
         private static Node getNextNode(List<Node> openNodes)
         {
-            try
+            int lowestFCost = openNodes.Where(node => node != null).Min(node => node.fCost);
+            List<Node> nodeLowestFCost = openNodes.Where(node => node != null && node.fCost == lowestFCost).ToList();
+
+            if (nodeLowestFCost.Count > 1)
             {
-                int lowestFCost = openNodes.Min(node => node.fCost);
-                List<Node> nodeLowestFCost = openNodes.Where(node => node.fCost == lowestFCost).ToList();
-
-                if (nodeLowestFCost.Count > 1)
-                {
-                    int lowestGCost = nodeLowestFCost.Min(node => node.gCost);
-                    List<Node> nodeLowestGCost = openNodes.Where(node => node.fCost == lowestGCost).ToList();
-                    return nodeLowestGCost[0];
-                }
-                else
-                {
-                    return nodeLowestFCost[0];
-                }
-
+                int lowestGCost = nodeLowestFCost.Where(node => node != null).Min(node => node.gCost);
+                List<Node> nodeLowestGCost = nodeLowestFCost.Where(node => node != null && node.gCost == lowestGCost).ToList();
+                return nodeLowestGCost.First();
             }
-            catch (Exception e)
+            else
             {
-                Console.Error.WriteLine(e.Message);
-                return null;
+                return nodeLowestFCost.First();
             }
         }
 
@@ -121,8 +131,6 @@ namespace AStart_Algorithm
 
             return neighbors;
         }
-
-
 
     }
 
