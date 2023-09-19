@@ -10,6 +10,6 @@ namespace AStart_Algorithm
         bool accessible { get; set; }
         bool occupied { get; set; }
         List<Enum> properties { get; set; }
-        List<Node>? origin{ get; set; }
+        List<Node> origin{ get; set; }
     }
 }

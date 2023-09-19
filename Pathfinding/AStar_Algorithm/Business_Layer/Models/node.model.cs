@@ -10,7 +10,7 @@ namespace AStart_Algorithm
         public int gCost { get; set; }
         public int hCost { get; set; }
         public List<Enum> properties { get; set; }
-        public List<Node>? origin { get; set; }
+        public List<Node> origin { get; set; }
 
         public Node(int posX, int posY)
         {
@@ -25,7 +25,7 @@ namespace AStart_Algorithm
             this.origin = new List<Node>();
         }
 
-        public Node(bool isOccupied, bool isAccessible, int calculatedFCost, int calculatedGCost, int calculatedHCost, List<Enum> properties)
+        public Node(bool isOccupied, bool isAccessible, int calculatedFCost, int calculatedGCost, int calculatedHCost, List<Enum> properties, List<Node> origin)
         {
             this.posX = posX;
             this.posY = posY;
@@ -35,6 +35,7 @@ namespace AStart_Algorithm
             this.gCost = calculatedGCost;
             this.hCost = calculatedHCost;
             this.properties = properties;
+            this.origin = origin;
         }
 
         public static Node[,] initNodes(int x, int y)
