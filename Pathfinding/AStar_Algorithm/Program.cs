@@ -1,8 +1,20 @@
 ﻿using System.Net;
 using System.Net.Sockets;
+using Microsoft.AspNetCore.Builder;
+
+WebApplicationBuilder webApplicationBuilder = WebApplication.CreateBuilder(args);
+
+WebApplication webApplication = webApplicationBuilder.Build();
+
+webApplication.MapGet("/api/home", 
+    () => "Hello Web Api"
+);
+
+webApplication.Run();
 
 namespace AStart_Algorithm
 {
+
     class Program
     {
 
