@@ -4,11 +4,11 @@ namespace AStart_Algorithm
     {
         public static void getDroneEndpoints(WebApplication webApplication)
         {
-            webApplication.MapGet("/dashboard/{droneId}", async (string droneId) =>
+            webApplication.MapGet("/dashboard/", async () =>
             {
                 // Return Node.origin for specific drone
 
-                return "Fuck you " + droneId;
+                return "Dashboard ";
             });
 
         }
