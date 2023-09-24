@@ -24,15 +24,15 @@ namespace AStart_Algorithm
             {
                 for (int j = 0; j < bredth; j++)
                 {
-                    if (nodes[i, j].occupied && nodes[i, j].properties.Contains(node_properties.Obstacle))
+                    if (nodes[i, j].occupied && nodes[i, j].properties.Contains(NodeProperties.Obstacle))
                     {
                         Console.Write(occupied);
                     }
-                    else if (nodes[i, j].properties.Contains(unique_node_properties.Start))
+                    else if (nodes[i, j].properties.Contains(UniqueNodeProperties.Start))
                     {
                         Console.Write(start);
                     }
-                    else if (nodes[i, j].properties.Contains(unique_node_properties.End))
+                    else if (nodes[i, j].properties.Contains(UniqueNodeProperties.End))
                     {
                         Console.Write(end);
                     }

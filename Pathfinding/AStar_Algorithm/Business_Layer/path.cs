@@ -23,7 +23,7 @@ namespace AStart_Algorithm
                     openNodes.Remove(currentNode);
                     closedNodes.Add(currentNode);
 
-                    if (currentNode.properties.Contains(unique_node_properties.End))
+                    if (currentNode.properties.Contains(UniqueNodeProperties.End))
                     {
                         return currentNode.origin!;
                     }
@@ -70,7 +70,7 @@ namespace AStart_Algorithm
 
         private static bool pathFound(Node currentNode)
         {
-            if (currentNode.properties.Contains(unique_node_properties.End))
+            if (currentNode.properties.Contains(UniqueNodeProperties.End))
             {
                 return true;
             }
@@ -122,7 +122,7 @@ namespace AStart_Algorithm
                 {
                     Node neighbor = nodes[newX, newY];
 
-                    if (!neighbor.properties.Contains(node_properties.Obstacle))
+                    if (!neighbor.properties.Contains(NodeProperties.Obstacle))
                     {
                         neighbors.Add(neighbor);
                     }
