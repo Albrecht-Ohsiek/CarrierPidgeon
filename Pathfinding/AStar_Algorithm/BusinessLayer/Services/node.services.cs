@@ -1,8 +1,8 @@
-using AStart_Algorithm.Business_Layer;
+using CarrierPidgeon.Business_Layer;
 using System.Numerics;
 using System.Drawing;
 
-namespace AStart_Algorithm
+namespace CarrierPidgeon
 {
     public class node_services
     {

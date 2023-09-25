@@ -1,6 +1,6 @@
-using AStart_Algorithm.Business_Layer;
+using CarrierPidgeon.Business_Layer;
 
-namespace AStart_Algorithm
+namespace CarrierPidgeon
 {
     class AStar_Algorithm
     {

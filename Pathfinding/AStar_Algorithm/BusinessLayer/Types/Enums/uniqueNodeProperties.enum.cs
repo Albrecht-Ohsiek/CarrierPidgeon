@@ -1,4 +1,4 @@
-namespace AStart_Algorithm.Business_Layer
+namespace CarrierPidgeon.Business_Layer
 {
     public enum UniqueNodeProperties
     {

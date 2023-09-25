@@ -1,9 +1,4 @@
-﻿using System.Net;
-using System.Net.Sockets;
-using AStart_Algorithm;
-using Microsoft.AspNetCore.Builder;
-
-namespace AStart_Algorithm
+﻿namespace CarrierPidgeon
 {
     class Program
     {

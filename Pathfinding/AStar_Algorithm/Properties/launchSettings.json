@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "AStar_Algorithm": {
+    "CarrierPidgeon": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

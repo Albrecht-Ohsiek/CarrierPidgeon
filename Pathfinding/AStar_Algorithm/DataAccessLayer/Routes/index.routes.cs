@@ -1,4 +1,4 @@
-namespace AStart_Algorithm
+namespace CarrierPidgeon
 {
     public class Api_Endpoints
     {
