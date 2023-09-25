@@ -1,4 +1,4 @@
-namespace AStart_Algorithm
+namespace CarrierPidgeon
 {
     public static class data_processing_services
     {

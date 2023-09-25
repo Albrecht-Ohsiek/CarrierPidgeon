@@ -1,6 +1,6 @@
-using AStart_Algorithm.Business_Layer;
+using CarrierPidgeon.Business_Layer;
 
-namespace AStart_Algorithm
+namespace CarrierPidgeon
 {
     class Display_Console
     {
@@ -18,20 +18,21 @@ namespace AStart_Algorithm
             int width = nodes.GetLength(0);
             int bredth = nodes.GetLength(1);
 
+            // TODO: Implement Switch Statement
             Console.Clear();
             for (int i = 0; i < width; i++)
             {
                 for (int j = 0; j < bredth; j++)
                 {
-                    if (nodes[i, j].occupied && nodes[i, j].properties.Contains(node_properties.Obstacle))
+                    if (nodes[i, j].occupied && nodes[i, j].properties.Contains(NodeProperties.Obstacle))
                     {
                         Console.Write(occupied);
                     }
-                    else if (nodes[i, j].properties.Contains(unique_node_properties.Start))
+                    else if (nodes[i, j].properties.Contains(UniqueNodeProperties.Start))
                     {
                         Console.Write(start);
                     }
-                    else if (nodes[i, j].properties.Contains(unique_node_properties.End))
+                    else if (nodes[i, j].properties.Contains(UniqueNodeProperties.End))
                     {
                         Console.Write(end);
                     }

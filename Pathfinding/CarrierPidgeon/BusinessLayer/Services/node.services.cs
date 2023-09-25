@@ -1,8 +1,8 @@
-using AStart_Algorithm.Business_Layer;
+using CarrierPidgeon.Business_Layer;
 using System.Numerics;
 using System.Drawing;
 
-namespace AStart_Algorithm
+namespace CarrierPidgeon
 {
     public class node_services
     {
@@ -68,7 +68,7 @@ namespace AStart_Algorithm
                 if (node.accessible)
                 {
                     node.occupied = true;
-                    node.properties.Add(node_properties.Obstacle);
+                    node.properties.Add(NodeProperties.Obstacle);
                 }
             }
             catch (Exception e)
@@ -81,12 +81,12 @@ namespace AStart_Algorithm
 
         public static Node setStart(Node[,] nodes, Node node)
         {
-            return setUniqueProperty(nodes, node, unique_node_properties.Start);
+            return setUniqueProperty(nodes, node, UniqueNodeProperties.Start);
         }
 
         public static Node setEnd(Node[,] nodes, Node node)
         {
-            return setUniqueProperty(nodes, node, unique_node_properties.End);
+            return setUniqueProperty(nodes, node, UniqueNodeProperties.End);
         }
 
         public static Node setUniqueProperty(Node[,] nodes, Node node, Enum unique)
@@ -101,7 +101,7 @@ namespace AStart_Algorithm
                     }
                 }
 
-                if (!node.properties.Contains(node_properties.Obstacle) && !node.properties.Any(prop => prop.GetType() == typeof(unique_node_properties)))
+                if (!node.properties.Contains(NodeProperties.Obstacle) && !node.properties.Any(prop => prop.GetType() == typeof(UniqueNodeProperties)))
                 {
                     node.properties.Add(unique);
                     return node;
@@ -126,7 +126,7 @@ namespace AStart_Algorithm
             {
                 foreach (Node node in nodes)
                 {
-                    if (node.properties.Contains(unique_node_properties.Start))
+                    if (node.properties.Contains(UniqueNodeProperties.Start))
                     {
                         Point cordinates = new Point(node.posX, node.posY);
                         return cordinates;
@@ -147,7 +147,7 @@ namespace AStart_Algorithm
             {
                 foreach (Node node in nodes)
                 {
-                    if (node.properties.Contains(unique_node_properties.End))
+                    if (node.properties.Contains(UniqueNodeProperties.End))
                     {
                         Point cordinates = new Point(node.posX, node.posY);
                         return cordinates;
