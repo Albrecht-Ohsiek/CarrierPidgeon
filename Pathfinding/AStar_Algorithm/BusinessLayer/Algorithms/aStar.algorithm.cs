@@ -2,7 +2,7 @@ using AStart_Algorithm.Business_Layer;
 
 namespace AStart_Algorithm
 {
-    class Path
+    class AStar_Algorithm
     {
         public static List<Node> calculatePath(Node[,] nodes, Node startNode, Node endNode)
         {
