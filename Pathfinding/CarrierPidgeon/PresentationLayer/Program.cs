@@ -1,4 +1,8 @@
-﻿namespace CarrierPidgeon
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Mvc;
+
+namespace CarrierPidgeon
 {
     class Program
     {
@@ -6,10 +10,30 @@
         {
             WebApplicationBuilder webApplicationBuilder = WebApplication.CreateBuilder(args);
 
+            webApplicationBuilder.Services.AddControllers();
+            webApplicationBuilder.Services.AddScoped<Grid_Services>();
+
             WebApplication webApplication = webApplicationBuilder.Build();
 
-            Api_Endpoints.getEnpoints(webApplication);
+            if (webApplication.Environment.IsDevelopment())
+            {
+                webApplication.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                // Configure production settings
+            }
 
+            webApplication.UseRouting();
+
+            // Use top-level route registrations directly in Program.cs
+            webApplication.MapControllerRoute(
+                name: "dashboard",
+                pattern: "dashboard/{action}",
+                defaults: new { controller = "Dashboard" }
+            );
+
+            // webApplication.Run("https://localhost:4000");
             webApplication.Run();
         }
     }

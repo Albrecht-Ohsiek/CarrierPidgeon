@@ -1,7 +1,11 @@
-namespace CarrierPidgeon
+using Microsoft.AspNetCore.Mvc;
+
+namespace CarrierPidgeon.Controllers
 {
-    public class Drone_Routes
-    {
+    [ApiController]
+    [Route("/drone")]
+    public class Drone_Controller
+    {  
         public static void getDroneEndpoints(WebApplication webApplication)
         {
             webApplication.MapGet("/drone/{droneId}/getRoute", async (string droneId) =>
