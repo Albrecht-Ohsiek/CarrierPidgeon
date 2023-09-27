@@ -12,4 +12,8 @@
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </Content>
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Driver" Version="2.21.0" />
+  </ItemGroup>
 </Project>
