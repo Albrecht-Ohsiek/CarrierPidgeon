@@ -18,7 +18,7 @@ namespace CarrierPidgeon.Controllers
         [HttpGet]
         public IActionResult GetGridInfo()
         {
-            Grid_Model gridModel = gridServices.grid_model;
+            Grid_Model gridModel = gridServices.gridModel;
 
             return Ok("It fucking worked");
         }
@@ -27,7 +27,7 @@ namespace CarrierPidgeon.Controllers
         [HttpGet("{userName}")]
         public IActionResult GetGridInfoUser(string userName)
         {
-            Grid_Model gridModel = gridServices.grid_model;
+            Grid_Model gridModel = gridServices.gridModel;
 
             return Ok($"It fucking worked {userName}");
         }

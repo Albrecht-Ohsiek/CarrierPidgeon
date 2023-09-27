@@ -10,6 +10,7 @@ namespace CarrierPidgeon
 
             webApplicationBuilder.Services.AddControllers();
             webApplicationBuilder.Services.AddScoped<Grid_Services>();
+            webApplicationBuilder.Services.AddScoped<Drone_Services>();
 
             WebApplication webApplication = webApplicationBuilder.Build();
 
