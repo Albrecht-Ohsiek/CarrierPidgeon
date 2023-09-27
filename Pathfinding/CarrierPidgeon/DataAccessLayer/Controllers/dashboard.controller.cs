@@ -21,6 +21,15 @@ namespace CarrierPidgeon.Controllers
             return Ok("It fucking worked");
         }
 
+        //Example sub route ../dashboard/{userName}
+        [HttpGet("{userName}")]
+        public IActionResult GetGridInfoUser(string userName)
+        {
+            Grid_Model gridModel = gridServices.grid_model;
+
+            return Ok($"It fucking worked {userName}");
+        }
+
         // Define additional actions and routes here, e.g., [HttpGet("otherAction")]
     }
 }
