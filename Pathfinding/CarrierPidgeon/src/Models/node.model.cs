@@ -1,4 +1,6 @@
-namespace CarrierPidgeon
+using CarrierPidgeon.Types;
+
+namespace CarrierPidgeon.Models
 {
     public class Node : INode
     {

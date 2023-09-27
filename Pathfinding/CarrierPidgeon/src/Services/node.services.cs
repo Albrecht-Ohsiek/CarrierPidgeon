@@ -1,8 +1,9 @@
-using CarrierPidgeon.Business_Layer;
+using CarrierPidgeon.Types;
+using CarrierPidgeon.Models;
 using System.Numerics;
 using System.Drawing;
 
-namespace CarrierPidgeon
+namespace CarrierPidgeon.Services
 {
     public class node_services
     {

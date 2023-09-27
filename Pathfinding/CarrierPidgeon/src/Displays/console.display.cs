@@ -1,8 +1,9 @@
-using CarrierPidgeon.Business_Layer;
+using CarrierPidgeon.Types;
+using CarrierPidgeon.Models;
 
-namespace CarrierPidgeon
+namespace CarrierPidgeon.Displays
 {
-    class Display_Console
+    class Console_Display
     {
         // Console Display Symbols
         private static char occupied = 'x';

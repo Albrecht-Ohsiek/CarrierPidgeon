@@ -1,4 +1,4 @@
-namespace CarrierPidgeon.Business_Layer
+namespace CarrierPidgeon.Types
 {
     public enum NodeProperties
     {

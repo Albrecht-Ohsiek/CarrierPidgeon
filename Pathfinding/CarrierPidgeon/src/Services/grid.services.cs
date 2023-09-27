@@ -1,4 +1,6 @@
-namespace CarrierPidgeon
+using CarrierPidgeon.Models;
+
+namespace CarrierPidgeon.Services
 {
     public class Grid_Services
     {

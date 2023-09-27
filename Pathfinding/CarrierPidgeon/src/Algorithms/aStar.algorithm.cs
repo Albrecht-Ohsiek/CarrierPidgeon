@@ -1,6 +1,8 @@
-using CarrierPidgeon.Business_Layer;
+using CarrierPidgeon.Types;
+using CarrierPidgeon.Models;
+using CarrierPidgeon.Services;
 
-namespace CarrierPidgeon
+namespace CarrierPidgeon.Algorithms
 {
     class AStar_Algorithm
     {

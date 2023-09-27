@@ -14,6 +14,7 @@ namespace CarrierPidgeon.Controllers
 
                 return "Fuck you " + droneId;
             });
+            
 
             webApplication.MapPost("/drone/{droneId}/setObstacle", async (string droneId) =>
             {

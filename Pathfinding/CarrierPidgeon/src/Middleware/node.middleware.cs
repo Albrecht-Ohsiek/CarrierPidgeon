@@ -1,4 +1,7 @@
-namespace CarrierPidgeon
+using CarrierPidgeon.Models;
+using CarrierPidgeon.Services;
+
+namespace CarrierPidgeon.Middleware
 {
     class Node_Middleware
     {
