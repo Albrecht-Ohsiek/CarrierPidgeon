@@ -29,7 +29,13 @@ namespace CarrierPidgeon
             webApplication.MapControllerRoute(
                 name: "dashboard",
                 pattern: "dashboard/{action}",
-                defaults: new { controller = "Dashboard" }
+                defaults: new { controller = "Dashboard_Controller" }
+            );
+
+            webApplication.MapControllerRoute(
+                name: "drone",
+                pattern: "drone/{action}",
+                defaults: new { controller = "Drone_Controller" }
             );
 
             // webApplication.Run("https://localhost:4000");
