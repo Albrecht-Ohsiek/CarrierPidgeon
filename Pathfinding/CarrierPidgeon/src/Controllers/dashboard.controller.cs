@@ -32,6 +32,12 @@ namespace CarrierPidgeon.Controllers
             return Ok($"It fucking worked {userName}");
         }
 
+        [HttpPost("/setGrid")]
+        public IActionResult SetGridSize([FromBody] Grid_Model gridModel)
+        {
+            return Ok("Set grid size");
+        }
+
         // Define additional actions and routes here, e.g., [HttpGet("otherAction")]
     }
 }
