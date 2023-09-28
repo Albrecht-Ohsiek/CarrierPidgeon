@@ -34,5 +34,10 @@ namespace CarrierPidgeon.Handlers
                 }
             }
         }
+
+        internal Task<IActionResult> SetNodeType()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
