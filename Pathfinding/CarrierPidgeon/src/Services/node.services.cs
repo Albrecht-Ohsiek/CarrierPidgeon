@@ -8,6 +8,13 @@ namespace CarrierPidgeon.Services
     public class node_services
     {
         // Create board
+        public static Node[,] InitializeNodes()
+        {
+            // Initialize the nodes array with default values
+            int width = 10;
+            int height = 10;
+            return initNodes(width, height);
+        }
         public static Node[,] initNodes(int width, int bredth)
         {
             Node[,] nodes = new Node[width, bredth];

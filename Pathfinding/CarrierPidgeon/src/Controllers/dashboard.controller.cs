@@ -32,10 +32,20 @@ namespace CarrierPidgeon.Controllers
             return Ok($"It fucking worked {userName}");
         }
 
-        [HttpPost("/setGrid")]
+        [HttpPost("setGrid")]
         public IActionResult SetGridSize([FromBody] Grid_Model gridModel)
         {
-            return Ok("Set grid size");
+            try{
+                int width = gridModel.sizeX;
+                int bredth = gridModel.sizeY;
+
+                Node[,] nodes = node_services.initNodes(width, bredth);
+
+                return Ok("Set grid size");
+            }
+            catch(Exception e){
+                return BadRequest("Failed to set grid size: " + e.Message);
+            }         
         }
 
         // Define additional actions and routes here, e.g., [HttpGet("otherAction")]

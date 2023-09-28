@@ -1,4 +1,5 @@
-﻿using CarrierPidgeon.Services;
+﻿using CarrierPidgeon.Models;
+using CarrierPidgeon.Services;
 
 namespace CarrierPidgeon
 {
@@ -11,6 +12,9 @@ namespace CarrierPidgeon
             webApplicationBuilder.Services.AddControllers();
             webApplicationBuilder.Services.AddScoped<Grid_Services>();
             webApplicationBuilder.Services.AddScoped<Drone_Services>();
+
+            Node[,] nodes = node_services.InitializeNodes();
+            webApplicationBuilder.Services.AddSingleton<Node[,]>(nodes);
 
             WebApplication webApplication = webApplicationBuilder.Build();
 
