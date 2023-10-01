@@ -7,11 +7,11 @@ namespace CarrierPidgeon.Controllers
 {
     [ApiController]
     [Route("/drone")]
-    public class Drone_Controller : ControllerBase
+    public class DroneController : ControllerBase
     {  
-        private readonly Drone_Services droneServices;
+        private readonly DroneServices droneServices;
 
-        public Drone_Controller(Drone_Services droneServices)
+        public DroneController(DroneServices droneServices)
         {
             this.droneServices = droneServices;
         }
@@ -19,7 +19,7 @@ namespace CarrierPidgeon.Controllers
         [HttpGet("{droneId}")]
         public IActionResult GetDroneInfo(ObjectId droneId)
         {
-            Drone_Model gridModel = droneServices.droneModel;
+            DroneModel gridModel = droneServices.droneModel;
 
             return Ok($"{droneId} was selected");
         }
@@ -27,7 +27,7 @@ namespace CarrierPidgeon.Controllers
         [HttpPost("{Node}")]
         public IActionResult setObstacle(Node node)
         {
-            Drone_Model gridModel = droneServices.droneModel;
+            DroneModel gridModel = droneServices.droneModel;
 
             return Ok("Added Node");
         }

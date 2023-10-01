@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace CarrierPidgeon.Services
 {
-    public class node_services
+    public class nodeServices
     {
         // Create board
         public static Node[,] InitializeNodes()

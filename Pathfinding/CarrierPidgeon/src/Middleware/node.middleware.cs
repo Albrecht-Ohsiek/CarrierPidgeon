@@ -3,26 +3,26 @@ using CarrierPidgeon.Services;
 
 namespace CarrierPidgeon.Middleware
 {
-    class Node_Middleware
+    class NodeMiddleware
     {
         public static Node[,] initNodes(int x, int y)
         {
-            return node_services.initNodes(x, y);
+            return nodeServices.initNodes(x, y);
         }
 
         public static Node placeObstacle(Node node)
         {
-            return node_services.placeObstacle(node);
+            return nodeServices.placeObstacle(node);
         }
 
         public static Node setStart(Node[,] nodes, Node node)
         {
-            return node_services.setStart(nodes, node);
+            return nodeServices.setStart(nodes, node);
         }
 
         public static Node setEnd(Node[,] nodes, Node node)
         {
-            return node_services.setEnd(nodes, node);
+            return nodeServices.setEnd(nodes, node);
         }
 
     }

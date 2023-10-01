@@ -7,6 +7,6 @@ namespace CarrierPidgeon.Types
     {
         ObjectId droneId {get; set;}
         string status {get; set;}
-        Route_Model activeRoute {get; set;}
+        RouteModel activeRoute {get; set;}
     }
 }

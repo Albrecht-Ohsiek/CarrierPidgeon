@@ -9,13 +9,13 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddControllers();
-        services.AddScoped<Grid_Services>();
-        services.AddScoped<Drone_Services>();
+        services.AddScoped<GridServices>();
+        services.AddScoped<DroneServices>();
         services.AddScoped<DashboardHandler>();
 
         // Add your other services here
 
-        Node[,] nodes = node_services.InitializeNodes();
+        Node[,] nodes = nodeServices.InitializeNodes();
         services.AddSingleton<Node[,]>(nodes);
     }
 

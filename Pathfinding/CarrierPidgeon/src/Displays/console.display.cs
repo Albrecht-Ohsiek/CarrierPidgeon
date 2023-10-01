@@ -3,7 +3,7 @@ using CarrierPidgeon.Models;
 
 namespace CarrierPidgeon.Displays
 {
-    class Console_Display
+    class ConsoleDisplay
     {
         // Console Display Symbols
         private static char occupied = 'x';

@@ -2,8 +2,8 @@ using CarrierPidgeon.Models;
 
 namespace CarrierPidgeon.Services
 {
-    public class Drone_Services
+    public class DroneServices
     {
-        public Drone_Model droneModel {get;} = new Drone_Model();
+        public DroneModel droneModel {get;} = new DroneModel();
     }
 }

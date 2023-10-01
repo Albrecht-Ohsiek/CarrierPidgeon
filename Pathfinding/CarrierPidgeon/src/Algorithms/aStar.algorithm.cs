@@ -4,14 +4,14 @@ using CarrierPidgeon.Services;
 
 namespace CarrierPidgeon.Algorithms
 {
-    class AStar_Algorithm
+    class AStarAlgorithm
     {
         public static List<Node> calculatePath(Node[,] nodes, Node startNode, Node endNode)
         {
             List<Node> openNodes = new List<Node>();
             List<Node> closedNodes = new List<Node>();
 
-            startNode = node_services.getNodeCosts(startNode, startNode, endNode);
+            startNode = nodeServices.getNodeCosts(startNode, startNode, endNode);
 
             openNodes.Add(nodes[startNode.posX, startNode.posY]);
 
@@ -39,13 +39,13 @@ namespace CarrierPidgeon.Algorithms
                             continue;
                         }
 
-                        int gCost = node_services.calculateGCost(startNode, neighbor);
+                        int gCost = nodeServices.calculateGCost(startNode, neighbor);
 
                         if (!openNodes.Contains(neighbor) || gCost < neighbor.gCost)
                         {
                             neighbor.gCost = gCost;
-                            neighbor.hCost = node_services.calculateHCost(nodes[endNode.posX, endNode.posY], neighbor);
-                            neighbor.fCost = node_services.calculateFCost(neighbor.gCost, neighbor.hCost);
+                            neighbor.hCost = nodeServices.calculateHCost(nodes[endNode.posX, endNode.posY], neighbor);
+                            neighbor.fCost = nodeServices.calculateFCost(neighbor.gCost, neighbor.hCost);
                             neighbor.origin = currentNode.origin;
                             neighbor.origin!.Add(currentNode);
 

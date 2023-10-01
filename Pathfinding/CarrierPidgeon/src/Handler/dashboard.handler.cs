@@ -9,14 +9,14 @@ namespace CarrierPidgeon.Handlers
         // private readonly IAuthorizationService _authorizationService;
         // private readonly IPermissionService _permissionService;
         // private readonly IQueryService _queryService;
-        private readonly Grid_Services gridServices;
+        private readonly GridServices gridServices;
 
-        public DashboardHandler(Grid_Services gridServices)
+        public DashboardHandler(GridServices gridServices)
         {
             this.gridServices = gridServices;
         }
 
-        public async Task<IActionResult> SetGridSize([FromBody] Grid_Model gridModel)
+        public async Task<IActionResult> SetGridSize([FromBody] GridModel gridModel)
         {
             {
                 try
@@ -24,7 +24,7 @@ namespace CarrierPidgeon.Handlers
                     int width = gridModel.sizeX;
                     int bredth = gridModel.sizeY;
 
-                    Node[,] nodes = node_services.initNodes(width, bredth);
+                    Node[,] nodes = nodeServices.initNodes(width, bredth);
 
                     return new OkObjectResult("Set grid size");
                 }

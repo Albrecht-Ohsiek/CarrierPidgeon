@@ -7,12 +7,12 @@ namespace CarrierPidgeon.Controllers
 {
     [ApiController]
     [Route("/dashboard")] // Define the base route for this controller
-    public class Dashboard_Controller : ControllerBase
+    public class DashboardController : ControllerBase
     {
-        private readonly Grid_Services gridServices;
+        private readonly GridServices gridServices;
         private readonly DashboardHandler dashboardHandler;
 
-        public Dashboard_Controller(Grid_Services gridServices)
+        public DashboardController(GridServices gridServices)
         {
             this.gridServices = gridServices;
             this.dashboardHandler = new DashboardHandler(gridServices);
@@ -21,13 +21,13 @@ namespace CarrierPidgeon.Controllers
         [HttpGet]
         public IActionResult GetGridInfo()
         {
-            Grid_Model gridModel = gridServices.gridModel;
+            GridModel gridModel = gridServices.gridModel;
 
             return Ok("It fucking worked");
         }
 
         [HttpPost("SetGrid")]
-        public async Task<IActionResult> SetGridSize([FromBody] Grid_Model gridModel)
+        public async Task<IActionResult> SetGridSize([FromBody] GridModel gridModel)
         {
             return await dashboardHandler.SetGridSize(gridModel);
         }

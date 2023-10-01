@@ -2,8 +2,8 @@ using CarrierPidgeon.Models;
 
 namespace CarrierPidgeon.Services
 {
-    public class Grid_Services
+    public class GridServices
     {
-        public Grid_Model gridModel {get;} = new Grid_Model();
+        public GridModel gridModel {get;} = new GridModel();
     }
 }
