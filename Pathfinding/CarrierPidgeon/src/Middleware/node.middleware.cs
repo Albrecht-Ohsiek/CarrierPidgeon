@@ -10,9 +10,9 @@ namespace CarrierPidgeon.Middleware
             return NodeServices.initNodes(x, y);
         }
 
-        public static Node placeObstacle(Node node)
+        public static Node setObstacle(Node[,] nodes, Node node)
         {
-            return NodeServices.placeObstacle(node);
+            return NodeServices.setObstacle(nodes, node);
         }
 
         public static Node setStart(Node[,] nodes, Node node)
@@ -23,6 +23,11 @@ namespace CarrierPidgeon.Middleware
         public static Node setEnd(Node[,] nodes, Node node)
         {
             return NodeServices.setEnd(nodes, node);
+        }
+
+        public static Node getNodeCosts(Node currentNode, Node startNode, Node endNode)
+        {
+            return NodeServices.getNodeCosts(currentNode, startNode, endNode);
         }
 
     }

@@ -1,6 +1,7 @@
 using CarrierPidgeon.Services;
 using CarrierPidgeon.Handlers;
 using CarrierPidgeon.Models;
+using CarrierPidgeon.Middleware;
 
 namespace CarrierPidgeon.Config;
 
@@ -15,7 +16,7 @@ public class Startup
 
         // Add your other services here
 
-        Node[,] nodes = NodeServices.InitializeNodes();
+        Node[,] nodes = GridMiddleware.initGrid();
         services.AddSingleton<Node[,]>(nodes);
     }
 

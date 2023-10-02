@@ -8,13 +8,6 @@ namespace CarrierPidgeon.Services
     public class NodeServices
     {
         // Create board
-        public static Node[,] InitializeNodes()
-        {
-            // Initialize the nodes array with default values
-            int width = 10;
-            int height = 10;
-            return initNodes(width, height);
-        }
         public static Node[,] initNodes(int width, int bredth)
         {
             Node[,] nodes = new Node[width, bredth];
@@ -28,6 +21,14 @@ namespace CarrierPidgeon.Services
         }
 
         // Calculate costs
+        public static Node getNodeCosts(Node currentNode, Node startNode, Node endNode)
+        {
+            currentNode.gCost = calculateGCost(startNode, currentNode);
+            currentNode.hCost = calculateHCost(endNode, currentNode);
+            currentNode.fCost = calculateFCost(startNode.gCost, startNode.hCost);
+
+            return currentNode;
+        }
         public static int getDistance(Node node1, Node node2)
         {
             Vector2 start = new Vector2(node1.posX, node1.posY);
@@ -59,65 +60,51 @@ namespace CarrierPidgeon.Services
             return gCost + hCost;
         }
 
-        public static Node getNodeCosts(Node currentNode, Node startNode, Node endNode)
-        {
-            currentNode.gCost = calculateGCost(startNode, currentNode);
-            currentNode.hCost = calculateHCost(endNode, currentNode);
-            currentNode.fCost = calculateFCost(startNode.gCost, startNode.hCost);
-
-            return currentNode;
-        }
-
         // set node properties
-        public static Node placeObstacle(Node node)
+        public static Node setObstacle(Node[,] nodes, Node node)
         {
-            try
-            {
-                if (node.accessible)
-                {
-                    node.occupied = true;
-                    node.properties.Add(NodeProperties.Obstacle);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.Error.WriteLine(e.Message);
-            }
-
-            return node;
+            return SetNodeProperty(nodes, node, NodeProperties.Obstacle);
         }
 
         public static Node setStart(Node[,] nodes, Node node)
         {
-            return setUniqueProperty(nodes, node, UniqueNodeProperties.Start);
+            return SetNodeProperty(nodes, node, UniqueNodeProperties.Start);
         }
 
         public static Node setEnd(Node[,] nodes, Node node)
         {
-            return setUniqueProperty(nodes, node, UniqueNodeProperties.End);
+            return SetNodeProperty(nodes, node, UniqueNodeProperties.End);
         }
 
-        public static Node setUniqueProperty(Node[,] nodes, Node node, Enum unique)
+        public static Node SetNodeProperty(Node[,] nodes, Node node, Enum property)
         {
             try
             {
-                foreach (Node item in nodes)
+                if (Enum.IsDefined(typeof(UniqueNodeProperties), property))
                 {
-                    if (item.properties.Contains(unique))
+                    if (!uniquePropertyExists(nodes, property) && !node.properties.Contains(NodeProperties.Obstacle) && !node.properties.Any(prop => prop.GetType() == typeof(UniqueNodeProperties)))
                     {
-                        throw new Exception("The Unique property already exists");
+                        node.properties.Add(property);
+                        return node;
+                    }
+                    else
+                    {
+                        throw new Exception("Unable to assign unique property");
                     }
                 }
-
-                if (!node.properties.Contains(NodeProperties.Obstacle) && !node.properties.Any(prop => prop.GetType() == typeof(UniqueNodeProperties)))
+                else if (property.Equals(NodeProperties.Obstacle))
                 {
-                    node.properties.Add(unique);
-                    return node;
+                    if (node.accessible)
+                    {             
+                        node.occupied = true;
+                        node.accessible = false;
+                        node.properties.RemoveAll(prop => prop.GetType().IsEnum && prop.GetType().GetEnumUnderlyingType() == typeof(UniqueNodeProperties));
+                        node.properties.Add(property);
+                        return node;
+                    }
                 }
-                else
-                {
-                    throw new Exception("Unable to assign unique property");
-                }
+                
+                throw new Exception("Unable to assign property");
 
             }
             catch (Exception e)
@@ -125,52 +112,18 @@ namespace CarrierPidgeon.Services
                 Console.Error.WriteLine(e.Message);
                 return node;
             }
-
         }
-        
-        public static Point getStartCordinates(Node[,] nodes)
+
+        public static bool uniquePropertyExists(Node[,] nodes, Enum property)
         {
-            try
+            foreach (Node item in nodes)
             {
-                foreach (Node node in nodes)
+                if (item.properties.Contains(property))
                 {
-                    if (node.properties.Contains(UniqueNodeProperties.Start))
-                    {
-                        Point cordinates = new Point(node.posX, node.posY);
-                        return cordinates;
-                    }
+                    return true;
                 }
-                throw new Exception("Start Node does not Exist");
             }
-            catch (Exception e)
-            {
-                Console.Error.WriteLine(e.Message);
-                return new Point();
-            }
+            return false;
         }
-
-        public static Point getEndCordinates(Node[,] nodes)
-        {
-            try
-            {
-                foreach (Node node in nodes)
-                {
-                    if (node.properties.Contains(UniqueNodeProperties.End))
-                    {
-                        Point cordinates = new Point(node.posX, node.posY);
-                        return cordinates;
-                    }
-                }
-                throw new Exception("End Node does not Exist");
-            }
-            catch (Exception e)
-            {
-                Console.Error.WriteLine(e.Message);
-                return new Point();
-            }
-        }
-
-
     }
-
 }
