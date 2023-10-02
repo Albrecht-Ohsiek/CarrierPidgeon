@@ -17,13 +17,13 @@ namespace CarrierPidgeon.Handlers
             this.gridServices = gridServices;
         }
 
-        public async Task<IActionResult> SetGridSize([FromBody] GridModel gridModel)
+        public async Task<IActionResult> SetGridSize([FromBody] Grid grid)
         {
             {
                 try
                 {
-                    int width = gridModel.sizeX;
-                    int bredth = gridModel.sizeY;
+                    int width = grid.sizeX;
+                    int bredth = grid.sizeY;
 
                     Node[,] nodes = nodeServices.initNodes(width, bredth);
 

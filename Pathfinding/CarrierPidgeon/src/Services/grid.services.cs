@@ -4,6 +4,6 @@ namespace CarrierPidgeon.Services
 {
     public class GridServices
     {
-        public GridModel gridModel {get;} = new GridModel();
+        public Grid grid {get;} = new Grid();
     }
 }

@@ -20,7 +20,7 @@ namespace CarrierPidgeon.Controllers
         [HttpGet("{droneId}")]
         public IActionResult GetDroneInfo(ObjectId droneId)
         {
-            DroneModel gridModel = droneServices.droneModel;
+            Drone grid = droneServices.drone;
 
             return Ok($"{droneId} was selected");
         }
@@ -28,7 +28,7 @@ namespace CarrierPidgeon.Controllers
         [HttpPost("{Node}")]
         public IActionResult setObstacle(Node node)
         {
-            DroneModel gridModel = droneServices.droneModel;
+            Drone grid = droneServices.drone;
 
             return Ok("Added Node");
         }
