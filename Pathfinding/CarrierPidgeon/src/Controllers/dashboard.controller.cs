@@ -27,15 +27,15 @@ namespace CarrierPidgeon.Controllers
         }
 
         [HttpPost("SetGrid")]
-        public async Task<IActionResult> SetGridSize([FromBody] Grid grid)
+        public IActionResult SetGridSize([FromBody] Grid grid)
         {
-            return await dashboardHandler.SetGridSize(grid);
+            return dashboardHandler.SetGridSize(grid);
         }
 
         [HttpPost("SetNodeType")]
         public async Task<IActionResult> SetNodeType([FromBody] Node node)
         {
-            return await dashboardHandler.SetNodeType();
+            return await dashboardHandler.SetNodeType(node);
         }
 
     }

@@ -7,22 +7,22 @@ namespace CarrierPidgeon.Middleware
     {
         public static Node[,] initNodes(int x, int y)
         {
-            return nodeServices.initNodes(x, y);
+            return NodeServices.initNodes(x, y);
         }
 
         public static Node placeObstacle(Node node)
         {
-            return nodeServices.placeObstacle(node);
+            return NodeServices.placeObstacle(node);
         }
 
         public static Node setStart(Node[,] nodes, Node node)
         {
-            return nodeServices.setStart(nodes, node);
+            return NodeServices.setStart(nodes, node);
         }
 
         public static Node setEnd(Node[,] nodes, Node node)
         {
-            return nodeServices.setEnd(nodes, node);
+            return NodeServices.setEnd(nodes, node);
         }
 
     }

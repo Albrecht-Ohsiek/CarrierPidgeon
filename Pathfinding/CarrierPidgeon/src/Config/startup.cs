@@ -15,7 +15,7 @@ public class Startup
 
         // Add your other services here
 
-        Node[,] nodes = nodeServices.InitializeNodes();
+        Node[,] nodes = NodeServices.InitializeNodes();
         services.AddSingleton<Node[,]>(nodes);
     }
 

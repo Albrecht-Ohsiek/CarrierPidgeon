@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using CarrierPidgeon.Services;
 using CarrierPidgeon.Models;
+using CarrierPidgeon.Middleware;
 
 namespace CarrierPidgeon.Handlers
 {
@@ -17,7 +18,7 @@ namespace CarrierPidgeon.Handlers
             this.gridServices = gridServices;
         }
 
-        public async Task<IActionResult> SetGridSize([FromBody] Grid grid)
+        public IActionResult SetGridSize([FromBody] Grid grid)
         {
             {
                 try
@@ -25,7 +26,7 @@ namespace CarrierPidgeon.Handlers
                     int width = grid.sizeX;
                     int bredth = grid.sizeY;
 
-                    Node[,] nodes = nodeServices.initNodes(width, bredth);
+                    Node[,] nodes = NodeMiddleware.initNodes(width, bredth);
 
                     return new OkObjectResult("Set grid size");
                 }
@@ -37,7 +38,7 @@ namespace CarrierPidgeon.Handlers
         }
 
         // TODO List<Enum> Properties From body
-        internal Task<IActionResult> SetNodeType()
+        internal Task<IActionResult> SetNodeType([FromBody] Node node)
         {
             throw new NotImplementedException();
         }

@@ -11,7 +11,7 @@ namespace CarrierPidgeon.Algorithms
             List<Node> openNodes = new List<Node>();
             List<Node> closedNodes = new List<Node>();
 
-            startNode = nodeServices.getNodeCosts(startNode, startNode, endNode);
+            startNode = NodeServices.getNodeCosts(startNode, startNode, endNode);
 
             openNodes.Add(nodes[startNode.posX, startNode.posY]);
 
@@ -39,13 +39,13 @@ namespace CarrierPidgeon.Algorithms
                             continue;
                         }
 
-                        int gCost = nodeServices.calculateGCost(startNode, neighbor);
+                        int gCost = NodeServices.calculateGCost(startNode, neighbor);
 
                         if (!openNodes.Contains(neighbor) || gCost < neighbor.gCost)
                         {
                             neighbor.gCost = gCost;
-                            neighbor.hCost = nodeServices.calculateHCost(nodes[endNode.posX, endNode.posY], neighbor);
-                            neighbor.fCost = nodeServices.calculateFCost(neighbor.gCost, neighbor.hCost);
+                            neighbor.hCost = NodeServices.calculateHCost(nodes[endNode.posX, endNode.posY], neighbor);
+                            neighbor.fCost = NodeServices.calculateFCost(neighbor.gCost, neighbor.hCost);
                             neighbor.origin = currentNode.origin;
                             neighbor.origin!.Add(currentNode);
 
