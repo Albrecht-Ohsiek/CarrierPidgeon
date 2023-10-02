@@ -20,26 +20,43 @@ namespace CarrierPidgeon.Handlers
 
         public IActionResult SetGridSize([FromBody] Grid grid)
         {
+            try
             {
-                try
-                {
-                    int width = grid.sizeX;
-                    int bredth = grid.sizeY;
+                int width = grid.sizeX;
+                int bredth = grid.sizeY;
 
-                    Node[,] nodes = NodeMiddleware.initNodes(width, bredth);
+                Node[,] nodes = NodeMiddleware.initNodes(width, bredth);
 
-                    return new OkObjectResult("Set grid size");
-                }
-                catch (Exception e)
-                {
-                    return new BadRequestObjectResult("Failed to set grid size: " + e.Message);
-                }
+                return new OkObjectResult("Set grid size seccessfully");
+            }
+            catch (Exception e)
+            {
+                return new BadRequestObjectResult("Failed to set grid size: " + e.Message);
             }
         }
 
         // TODO List<Enum> Properties From body
-        internal Task<IActionResult> SetNodeType([FromBody] Node node)
+        public IActionResult SetNodeType([FromBody] Node node)
         {
+            try
+            {
+                int posX = node.posX;
+                int posY = node.posY;
+                bool occupied = node.occupied;
+                bool accessible = node.accessible;
+                int gCost = node.gCost;
+                int hCost = node.hCost;
+                int fCost = node.fCost;
+                List<Enum> properties = node.properties;
+                List<Node> origin = node.origin;
+
+                return new OkObjectResult("Set node succesfully");
+            }
+            catch (Exception e)
+            {
+                return new BadRequestObjectResult("Failed to initialize node " + e.Message);
+            }
+
             throw new NotImplementedException();
         }
     }

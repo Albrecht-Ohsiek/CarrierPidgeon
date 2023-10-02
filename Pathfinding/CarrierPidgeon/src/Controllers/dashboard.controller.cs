@@ -32,10 +32,10 @@ namespace CarrierPidgeon.Controllers
             return dashboardHandler.SetGridSize(grid);
         }
 
-        [HttpPost("SetNodeType")]
-        public async Task<IActionResult> SetNodeType([FromBody] Node node)
+        [HttpPost("SetNode")]
+        public IActionResult SetNodeType([FromBody] Node node)
         {
-            return await dashboardHandler.SetNodeType(node);
+            return dashboardHandler.SetNodeType(node);
         }
 
     }

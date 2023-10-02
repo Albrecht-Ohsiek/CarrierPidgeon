@@ -29,6 +29,7 @@ namespace CarrierPidgeon.Services
 
             return currentNode;
         }
+        
         public static int getDistance(Node node1, Node node2)
         {
             Vector2 start = new Vector2(node1.posX, node1.posY);
