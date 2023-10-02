@@ -3,17 +3,17 @@ using MongoDB.Bson;
 
 namespace CarrierPidgeon.Models
 {
-    public class DroneModel : IDrone
+    public class Drone : IDrone
     {
         public ObjectId droneId { get; set; }
         public string status { get; set; }
-        public RouteModel activeRoute {get; set;}
+        public Route activeRoute {get; set;}
 
-        public DroneModel(){
+        public Drone(){
 
         }
 
-        public DroneModel(ObjectId droneId, string status, RouteModel activeRoute){
+        public Drone(ObjectId droneId, string status, Route activeRoute){
             this.droneId = droneId;
             this.status = status;
             this.activeRoute = activeRoute;

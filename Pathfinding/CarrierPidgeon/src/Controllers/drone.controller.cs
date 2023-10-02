@@ -16,6 +16,7 @@ namespace CarrierPidgeon.Controllers
             this.droneServices = droneServices;
         }
 
+        // TODO
         [HttpGet("{droneId}")]
         public IActionResult GetDroneInfo(ObjectId droneId)
         {

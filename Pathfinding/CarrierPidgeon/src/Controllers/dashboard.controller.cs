@@ -21,19 +21,19 @@ namespace CarrierPidgeon.Controllers
         [HttpGet]
         public IActionResult GetGridInfo()
         {
-            GridModel gridModel = gridServices.gridModel;
+            Grid gridModel = gridServices.gridModel;
 
             return Ok("It fucking worked");
         }
 
         [HttpPost("SetGrid")]
-        public async Task<IActionResult> SetGridSize([FromBody] GridModel gridModel)
+        public async Task<IActionResult> SetGridSize([FromBody] Grid gridModel)
         {
             return await dashboardHandler.SetGridSize(gridModel);
         }
 
         [HttpPost("SetNodeType")]
-        public async Task<IActionResult> SetNodeType()
+        public async Task<IActionResult> SetNodeType([FromBody] Node nodeModel)
         {
             return await dashboardHandler.SetNodeType();
         }

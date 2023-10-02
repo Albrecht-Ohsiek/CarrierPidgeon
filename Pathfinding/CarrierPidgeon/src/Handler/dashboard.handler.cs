@@ -6,6 +6,7 @@ namespace CarrierPidgeon.Handlers
 {
     public class DashboardHandler
     {
+        // TODO
         // private readonly IAuthorizationService _authorizationService;
         // private readonly IPermissionService _permissionService;
         // private readonly IQueryService _queryService;
@@ -35,6 +36,7 @@ namespace CarrierPidgeon.Handlers
             }
         }
 
+        // TODO List<Enum> Properties From body
         internal Task<IActionResult> SetNodeType()
         {
             throw new NotImplementedException();
