@@ -19,8 +19,8 @@ namespace CarrierPidgeon.Models
         public int hCost { get; set; }
         public int fCost { get; set; }
         [JsonConverter(typeof(PropertiesEnumConverter))]
-        public List<Enum>? properties { get; set; }
-        public List<Node>? origin { get; set; }
+        public List<Enum> properties { get; set; }
+        public List<Node> origin { get; set; }
 
         public Node(int posX, int posY)
         {

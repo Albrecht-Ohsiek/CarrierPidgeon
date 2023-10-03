@@ -11,7 +11,7 @@ namespace CarrierPidgeon.Types
         int fCost { get; set; }
         bool accessible { get; set; }
         bool occupied { get; set; }
-        List<Enum>? properties { get; set; }
-        List<Node>? origin{ get; set; }
+        List<Enum> properties { get; set; }
+        List<Node> origin{ get; set; }
     }
 }
