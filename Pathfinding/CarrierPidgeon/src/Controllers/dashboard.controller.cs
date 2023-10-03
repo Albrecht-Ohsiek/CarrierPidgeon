@@ -33,9 +33,9 @@ namespace CarrierPidgeon.Controllers
         }
 
         [HttpPost("SetNode")]
-        public IActionResult SetNodeType([FromBody] Node node)
+        public IActionResult SetNodes([FromBody] List<Node> nodes)
         {
-            return dashboardHandler.SetNodeType(node);
+            return dashboardHandler.SetNodes(nodes);
         }
 
     }

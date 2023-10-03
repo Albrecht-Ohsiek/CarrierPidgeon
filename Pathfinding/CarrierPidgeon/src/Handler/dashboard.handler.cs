@@ -36,21 +36,24 @@ namespace CarrierPidgeon.Handlers
         }
 
         // TODO List<Enum> Properties From body
-        public IActionResult SetNodeType([FromBody] Node node)
+        public IActionResult SetNodes([FromBody] List<Node> nodes)
         {
             try
             {
-                int posX = node.posX;
-                int posY = node.posY;
-                bool occupied = node.occupied;
-                bool accessible = node.accessible;
-                int gCost = node.gCost;
-                int hCost = node.hCost;
-                int fCost = node.fCost;
-                List<Enum> properties = node.properties;
-                List<Node> origin = node.origin;
-
+                foreach (Node node in nodes)
+                {
+                    int posX = node.posX;
+                    int posY = node.posY;
+                    bool occupied = node.occupied;
+                    bool accessible = node.accessible;
+                    int gCost = node.gCost;
+                    int hCost = node.hCost;
+                    int fCost = node.fCost;
+                    List<Enum>? properties = node.properties;
+                    List<Node>? origin = node.origin;
+                }
                 return new OkObjectResult("Set node succesfully");
+                
             }
             catch (Exception e)
             {

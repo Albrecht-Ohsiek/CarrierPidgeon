@@ -1,7 +1,6 @@
 using CarrierPidgeon.Types;
 using CarrierPidgeon.Models;
 using System.Numerics;
-using System.Drawing;
 
 namespace CarrierPidgeon.Services
 {
@@ -25,7 +24,7 @@ namespace CarrierPidgeon.Services
         {
             currentNode.gCost = calculateGCost(startNode, currentNode);
             currentNode.hCost = calculateHCost(endNode, currentNode);
-            currentNode.fCost = calculateFCost(startNode.gCost, startNode.hCost);
+            currentNode.fCost = calculateFCost(currentNode.gCost, currentNode.hCost);
 
             return currentNode;
         }
