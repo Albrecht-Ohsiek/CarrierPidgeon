@@ -16,8 +16,8 @@ public class Startup
 
         // Add your other services here
 
-        Node[,] nodes = GridMiddleware.initGrid();
-        services.AddSingleton<Node[,]>(nodes);
+        List<Node> nodes = GridMiddleware.initGrid();
+        services.AddSingleton(nodes);
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment environment)

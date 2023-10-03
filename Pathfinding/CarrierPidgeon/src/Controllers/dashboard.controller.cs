@@ -22,6 +22,7 @@ namespace CarrierPidgeon.Controllers
         public IActionResult GetGridInfo()
         {
             Grid grid = gridServices.grid;
+            
 
             return Ok("It fucking worked");
         }

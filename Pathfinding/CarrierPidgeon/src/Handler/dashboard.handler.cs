@@ -13,6 +13,8 @@ namespace CarrierPidgeon.Handlers
         // private readonly IQueryService _queryService;
         private readonly GridServices gridServices;
 
+        private List<Node> nodes;
+
         public DashboardHandler(GridServices gridServices)
         {
             this.gridServices = gridServices;
@@ -25,7 +27,7 @@ namespace CarrierPidgeon.Handlers
                 int width = grid.sizeX;
                 int bredth = grid.sizeY;
 
-                Node[,] nodes = NodeMiddleware.initNodes(width, bredth);
+                nodes = NodeMiddleware.initNodes(width, bredth);
 
                 return new OkObjectResult("Set grid size seccessfully");
             }

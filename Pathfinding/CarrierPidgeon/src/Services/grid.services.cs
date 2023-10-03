@@ -6,7 +6,7 @@ namespace CarrierPidgeon.Services
     {
         public Grid grid {get;} = new Grid();
 
-        public static Node[,] InitializeNodes()
+        public static List<Node> InitializeNodes()
         {
             // Initialize the nodes array with default values
             int width = 10;

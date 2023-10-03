@@ -6,14 +6,14 @@ namespace CarrierPidgeon.Algorithms
 {
     class AStarAlgorithm
     {
-        public static List<Node> calculatePath(Node[,] nodes, Node startNode, Node endNode)
+        public static List<Node> calculatePath(List<Node> nodes, Node startNode, Node endNode)
         {
             List<Node> openNodes = new List<Node>();
             List<Node> closedNodes = new List<Node>();
 
             startNode = NodeServices.getNodeCosts(startNode, startNode, endNode);
 
-            openNodes.Add(nodes[startNode.posX, startNode.posY]);
+            openNodes.Add(nodes.FirstOrDefault(n => n.posX == startNode.posX && n.posY == startNode.posY));
 
             try
             {
@@ -44,7 +44,7 @@ namespace CarrierPidgeon.Algorithms
                         if (!openNodes.Contains(neighbor) || gCost < neighbor.gCost)
                         {
                             neighbor.gCost = gCost;
-                            neighbor.hCost = NodeServices.calculateHCost(nodes[endNode.posX, endNode.posY], neighbor);
+                            neighbor.hCost = NodeServices.calculateHCost(nodes.FirstOrDefault(n => n.posX == endNode.posX && n.posY == endNode.posY), neighbor);
                             neighbor.fCost = NodeServices.calculateFCost(neighbor.gCost, neighbor.hCost);
                             neighbor.origin = currentNode.origin;
                             neighbor.origin!.Add(currentNode);
@@ -105,30 +105,25 @@ namespace CarrierPidgeon.Algorithms
             }
         }
 
-        private static List<Node> getNeighbors(Node[,] nodes, Node currentNode)
+        private static List<Node> getNeighbors(List<Node> nodes, Node currentNode)
         {
             List<Node> neighbors = new List<Node>();
-            int gridLength = nodes.GetLength(0);
-            int gridBreadth = nodes.GetLength(1);
 
             // Define the possible relative positions of neighbors
             int[] dx = { -1, 0, 1, -1, 1, -1, 0, 1 };
             int[] dy = { -1, -1, -1, 0, 0, 1, 1, 1 };
 
-            for (int i = 0; i < 8; i++)
+            foreach (int i in Enumerable.Range(0, 8))
             {
                 int newX = currentNode.posX + dx[i];
                 int newY = currentNode.posY + dy[i];
 
-                if (newX >= 0 && newX < gridLength && newY >= 0 && newY < gridBreadth)
-                {
-                    Node neighbor = nodes[newX, newY];
+                Node neighbor = nodes.FirstOrDefault(n => n.posX == newX && n.posY == newY);
 
-                    if (!neighbor.properties.Contains(NodeProperties.Obstacle))
-                    {
-                        neighbors.Add(neighbor);
-                    }
-                }
+                if (neighbor != null && !neighbor.properties.Contains(NodeProperties.Obstacle))
+        {
+                neighbors.Add(neighbor);
+        }
             }
 
             return neighbors;

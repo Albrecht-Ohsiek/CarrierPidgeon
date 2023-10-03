@@ -7,13 +7,13 @@ namespace CarrierPidgeon.Services
     public class NodeServices
     {
         // Create board
-        public static Node[,] initNodes(int width, int bredth)
+        public static List<Node> initNodes(int width, int bredth)
         {
-            Node[,] nodes = new Node[width, bredth];
+            List<Node> nodes = new List<Node>();
             for (int i = 0; i < width; i++)
                 for (int j = 0; j < bredth; j++)
                 {
-                    nodes[i, j] = new Node(i, j);
+                    nodes.Add(new Node(i, j));
                 }
 
             return nodes;
@@ -61,22 +61,22 @@ namespace CarrierPidgeon.Services
         }
 
         // set node properties
-        public static Node setObstacle(Node[,] nodes, Node node)
+        public static Node setObstacle(List<Node> nodes, Node node)
         {
             return SetNodeProperty(nodes, node, NodeProperties.Obstacle);
         }
 
-        public static Node setStart(Node[,] nodes, Node node)
+        public static Node setStart(List<Node> nodes, Node node)
         {
             return SetNodeProperty(nodes, node, UniqueNodeProperties.Start);
         }
 
-        public static Node setEnd(Node[,] nodes, Node node)
+        public static Node setEnd(List<Node> nodes, Node node)
         {
             return SetNodeProperty(nodes, node, UniqueNodeProperties.End);
         }
 
-        public static Node SetNodeProperty(Node[,] nodes, Node node, Enum property)
+        public static Node SetNodeProperty(List<Node> nodes, Node node, Enum property)
         {
             try
             {
@@ -114,7 +114,7 @@ namespace CarrierPidgeon.Services
             }
         }
 
-        public static bool uniquePropertyExists(Node[,] nodes, Enum property)
+        public static bool uniquePropertyExists(List<Node> nodes, Enum property)
         {
             foreach (Node item in nodes)
             {
