@@ -9,13 +9,16 @@ namespace CarrierPidgeon.Controllers
     [Route("/dashboard")] // Define the base route for this controller
     public class DashboardController : ControllerBase
     {
+
         private readonly GridServices gridServices;
         private readonly DashboardHandler dashboardHandler;
+        private List<Node> nodes;
 
-        public DashboardController(GridServices gridServices)
+        public DashboardController(GridServices gridServices, List<Node> nodes)
         {
+            this.nodes = nodes;
             this.gridServices = gridServices;
-            this.dashboardHandler = new DashboardHandler(gridServices);
+            this.dashboardHandler = new DashboardHandler(gridServices, nodes);
         }
 
         [HttpGet]

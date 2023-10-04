@@ -15,9 +15,10 @@ namespace CarrierPidgeon.Handlers
 
         private List<Node> nodes;
 
-        public DashboardHandler(GridServices gridServices)
+        public DashboardHandler(GridServices gridServices, List<Node> nodes)
         {
             this.gridServices = gridServices;
+            this.nodes = nodes;
         }
 
         public IActionResult SetGridSize([FromBody] Grid grid)
@@ -27,7 +28,8 @@ namespace CarrierPidgeon.Handlers
                 int width = grid.sizeX;
                 int bredth = grid.sizeY;
 
-                nodes = NodeMiddleware.initNodes(width, bredth);
+                nodes.Clear();
+                nodes.AddRange(NodeMiddleware.initNodes(width, bredth));
 
                 return new OkObjectResult("Set grid size seccessfully");
             }
@@ -38,21 +40,29 @@ namespace CarrierPidgeon.Handlers
         }
 
         // TODO List<Enum> Properties From body
-        public IActionResult SetNodes([FromBody] List<Node> nodes)
+        public IActionResult SetNodes([FromBody] List<Node> updatedNodes)
         {
             try
             {
-                foreach (Node node in nodes)
+                foreach (Node updatedNode in updatedNodes)
                 {
-                    int posX = node.posX;
-                    int posY = node.posY;
-                    bool occupied = node.occupied;
-                    bool accessible = node.accessible;
-                    int gCost = node.gCost;
-                    int hCost = node.hCost;
-                    int fCost = node.fCost;
-                    List<Enum>? properties = node.properties;
-                    List<Node>? origin = node.origin;
+                    Node node = nodes.FirstOrDefault(n => n.posX == updatedNode.posX && n.posY == updatedNode.posY);
+
+                    if (node != null)
+                    {
+                        node.posX = updatedNode.posX;
+                        node.posY = updatedNode.posY;
+                        node.occupied = updatedNode.occupied;
+                        node.accessible = updatedNode.accessible;
+                        node.gCost = updatedNode.gCost;
+                        node.hCost = updatedNode.hCost;
+                        node.fCost = updatedNode.fCost;
+                        node.properties = updatedNode.properties;
+                        node.origin = updatedNode.origin;
+                    }
+                    else{
+                        throw new NullReferenceException();
+                    }           
                 }
                 return new OkObjectResult("Set node succesfully");
                 
