@@ -2,6 +2,7 @@ using CarrierPidgeon.Services;
 using CarrierPidgeon.Handlers;
 using CarrierPidgeon.Models;
 using CarrierPidgeon.Middleware;
+using CarrierPidgeon.Serializer;
 
 namespace CarrierPidgeon.Config;
 
@@ -13,6 +14,12 @@ public class Startup
         services.AddScoped<GridServices>();
         services.AddScoped<DroneServices>();
         services.AddScoped<DashboardHandler>();
+
+        services.AddMvc().AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.Converters.Add(new NodePropertiesConverter());
+            options.JsonSerializerOptions.Converters.Add(new NodeOriginConverter());
+        });
 
         // Add your other services here
 

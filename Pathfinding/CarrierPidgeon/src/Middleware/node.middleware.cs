@@ -30,5 +30,10 @@ namespace CarrierPidgeon.Middleware
             return NodeServices.getNodeCosts(currentNode, startNode, endNode);
         }
 
+        public static Node CloneNode(Node node)
+        {
+            return NodeServices.CloneNode(node);
+        }
+
     }
 }

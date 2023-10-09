@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using CarrierPidgeon.Services;
+using CarrierPidgeon.Serializer;
 using CarrierPidgeon.Types;
 
 namespace CarrierPidgeon.Models
@@ -18,9 +18,27 @@ namespace CarrierPidgeon.Models
         public int gCost { get; set; }
         public int hCost { get; set; }
         public int fCost { get; set; }
-        [JsonConverter(typeof(PropertiesEnumConverter))]
+        [JsonConverter(typeof(NodePropertiesConverter))]
         public List<Enum> properties { get; set; }
-        public List<Node> origin { get; set; }
+        [JsonIgnore]
+        public List<Node> _origin {get; set;}
+        [JsonConverter(typeof(NodeOriginConverter))]
+        public List<Node> origin 
+        {
+            get 
+            {
+                if (_origin == null) {
+                    _origin = new List<Node>();
+                }
+                return _origin;
+            } 
+            set => _origin = value;
+        }
+
+        public Node()
+        {
+
+        }
 
         public Node(int posX, int posY)
         {
@@ -49,5 +67,30 @@ namespace CarrierPidgeon.Models
             this.origin = origin;
         }
 
+        public void ConvertPropertiesToEnums()
+    {
+        Dictionary<string, Type> enumTypeMappings = new Dictionary<string, Type>
+        {
+            { "UniqueNodeProperties", typeof(UniqueNodeProperties) },
+            { "NodeProperties", typeof(NodeProperties) },
+            // Add more mappings as needed
+        };
+
+        List<Enum> properties = new List<Enum>();
+        foreach (var property in properties.Cast<EnumInfo>())
+        {
+            if (enumTypeMappings.TryGetValue(property.value, out var enumType))
+            {
+                Enum enumValue = (Enum)Enum.Parse(enumType, property.value);
+                properties.Add(enumValue);
+            }
+            else
+            {
+                throw new InvalidOperationException($"Invalid enum type '{property.value}'.");
+            }
+        }
+
+        this.properties = properties;
+    }
     }
 }

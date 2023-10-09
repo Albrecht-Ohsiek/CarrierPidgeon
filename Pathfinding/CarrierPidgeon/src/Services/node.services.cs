@@ -39,7 +39,7 @@ namespace CarrierPidgeon.Services
 
         public static int calculateGCost(Node startNode, Node currentNode)
         {
-            if (currentNode.origin.Count > 0)
+            if (currentNode.origin != null && currentNode.origin.Any())
             {
                 Node previousNode = currentNode.origin.Last();
                 return getDistance(previousNode, currentNode) + previousNode.gCost;
@@ -124,6 +124,27 @@ namespace CarrierPidgeon.Services
                 }
             }
             return false;
+        }
+
+        public static Node CloneNode(Node node)
+        {
+            if (node == null)
+            {
+                throw new ArgumentNullException(nameof(node));
+            }
+            
+            Node newNode = new Node
+            {
+                posX = node.posX,
+                posY = node.posY,
+                fCost = node.fCost,
+                gCost = node.gCost,
+                hCost = node.hCost,
+                properties = new List<Enum>(node.properties),
+                origin = new List<Node>(node.origin),
+            };
+
+            return newNode;
         }
     }
 }

@@ -3,7 +3,7 @@ using MongoDB.Bson;
 
 namespace CarrierPidgeon.Types
 {
-    interface IRoute
+    public interface IRoute
     {
         ObjectId routeId {get; set;}
         ObjectId droneId {get; set;}

@@ -1,6 +1,7 @@
 using CarrierPidgeon.Types;
 using CarrierPidgeon.Models;
 using CarrierPidgeon.Services;
+using CarrierPidgeon.Middleware;
 
 namespace CarrierPidgeon.Algorithms
 {
@@ -8,6 +9,8 @@ namespace CarrierPidgeon.Algorithms
     {
         public static List<Node> calculatePath(List<Node> nodes, Node startNode, Node endNode)
         {
+            List<Node> clearNodes = nodes.Select(n => NodeMiddleware.CloneNode(n)).ToList();
+
             List<Node> openNodes = new List<Node>();
             List<Node> closedNodes = new List<Node>();
 
@@ -66,6 +69,8 @@ namespace CarrierPidgeon.Algorithms
             }
             finally
             {
+                nodes.Clear();
+                nodes.AddRange(clearNodes);
             }
             return new List<Node>();
         }
@@ -121,9 +126,9 @@ namespace CarrierPidgeon.Algorithms
                 Node neighbor = nodes.FirstOrDefault(n => n.posX == newX && n.posY == newY);
 
                 if (neighbor != null && !neighbor.properties.Contains(NodeProperties.Obstacle))
-        {
-                neighbors.Add(neighbor);
-        }
+                {
+                    neighbors.Add(neighbor);
+                }
             }
 
             return neighbors;

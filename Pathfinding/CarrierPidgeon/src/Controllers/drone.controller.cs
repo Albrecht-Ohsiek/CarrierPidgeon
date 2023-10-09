@@ -1,3 +1,4 @@
+using CarrierPidgeon.Handlers;
 using CarrierPidgeon.Models;
 using CarrierPidgeon.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -10,19 +11,19 @@ namespace CarrierPidgeon.Controllers
     public class DroneController : ControllerBase
     {  
         private readonly DroneServices droneServices;
+        private List<Node> nodes;
 
-        public DroneController(DroneServices droneServices)
+        public DroneController(DroneServices droneServices, List<Node> nodes)
         {
+            this.nodes = nodes;
             this.droneServices = droneServices;
         }
 
         // TODO
-        [HttpGet("{droneId}")]
+        [HttpGet("GetPath")]
         public IActionResult GetDroneInfo(ObjectId droneId)
         {
-            Drone grid = droneServices.drone;
-
-            return Ok($"{droneId} was selected");
+            return DroneHandler.GetPath(nodes);
         }
 
         [HttpPost("{Node}")]
@@ -32,6 +33,5 @@ namespace CarrierPidgeon.Controllers
 
             return Ok("Added Node");
         }
-
     }
 }
