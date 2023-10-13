@@ -11,7 +11,7 @@
     <Content Update="Properties\launchSettings.json">
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </Content>
-    <None Update="Properties\appsettings.json">
+    <None Update="Properties\appSettings.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

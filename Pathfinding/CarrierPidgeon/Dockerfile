@@ -25,4 +25,5 @@ RUN dotnet publish "CarrierPidgeon.csproj" -c $configuration -o /app/publish /p:
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+COPY ./Properties /app/Properties
 ENTRYPOINT ["dotnet", "CarrierPidgeon.dll"]
