@@ -16,3 +16,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
     volumes:
       - ~/.vsdbg:/remote_debugger:rw
+
+  bluejay:
+    image: mongo
+    ports: 
+      - 27017:27017

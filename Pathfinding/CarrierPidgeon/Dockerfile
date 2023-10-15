@@ -1,6 +1,7 @@
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
 EXPOSE 4000
+EXPOSE 27017
 
 ENV ASPNETCORE_URLS=http://+:4000
 
