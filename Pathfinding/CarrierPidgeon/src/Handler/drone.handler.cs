@@ -22,7 +22,7 @@ namespace CarrierPidgeon.Handlers
 
             //List<Node> path = AStarAlgorithm.calculatePath(nodes, startNode, endNode);
             List<Node> path = new List<Node>();
-            path.Add(nodes.FirstOrDefault(n => n.properties.Contains(UniqueNodeProperties.End)));
+            path.Add(endNode);
 
             return new OkObjectResult(path);
         }

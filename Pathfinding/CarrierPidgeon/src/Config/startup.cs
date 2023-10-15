@@ -3,10 +3,7 @@ using CarrierPidgeon.Handlers;
 using CarrierPidgeon.Models;
 using CarrierPidgeon.Middleware;
 using CarrierPidgeon.Serializer;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-
+using CarrierPidgeon.Repositories;
 namespace CarrierPidgeon.Config;
 
 public class Startup
@@ -41,9 +38,13 @@ public class Startup
         List<Node> nodes = GridMiddleware.initGrid();
         services.AddSingleton(nodes);
 
+        services.AddSingleton<DatabaseServices>();
+        services.AddTransient<UserRepository>();
+
+
         // Configure JWT authentication using JwtAuthenticationService
-            var jwtAuthenticationService = new AuthenticationServices(configuration);
-            jwtAuthenticationService.ConfigureAuthentication(services);
+        var jwtAuthenticationService = new AuthenticationServices(configuration);
+        jwtAuthenticationService.ConfigureAuthentication(services);
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment environment)
@@ -58,16 +59,23 @@ public class Startup
             endpoints.MapControllerRoute(
                 name: "dashboard",
                 pattern: "dashboard/{action}",
-                defaults: new { controller = "Dashboard_Controller" }
+                defaults: new { controller = "DashboardController" }
             );
 
             endpoints.MapControllerRoute(
                 name: "drone",
                 pattern: "drone/{action}",
-                defaults: new { controller = "Drone_Controller" }
+                defaults: new { controller = "DroneController" }
+            );
+
+            endpoints.MapControllerRoute(
+                name: "api",
+                pattern: "api/{controller}/{action}/{id?}"
             );
 
             // Add other endpoint mappings here
+
+
         });
 
         // Add other middleware and configurations here

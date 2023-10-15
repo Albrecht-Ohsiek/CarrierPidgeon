@@ -37,7 +37,7 @@ namespace CarrierPidgeon.Controllers
             return Ok("login endpoind");
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost("SetGrid")]
         public IActionResult SetGridSize([FromBody] Grid grid)
         {
