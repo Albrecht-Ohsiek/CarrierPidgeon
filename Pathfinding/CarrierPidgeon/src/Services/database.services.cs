@@ -2,13 +2,16 @@ using MongoDB.Driver;
 
 public class DatabaseServices
 {
+    private readonly IConfiguration _configuration;
     private readonly IMongoDatabase _database;
 
     public DatabaseServices(IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("Database:MongoDBConnection");
+        _configuration = configuration;
+
+        var connectionString = _configuration.GetSection("Database:ConnectionString").Value;
         var client = new MongoClient(connectionString);
-        _database = client.GetDatabase("Database:YourDatabaseName");
+        _database = client.GetDatabase(_configuration.GetSection("Database:DatabaseName").Value);
     }
 
     public IMongoCollection<T> GetCollection<T>(string collectionName)

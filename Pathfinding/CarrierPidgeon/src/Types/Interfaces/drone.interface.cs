@@ -5,7 +5,7 @@ namespace CarrierPidgeon.Types
 {
     public interface IDrone
     {
-        ObjectId droneId {get; set;}
+        ObjectId _id {get; set;}
         string status {get; set;}
         Models.Route activeRoute {get; set;}
     }

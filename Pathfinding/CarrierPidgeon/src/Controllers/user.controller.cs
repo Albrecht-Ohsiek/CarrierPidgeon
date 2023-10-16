@@ -5,7 +5,7 @@ using MongoDB.Bson;
 
 namespace CarrierPidgeon.Config
 {
-    [Route("api/user")]
+    [Route("/api/users")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -27,19 +27,28 @@ namespace CarrierPidgeon.Config
         [HttpGet("{userId}")]
         public async Task<IActionResult> GetUser(ObjectId userId)
         {
-            // Implement logic to retrieve a user by ID from the database
-            _userRepository.GetUserById(userId);
-            return Ok();
-            // Return the user data in the response (e.g., 200 OK)
+            User user = await _userRepository.GetUserById(userId);
+            if (user == null)
+            {
+                return NotFound(); // Return a 404 Not Found response if the user is not found.
+            }
+            return Ok(user);
         }
 
         [HttpPut("update/{userId}")]
-        public async Task<IActionResult> UpdateUser(ObjectId userId, [FromBody] User user)
+        public async Task<IActionResult> UpdateUser([FromRoute] ObjectId userId, [FromBody] User user)
         {
-            // Implement logic to update a user in the database
+            var existingUser = await _userRepository.GetUserById(userId);
+
+            if (existingUser == null)
+            {
+                return NotFound("User not found");
+            }
+
+            user._id = existingUser._id;
+
             _userRepository.UpdateUser(userId, user);
             return Ok();
-            // Return appropriate HTTP response (e.g., 200 OK)
         }
     }
 }

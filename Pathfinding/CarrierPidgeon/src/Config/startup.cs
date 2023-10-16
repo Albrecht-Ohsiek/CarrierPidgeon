@@ -21,6 +21,7 @@ public class Startup
             .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "Properties"))
             .AddJsonFile("appSettings.json")
             .Build();
+        services.AddSingleton(configuration);
 
         services.AddControllers();
         services.AddScoped<GridServices>();

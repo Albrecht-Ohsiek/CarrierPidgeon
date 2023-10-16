@@ -24,7 +24,7 @@ namespace CarrierPidgeon.Repositories
         // Retrieve a user
         public async Task<User> GetUserById(ObjectId userId)
         {
-            return await _userCollection.Find(user => user.userId == userId).FirstOrDefaultAsync();
+            return await _userCollection.Find(user => user._id == userId).FirstOrDefaultAsync();
         }
 
         public async Task<User> GetUserByName(string name)
@@ -35,8 +35,9 @@ namespace CarrierPidgeon.Repositories
         // Update an existing user
         public async Task UpdateUser(ObjectId userId, User user)
         {
-            var filter = Builders<User>.Filter.Eq(user => user.userId, user.userId);
-            await _userCollection.ReplaceOneAsync(filter, user);
+            var filter = Builders<User>.Filter.Eq(u => u._id, userId);
+            ReplaceOneResult result = await _userCollection.ReplaceOneAsync(filter, user);
+
         }
     }
 }
