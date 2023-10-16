@@ -7,7 +7,7 @@ using MongoDB.Bson;
 namespace CarrierPidgeon.Controllers
 {
     [ApiController]
-    [Route("/drone")]
+    [Route("api/drones")]
     public class DroneController : ControllerBase
     {  
         private readonly DroneServices droneServices;
@@ -18,6 +18,8 @@ namespace CarrierPidgeon.Controllers
             this.nodes = nodes;
             this.droneServices = droneServices;
         }
+
+        
 
         // TODO
         [HttpGet("GetPath")]

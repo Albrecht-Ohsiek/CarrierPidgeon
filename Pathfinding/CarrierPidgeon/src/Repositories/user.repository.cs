@@ -27,8 +27,9 @@ namespace CarrierPidgeon.Repositories
             return await _userCollection.Find(user => user._id == userId).FirstOrDefaultAsync();
         }
 
-        public async Task<User> GetUserByName(string name)
+        public async Task<User> GetUserIdByName(string name)
         {
+            
             return await _userCollection.Find(user => user.name == name).FirstOrDefaultAsync();
         }
 

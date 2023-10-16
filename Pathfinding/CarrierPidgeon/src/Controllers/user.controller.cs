@@ -24,8 +24,8 @@ namespace CarrierPidgeon.Config
             return Ok(user);
         }
 
-        [HttpGet("{userId}")]
-        public async Task<IActionResult> GetUser(ObjectId userId)
+        [HttpGet("id/{userId}")]
+        public async Task<IActionResult> GetUserById(ObjectId userId)
         {
             User user = await _userRepository.GetUserById(userId);
             if (user == null)
@@ -33,6 +33,20 @@ namespace CarrierPidgeon.Config
                 return NotFound(); // Return a 404 Not Found response if the user is not found.
             }
             return Ok(user);
+        }
+
+        [HttpGet("name/{name}")]
+        public async Task<IActionResult> GetUserIdByName([FromRoute] string name)
+        {
+            User user = await _userRepository.GetUserIdByName(name);
+            if (user == null)
+            {
+                return NotFound(); // Return a 404 Not Found response if the user is not found.
+            }
+
+            string formattedId = $"\"{user._id.ToString()}\"";
+
+            return Ok(formattedId);
         }
 
         [HttpPut("update/{userId}")]
