@@ -16,4 +16,18 @@ public class DatabaseServices
     {
         return _database.GetCollection<T>(collectionName);
     }
+
+    public static bool TryParseObjectId(string input, out MongoDB.Bson.ObjectId objectId)
+    {
+        try
+        {
+            objectId = MongoDB.Bson.ObjectId.Parse(input);
+            return true;
+        }
+        catch (Exception)
+        {
+            objectId = MongoDB.Bson.ObjectId.Empty; // or some other default value
+            return false;
+        }
+    } 
 }

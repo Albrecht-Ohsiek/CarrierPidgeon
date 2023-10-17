@@ -25,14 +25,21 @@ namespace CarrierPidgeon.Config
         }
 
         [HttpGet("userId/{userId}")]
-        public async Task<IActionResult> GetUserById(ObjectId userId)
+        public async Task<IActionResult> GetUserById([FromRoute] string userId)
         {
-            User user = await _userRepository.GetUserById(userId);
-            if (user == null)
+            if (DatabaseServices.TryParseObjectId(userId, out ObjectId objectId))
             {
-                return NotFound(); // Return a 404 Not Found response if the user is not found.
+                User user = await _userRepository.GetUserById(objectId);
+                if (user == null)
+                {
+                    return NotFound(); // Return a 404 Not Found response if the user is not found.
+                }
+                return Ok(user);
             }
-            return Ok(user);
+            else
+            {
+                return BadRequest("Invalid ObjectId format");
+            }
         }
 
         [HttpGet("name/{name}")]
@@ -50,19 +57,26 @@ namespace CarrierPidgeon.Config
         }
 
         [HttpPut("update/{userId}")]
-        public async Task<IActionResult> UpdateUser([FromRoute] ObjectId userId, [FromBody] User user)
+        public async Task<IActionResult> UpdateUser([FromRoute] string userId, [FromBody] User user)
         {
-            var existingUser = await _userRepository.GetUserById(userId);
-
-            if (existingUser == null)
+            if (DatabaseServices.TryParseObjectId(userId, out ObjectId objectId))
             {
-                return NotFound("User not found");
+                var existingUser = await _userRepository.GetUserById(objectId);
+
+                if (existingUser == null)
+                {
+                    return NotFound("User not found");
+                }
+
+                user._id = existingUser._id;
+
+                _userRepository.UpdateUser(objectId, user);
+                return Ok(user);
             }
-
-            user._id = existingUser._id;
-
-            _userRepository.UpdateUser(userId, user);
-            return Ok();
+            else
+            {
+                return BadRequest("Invalid ObjectId format");
+            }
         }
     }
 }

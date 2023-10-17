@@ -8,7 +8,7 @@ namespace CarrierPidgeon.Models
     {
         [BsonId]
         public ObjectId _id {get; set;}
-        public ObjectId droneId {get; set;}
+        public string droneId {get; set;}
         public string status {get; set;}
         public List<Node> path {get; set;}
     }

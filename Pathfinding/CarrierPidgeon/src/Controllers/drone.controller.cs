@@ -10,15 +10,16 @@ namespace CarrierPidgeon.Controllers
     [ApiController]
     [Route("/api/drones")]
     public class DroneController : ControllerBase
-    {  
+    {
         private readonly DroneServices droneServices;
         private List<Node> nodes;
         private readonly DroneRepository _droneRepository;
 
-        public DroneController(DroneServices droneServices, List<Node> nodes)
+        public DroneController(DroneServices droneServices, List<Node> nodes, DroneRepository droneRepository)
         {
             this.nodes = nodes;
             this.droneServices = droneServices;
+            _droneRepository = droneRepository;
         }
 
         [HttpPost("create")]
@@ -29,46 +30,60 @@ namespace CarrierPidgeon.Controllers
         }
 
         [HttpGet("droneId/{droneId}")]
-        public async Task<IActionResult> GetDroneByDroneId(ObjectId droneId)
+        public async Task<IActionResult> GetDroneByDroneId(string droneId)
         {
-            Drone drone = await _droneRepository.GetDroneByDroneId(droneId);
-            if (drone == null)
+            if (DatabaseServices.TryParseObjectId(droneId, out ObjectId objectId))
             {
-                return NotFound(); // Return a 404 Not Found response if the user is not found.
+                Drone drone = await _droneRepository.GetDroneByDroneId(objectId);
+                if (drone == null)
+                {
+                    return NotFound(); // Return a 404 Not Found response if the drone is not found.
+                }
+                return Ok(drone);
             }
-            return Ok(drone);
+            else
+            {
+                return BadRequest("Invalid ObjectId format");
+            }
         }
 
         [HttpGet("userId/{userId}")]
-        public async Task<IActionResult> GetDroneByUserId(ObjectId userId)
+        public async Task<IActionResult> GetDroneByUserId(string userId)
         {
-            Drone drone = await _droneRepository.GetDroneByUserId(userId);
-            if (drone == null)
-            {
-                return NotFound(); // Return a 404 Not Found response if the user is not found.
-            }
-            return Ok(drone);
+                Drone drone = await _droneRepository.GetDroneByUserId(userId);
+                if (drone == null)
+                {
+                    return NotFound(); // Return a 404 Not Found response if the drone is not found.
+                }
+                return Ok(drone);
         }
 
         [HttpPut("update/{droneId}")]
-        public async Task<IActionResult> UpdateDrone([FromRoute] ObjectId droneId, [FromBody] Drone drone)
+        public async Task<IActionResult> UpdateDrone([FromRoute] string droneId, [FromBody] Drone drone)
         {
-            var existingUser = await _droneRepository.GetDroneByDroneId(droneId);
-
-            if (existingUser == null)
+            if (DatabaseServices.TryParseObjectId(droneId, out ObjectId objectId))
             {
-                return NotFound("User not found");
+                var existingDrone = await _droneRepository.GetDroneByDroneId(objectId);
+
+                if (existingDrone == null)
+                {
+                    return NotFound("Drone not found");
+                }
+
+                drone._id = existingDrone._id;
+
+                _droneRepository.UpdateDrone(objectId, drone);
+                return Ok(drone);
             }
-
-            drone._id = existingUser._id;
-
-            _droneRepository.UpdateDrone(droneId, drone);
-            return Ok();
+            else
+            {
+                return BadRequest("Invalid ObjectId format");
+            }
         }
 
         // TODO
-        [HttpGet("GetPath")]
-        public IActionResult GetDroneInfo(ObjectId droneId)
+        [HttpGet("GetPath/{droneId}")]
+        public IActionResult GetDroneInfo([FromRoute] ObjectId droneId)
         {
             return DroneHandler.GetPath(nodes);
         }

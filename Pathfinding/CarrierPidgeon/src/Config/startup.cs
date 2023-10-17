@@ -41,6 +41,7 @@ public class Startup
 
         services.AddSingleton<DatabaseServices>();
         services.AddTransient<UserRepository>();
+        services.AddTransient<DroneRepository>();
 
 
         // Configure JWT authentication using JwtAuthenticationService
