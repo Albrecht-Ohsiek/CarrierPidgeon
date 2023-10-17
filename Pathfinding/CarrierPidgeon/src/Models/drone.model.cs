@@ -10,17 +10,17 @@ namespace CarrierPidgeon.Models
         public ObjectId _id { get; set; }
         public ObjectId userId {get; set;}
         public string status { get; set; }
-        public Route activeRoute {get; set;}
+        public ObjectId routeId {get; set;}
 
         public Drone(){
 
         }
 
-        public Drone(ObjectId droneId, ObjectId userId, string status, Route activeRoute){
+        public Drone(ObjectId droneId, ObjectId userId, string status, ObjectId routeId){
             this._id = droneId;
             this.userId = userId;
             this.status = status;
-            this.activeRoute = activeRoute;
+            this.routeId = routeId;
         }
     }
 }

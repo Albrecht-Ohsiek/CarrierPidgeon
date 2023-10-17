@@ -18,6 +18,6 @@ services:
       - ~/.vsdbg:/remote_debugger:rw
 
   bluejay:
-    image: mongo
+    image: mongo:6.3
     ports: 
       - 27017:27017

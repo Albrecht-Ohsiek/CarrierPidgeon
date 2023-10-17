@@ -24,7 +24,7 @@ namespace CarrierPidgeon.Config
             return Ok(user);
         }
 
-        [HttpGet("id/{userId}")]
+        [HttpGet("userId/{userId}")]
         public async Task<IActionResult> GetUserById(ObjectId userId)
         {
             User user = await _userRepository.GetUserById(userId);

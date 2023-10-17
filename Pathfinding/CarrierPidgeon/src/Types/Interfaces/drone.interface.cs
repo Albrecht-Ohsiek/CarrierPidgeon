@@ -1,4 +1,3 @@
-using CarrierPidgeon.Models;
 using MongoDB.Bson;
 
 namespace CarrierPidgeon.Types
@@ -8,6 +7,6 @@ namespace CarrierPidgeon.Types
         ObjectId _id {get; set;}
         ObjectId userId{ get; set;}
         string status {get; set;}
-        Models.Route activeRoute {get; set;}
+        ObjectId routeId {get; set;}
     }
 }
