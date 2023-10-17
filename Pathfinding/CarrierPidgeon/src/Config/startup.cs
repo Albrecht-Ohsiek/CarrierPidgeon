@@ -43,7 +43,6 @@ public class Startup
         services.AddTransient<UserRepository>();
         services.AddTransient<DroneRepository>();
 
-
         // Configure JWT authentication using JwtAuthenticationService
         var jwtAuthenticationService = new AuthenticationServices(configuration);
         jwtAuthenticationService.ConfigureAuthentication(services);
