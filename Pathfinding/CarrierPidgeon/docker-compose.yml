@@ -12,6 +12,6 @@ services:
       - 4000:4000
 
   bluejay:
-    image: mongo:6.3
+    image: mongo:6.0
     ports: 
       - 27017:27017
