@@ -1,26 +1,41 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Text;
+using CarrierPidgeon.Models;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CarrierPidgeon.Keys
 {
     public class Keygen
     {
-        public static void GenerateKeyPair(out string publicKey, out string privateKey)
+        private readonly AuthenticationConfiguration _configuration;
+
+        public Keygen(AuthenticationConfiguration configuration)
         {
-            using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(4096)) // You can adjust the key size
-            {
-                privateKey = rsa.ToXmlString(true); // Get the private key
-                publicKey = rsa.ToXmlString(false); // Get the public key
-            }
+            _configuration = configuration;
         }
 
-        public static string GenerateRandomKey(int keySize)
+        public string GenerateToken(User user)
         {
-            using (RandomNumberGenerator rng = new RNGCryptoServiceProvider())
-            {
-                byte[] randomBytes = new byte[keySize / 8];
-                rng.GetBytes(randomBytes);
-                return Convert.ToBase64String(randomBytes);
-            }
+            SecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.JwtSecret));
+            SigningCredentials credentials = new SigningCredentials(securityKey, SecurityAlgorithms.Sha256);
+
+            List<Claim> claims = new List<Claim>(){
+                new Claim("_id", user._id.ToString()),
+                new Claim(ClaimTypes.Name, user.name), 
+                new Claim(ClaimTypes.Email, user.email)
+            };
+
+            JwtSecurityToken jwt = new JwtSecurityToken(
+                _configuration.JwtIssuer,
+                _configuration.JwtAudience,
+                claims,
+                DateTime.UtcNow,
+                DateTime.UtcNow.AddMinutes(_configuration.JwtLifetime)
+                );
+
+            return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
     }
 }

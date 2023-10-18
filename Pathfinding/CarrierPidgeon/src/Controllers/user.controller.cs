@@ -1,3 +1,4 @@
+using CarrierPidgeon.Keys;
 using CarrierPidgeon.Models;
 using CarrierPidgeon.Repositories;
 using CarrierPidgeon.Services.Responses;
@@ -11,10 +12,12 @@ namespace CarrierPidgeon.Config
     public class UserController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
+        private readonly Keygen _keygen;
 
-        public UserController(IUserRepository userRepository)
+        public UserController(IUserRepository userRepository, Keygen keygen)
         {
             _userRepository = userRepository;
+            _keygen = keygen;
         }
 
         [HttpPost("register")]
@@ -42,17 +45,17 @@ namespace CarrierPidgeon.Config
                 return Conflict(new ErrorResponse("Username already exists"));
             }
 
-            User myUser = new User(){
+            User _User = new User(){
                 name = user.name,
                 email = user.email,
                 password = user.password //hashed in frontend
             };
 
-            await _userRepository.RegisterUser(myUser);
+            await _userRepository.RegisterUser(_User);
             return Ok();
         }
 
-        [HttpPost("login")]
+        [HttpGet("login")]
         public async Task<IActionResult> loginUSer([FromBody] LoginRequest user)
         {
             if(!ModelState.IsValid)
@@ -66,8 +69,16 @@ namespace CarrierPidgeon.Config
                 return Unauthorized();
             }
 
-            await _userRepository.RegisterUser(myUser);
-            return Ok();
+            if (user.password != _user.password)
+            {
+                return Unauthorized();
+            }
+
+            string jwt = _keygen.GenerateToken(_user);
+
+            return Ok(new AuthenticatedResponse(){
+                Token = jwt
+            });
         }
 
         
