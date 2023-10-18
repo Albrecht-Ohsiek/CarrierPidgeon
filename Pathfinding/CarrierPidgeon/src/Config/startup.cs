@@ -40,7 +40,7 @@ public class Startup
         services.AddSingleton(nodes);
 
         services.AddSingleton<DatabaseServices>();
-        services.AddTransient<UserRepository>();
+        services.AddTransient<IUserRepository, UserRepository>();
         services.AddTransient<DroneRepository>();
 
         // Configure JWT authentication using JwtAuthenticationService

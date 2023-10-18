@@ -4,7 +4,7 @@ using MongoDB.Driver;
 
 namespace CarrierPidgeon.Repositories
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly IMongoCollection<User> _userCollection;
 
@@ -13,7 +13,22 @@ namespace CarrierPidgeon.Repositories
             _userCollection = dbContext.GetCollection<User>("users");
         }
 
-        //TODO CRUD operations
+
+        public Task<User> GetUserByName(string name)
+        {
+            return _userCollection.Find(user => user.name == name).FirstOrDefaultAsync();
+        }
+
+        public Task<User> GetUserByEmail(string email)
+        {
+            return _userCollection.Find(user => user.email == email).FirstOrDefaultAsync();
+        }
+
+        Task<User> IUserRepository.RegisterUser(User user)
+        {
+            _userCollection.InsertOneAsync(user);
+            return Task.FromResult(user);
+        }
 
         // Create a new user
         public async Task CreateUser(User user)
@@ -40,5 +55,7 @@ namespace CarrierPidgeon.Repositories
             ReplaceOneResult result = await _userCollection.ReplaceOneAsync(filter, user);
 
         }
+
+
     }
 }

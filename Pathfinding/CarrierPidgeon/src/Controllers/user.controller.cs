@@ -1,5 +1,6 @@
 using CarrierPidgeon.Models;
 using CarrierPidgeon.Repositories;
+using CarrierPidgeon.Services.Responses;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 
@@ -9,74 +10,130 @@ namespace CarrierPidgeon.Config
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserRepository _userRepository;
+        private readonly IUserRepository _userRepository;
 
-        public UserController(UserRepository userRepository)
+        public UserController(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }
 
-        [HttpPost("create")]
-        public async Task<IActionResult> CreateUser([FromBody] User user)
+        [HttpPost("register")]
+        public async Task<IActionResult> registerUser([FromBody] RegisterRequest  user)
         {
-            // Implement logic to create a user in the database
-            _userRepository.CreateUser(user);
-            return Ok(user);
+            if(!ModelState.IsValid)
+            {
+                return BadRequestModelStateResponse.BadRequestModelState(ModelState);
+            }
+
+            if (user.password != user.confirmPassword)
+            {
+                return BadRequest(new ErrorResponse("Passwords do not match"));
+            }
+
+            User existingEmail = await _userRepository.GetUserByEmail(user.email);
+            if(existingEmail != null)
+            {
+                return Conflict(new ErrorResponse("Email already exists"));
+            }
+
+            User existingName = await _userRepository.GetUserByName(user.name);
+            if(existingName != null)
+            {
+                return Conflict(new ErrorResponse("Username already exists"));
+            }
+
+            User myUser = new User(){
+                name = user.name,
+                email = user.email,
+                password = user.password //hashed in frontend
+            };
+
+            await _userRepository.RegisterUser(myUser);
+            return Ok();
         }
 
-        [HttpGet("userId/{userId}")]
-        public async Task<IActionResult> GetUserById([FromRoute] string userId)
+        [HttpPost("login")]
+        public async Task<IActionResult> loginUSer([FromBody] LoginRequest user)
         {
-            if (DatabaseServices.TryParseObjectId(userId, out ObjectId objectId))
+            if(!ModelState.IsValid)
             {
-                User user = await _userRepository.GetUserById(objectId);
-                if (user == null)
-                {
-                    return NotFound(); // Return a 404 Not Found response if the user is not found.
-                }
-                return Ok(user);
+                return BadRequestModelStateResponse.BadRequestModelState(ModelState);
             }
-            else
-            {
-                return BadRequest("Invalid ObjectId format");
-            }
-        }
 
-        [HttpGet("name/{name}")]
-        public async Task<IActionResult> GetUserIdByName([FromRoute] string name)
-        {
-            User user = await _userRepository.GetUserIdByName(name);
+            User _user = await _userRepository.GetUserByName(user.name);
             if (user == null)
             {
-                return NotFound(); // Return a 404 Not Found response if the user is not found.
+                return Unauthorized();
             }
 
-            string formattedId = $"\"{user._id.ToString()}\"";
-
-            return Ok(formattedId);
+            await _userRepository.RegisterUser(myUser);
+            return Ok();
         }
 
-        [HttpPut("update/{userId}")]
-        public async Task<IActionResult> UpdateUser([FromRoute] string userId, [FromBody] User user)
-        {
-            if (DatabaseServices.TryParseObjectId(userId, out ObjectId objectId))
-            {
-                var existingUser = await _userRepository.GetUserById(objectId);
+        
 
-                if (existingUser == null)
-                {
-                    return NotFound("User not found");
-                }
+        // [HttpPost("create")]
+        // public async Task<IActionResult> CreateUser([FromBody] User user)
+        // {
+        //     // Implement logic to create a user in the database
+        //     _userRepository.CreateUser(user);
+        //     return Ok(user);
+        // }
 
-                user._id = existingUser._id;
+        // [HttpGet("userId/{userId}")]
+        // public async Task<IActionResult> GetUserById([FromRoute] string userId)
+        // {
+        //     if (DatabaseServices.TryParseObjectId(userId, out ObjectId objectId))
+        //     {
+        //         User user = await _userRepository.GetUserById(objectId);
+        //         if (user == null) 
+        //         {
+        //             return NotFound(); // Return a 404 Not Found response if the user is not found.
+        //         }
+        //         return Ok(user);
+        //     }
+        //     else
+        //     {
+        //         return BadRequest("Invalid ObjectId format");
+        //     }
+        // }
 
-                _userRepository.UpdateUser(objectId, user);
-                return Ok(user);
-            }
-            else
-            {
-                return BadRequest("Invalid ObjectId format");
-            }
-        }
+        // [HttpGet("name/{name}")]
+        // public async Task<IActionResult> GetUserIdByName([FromRoute] string name)
+        // {
+        //     User user = await _userRepository.GetUserIdByName(name);
+        //     if (user == null)
+        //     {
+        //         return NotFound(); // Return a 404 Not Found response if the user is not found.
+        //     }
+
+        //     string formattedId = $"\"{user._id.ToString()}\"";
+
+        //     return Ok(formattedId);
+        // }
+
+        // [HttpPut("update/{userId}")]
+        // public async Task<IActionResult> UpdateUser([FromRoute] string userId, [FromBody] User user)
+        // {
+        //     if (DatabaseServices.TryParseObjectId(userId, out ObjectId objectId))
+        //     {
+        //         var existingUser = await _userRepository.GetUserById(objectId);
+
+        //         if (existingUser == null)
+        //         {
+        //             return NotFound("User not found");
+        //         }
+
+        //         user._id = existingUser._id;
+
+        //         _userRepository.UpdateUser(objectId, user);
+        //         return Ok(user);
+        //     }
+        //     else
+        //     {
+        //         return BadRequest("Invalid ObjectId format");
+        //     }
+        // }
+        
     }
 }

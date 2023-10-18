@@ -1,16 +1,26 @@
 using System.Security.Cryptography;
 
-namespace CarrierPidgeon.Keys{
-    public class Keygen{
-        public static string GenerateRandomKey(int keyLenghtInBytes)
+namespace CarrierPidgeon.Keys
+{
+    public class Keygen
+    {
+        public static void GenerateKeyPair(out string publicKey, out string privateKey)
         {
-            byte[] keyBytes = new byte[keyLenghtInBytes];
-
-            using (RandomNumberGenerator random = RandomNumberGenerator.Create())
+            using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(4096)) // You can adjust the key size
             {
-                random.GetBytes(keyBytes);
+                privateKey = rsa.ToXmlString(true); // Get the private key
+                publicKey = rsa.ToXmlString(false); // Get the public key
             }
-            return Convert.ToBase64String(keyBytes);
+        }
+
+        public static string GenerateRandomKey(int keySize)
+        {
+            using (RandomNumberGenerator rng = new RNGCryptoServiceProvider())
+            {
+                byte[] randomBytes = new byte[keySize / 8];
+                rng.GetBytes(randomBytes);
+                return Convert.ToBase64String(randomBytes);
+            }
         }
     }
 }
