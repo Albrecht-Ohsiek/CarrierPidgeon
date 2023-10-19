@@ -19,7 +19,7 @@ namespace CarrierPidgeon.Keys
         public string GenerateToken(User user)
         {
             SecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.JwtSecret));
-            SigningCredentials credentials = new SigningCredentials(securityKey, SecurityAlgorithms.Sha256);
+            SigningCredentials credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             List<Claim> claims = new List<Claim>(){
                 new Claim("_id", user._id.ToString()),
@@ -32,7 +32,8 @@ namespace CarrierPidgeon.Keys
                 _configuration.JwtAudience,
                 claims,
                 DateTime.UtcNow,
-                DateTime.UtcNow.AddMinutes(_configuration.JwtLifetime)
+                DateTime.UtcNow.AddMinutes(_configuration.JwtLifetime),
+                credentials
                 );
 
             return new JwtSecurityTokenHandler().WriteToken(jwt);

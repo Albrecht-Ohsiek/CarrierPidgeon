@@ -2,6 +2,7 @@ using CarrierPidgeon.Handlers;
 using CarrierPidgeon.Models;
 using CarrierPidgeon.Repositories;
 using CarrierPidgeon.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 
@@ -20,6 +21,13 @@ namespace CarrierPidgeon.Controllers
             this.nodes = nodes;
             this.droneServices = droneServices;
             _droneRepository = droneRepository;
+        }
+
+        [Authorize]
+        [HttpGet("jwtTest")]
+        public async Task<IActionResult> jwtTest()
+        {
+            return Ok();
         }
 
         [HttpPost("create")]

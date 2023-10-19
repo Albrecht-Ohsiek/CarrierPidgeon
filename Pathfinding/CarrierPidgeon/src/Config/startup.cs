@@ -39,6 +39,7 @@ public class Startup
         services.AddScoped<GridServices>();
         services.AddScoped<DroneServices>();
         services.AddScoped<DashboardHandler>();
+        services.AddScoped<AuthenticationServices>();
 
         // Add your other services here
 
@@ -49,6 +50,9 @@ public class Startup
         services.AddSingleton<DatabaseServices>();
         services.AddTransient<IUserRepository, UserRepository>();
         services.AddTransient<DroneRepository>();
+
+        var authenticationServices = services.BuildServiceProvider().GetService<AuthenticationServices>();
+        authenticationServices.ConfigureAuthentication(services);
 
     }
 

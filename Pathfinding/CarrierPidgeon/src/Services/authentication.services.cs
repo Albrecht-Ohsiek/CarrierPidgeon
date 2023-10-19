@@ -1,4 +1,5 @@
 using System.Text;
+using CarrierPidgeon.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -6,9 +7,9 @@ namespace CarrierPidgeon.Services
 {
     public class AuthenticationServices
     {
-        private readonly IConfiguration _configuration;
+        private readonly AuthenticationConfiguration _configuration;
 
-        public AuthenticationServices(IConfiguration configuration)
+        public AuthenticationServices(AuthenticationConfiguration configuration)
         {
             _configuration = configuration;
         }
@@ -24,9 +25,11 @@ namespace CarrierPidgeon.Services
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        ValidIssuer = _configuration["JwtAuth:JwtIssuer"],
-                        ValidAudience = _configuration["JwtAuth:JwtAudience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtAuth:JwtSecret"]))
+                        ValidIssuer = _configuration.JwtIssuer,
+                        ValidAudience = _configuration.JwtAudience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.JwtSecret)),
+                        RequireSignedTokens = true,
+                        ValidAlgorithms = new[] { SecurityAlgorithms.HmacSha256 }
                     };
                 });
         }
