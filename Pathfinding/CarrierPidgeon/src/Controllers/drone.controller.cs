@@ -24,12 +24,6 @@ namespace CarrierPidgeon.Controllers
         }
 
         [Authorize]
-        [HttpGet("jwtTest")]
-        public async Task<IActionResult> jwtTest()
-        {
-            return Ok();
-        }
-
         [HttpPost("create")]
         public async Task<IActionResult> CreateUser([FromBody] Drone drone)
         {
@@ -37,6 +31,7 @@ namespace CarrierPidgeon.Controllers
             return Ok(drone);
         }
 
+        [Authorize]
         [HttpGet("droneId/{droneId}")]
         public async Task<IActionResult> GetDroneByDroneId(string droneId)
         {
@@ -55,6 +50,7 @@ namespace CarrierPidgeon.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("userId/{userId}")]
         public async Task<IActionResult> GetDroneByUserId(string userId)
         {
@@ -66,6 +62,7 @@ namespace CarrierPidgeon.Controllers
                 return Ok(drone);
         }
 
+        [Authorize]
         [HttpPut("update/{droneId}")]
         public async Task<IActionResult> UpdateDrone([FromRoute] string droneId, [FromBody] Drone drone)
         {
@@ -90,6 +87,7 @@ namespace CarrierPidgeon.Controllers
         }
 
         // TODO
+        [Authorize]
         [HttpGet("GetPath/{droneId}")]
         public IActionResult GetDroneInfo([FromRoute] ObjectId droneId)
         {

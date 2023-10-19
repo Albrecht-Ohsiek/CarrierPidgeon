@@ -1,7 +1,9 @@
+using System.Security.Claims;
 using CarrierPidgeon.Keys;
 using CarrierPidgeon.Models;
 using CarrierPidgeon.Repositories;
 using CarrierPidgeon.Services.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 
@@ -20,10 +22,15 @@ namespace CarrierPidgeon.Config
             _keygen = keygen;
         }
 
+        // Using CLAIMS for validation
+        // string authedId  = HttpContext.User.Claims.FirstOrDefault(claim => claim.Type == "_id").Value;
+        // string authedName = HttpContext.User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name).Value;
+        // string authedEmail = HttpContext.User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Email).Value;
+
         [HttpPost("register")]
-        public async Task<IActionResult> registerUser([FromBody] RegisterRequest  user)
+        public async Task<IActionResult> registerUser([FromBody] RegisterRequest user)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequestModelStateResponse.BadRequestModelState(ModelState);
             }
@@ -34,18 +41,19 @@ namespace CarrierPidgeon.Config
             }
 
             User existingEmail = await _userRepository.GetUserByEmail(user.email);
-            if(existingEmail != null)
+            if (existingEmail != null)
             {
                 return Conflict(new ErrorResponse("Email already exists"));
             }
 
             User existingName = await _userRepository.GetUserByName(user.name);
-            if(existingName != null)
+            if (existingName != null)
             {
                 return Conflict(new ErrorResponse("Username already exists"));
             }
 
-            User _User = new User(){
+            User _User = new User()
+            {
                 name = user.name,
                 email = user.email,
                 password = user.password //hashed in frontend
@@ -58,7 +66,7 @@ namespace CarrierPidgeon.Config
         [HttpGet("login")]
         public async Task<IActionResult> loginUSer([FromBody] LoginRequest user)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequestModelStateResponse.BadRequestModelState(ModelState);
             }
@@ -66,85 +74,135 @@ namespace CarrierPidgeon.Config
             User _user = await _userRepository.GetUserByName(user.name);
             if (user == null)
             {
-                return Unauthorized();
+                return Unauthorized(new ErrorResponse("Username does not exist"));
             }
 
             if (user.password != _user.password)
             {
-                return Unauthorized();
+                return Unauthorized(new ErrorResponse("Passwords do not match"));
             }
 
             string jwt = _keygen.GenerateToken(_user);
 
-            return Ok(new AuthenticatedResponse(){
+            return Ok(new AuthenticatedResponse()
+            {
                 Token = jwt
             });
         }
 
-        
+        [Authorize]
+        [HttpGet("userId/{userId}")]
+        public async Task<IActionResult> GetUserById([FromRoute] string userId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequestModelStateResponse.BadRequestModelState(ModelState);
+            }
 
-        // [HttpPost("create")]
-        // public async Task<IActionResult> CreateUser([FromBody] User user)
-        // {
-        //     // Implement logic to create a user in the database
-        //     _userRepository.CreateUser(user);
-        //     return Ok(user);
-        // }
+            if (DatabaseServices.TryParseObjectId(userId, out ObjectId objectId))
+            {
+                User user = await _userRepository.GetUserById(objectId);
+                if (user == null)
+                {
+                    return NotFound(new ErrorResponse("User not found"));
+                }
+                return Ok(user);
+            }
+            else
+            {
+                return BadRequest(new ErrorResponse("Invalid ObjectId format"));
+            }
+        }
 
-        // [HttpGet("userId/{userId}")]
-        // public async Task<IActionResult> GetUserById([FromRoute] string userId)
-        // {
-        //     if (DatabaseServices.TryParseObjectId(userId, out ObjectId objectId))
-        //     {
-        //         User user = await _userRepository.GetUserById(objectId);
-        //         if (user == null) 
-        //         {
-        //             return NotFound(); // Return a 404 Not Found response if the user is not found.
-        //         }
-        //         return Ok(user);
-        //     }
-        //     else
-        //     {
-        //         return BadRequest("Invalid ObjectId format");
-        //     }
-        // }
+        [Authorize]
+        [HttpGet("email/{email}")]
+        public async Task<IActionResult> GetUserByEmail([FromRoute] string email)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequestModelStateResponse.BadRequestModelState(ModelState);
+            }
 
-        // [HttpGet("name/{name}")]
-        // public async Task<IActionResult> GetUserIdByName([FromRoute] string name)
-        // {
-        //     User user = await _userRepository.GetUserIdByName(name);
-        //     if (user == null)
-        //     {
-        //         return NotFound(); // Return a 404 Not Found response if the user is not found.
-        //     }
+            User user = await _userRepository.GetUserByEmail(email);
+            if (user == null)
+            {
+                return NotFound(new ErrorResponse("User not found"));
+            }
 
-        //     string formattedId = $"\"{user._id.ToString()}\"";
+            return Ok(user);
+        }
 
-        //     return Ok(formattedId);
-        // }
+        [Authorize]
+        [HttpGet("name/{name}")]
+        public async Task<IActionResult> GetUserByName([FromRoute] string name)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequestModelStateResponse.BadRequestModelState(ModelState);
+            }
 
-        // [HttpPut("update/{userId}")]
-        // public async Task<IActionResult> UpdateUser([FromRoute] string userId, [FromBody] User user)
-        // {
-        //     if (DatabaseServices.TryParseObjectId(userId, out ObjectId objectId))
-        //     {
-        //         var existingUser = await _userRepository.GetUserById(objectId);
+            User user = await _userRepository.GetUserByName(name);
+            if (user == null)
+            {
+                return NotFound(new ErrorResponse("User not found"));
+            }
 
-        //         if (existingUser == null)
-        //         {
-        //             return NotFound("User not found");
-        //         }
+            return Ok(user);
+        }
 
-        //         user._id = existingUser._id;
+        [Authorize]
+        [HttpPut("update/user/{userId}")]
+        public async Task<IActionResult> UpdateUserById([FromRoute] string userId, [FromBody] UpdateUserRequest user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequestModelStateResponse.BadRequestModelState(ModelState);
+            }
 
-        //         _userRepository.UpdateUser(objectId, user);
-        //         return Ok(user);
-        //     }
-        //     else
-        //     {
-        //         return BadRequest("Invalid ObjectId format");
-        //     }
-        // }
-        
+            string authedId = HttpContext.User.Claims.FirstOrDefault(claim => claim.Type == "_id").Value;
+            string authedName = HttpContext.User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name).Value;
+            string authedEmail = HttpContext.User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Email).Value;
+
+            if (authedId != userId)
+            {
+                return Unauthorized(new ErrorResponse("Invalid Permisions. Who are you?"));
+            }
+
+            if (user.password != user.confirmPassword)
+            {
+                return BadRequest(new ErrorResponse("Passwords do not match"));
+            }
+
+            User existingName = await _userRepository.GetUserByName(user.name);
+            if (existingName != null && authedName != user.name)
+            {
+                return Conflict(new ErrorResponse("Username already exists"));
+            }
+
+            if (DatabaseServices.TryParseObjectId(userId, out ObjectId objectId))
+            {
+                User existingUser = await _userRepository.GetUserById(objectId);
+                if (existingUser == null)
+                {
+                    return NotFound(new ErrorResponse("User does not exist"));
+                }
+
+                User _user = new User()
+                {
+                    _id = existingUser._id,
+                    name = user.name,
+                    email = existingUser.email,
+                    password = user.password //hashed in frontend
+                };
+
+                await _userRepository.UpdateUserById(objectId, _user);
+                return Ok(user);
+            }
+            else
+            {
+                return BadRequest(new ErrorResponse("Invalid ObjectId format"));
+            }
+        }
+
     }
 }

@@ -13,6 +13,11 @@ namespace CarrierPidgeon.Repositories
             _userCollection = dbContext.GetCollection<User>("users");
         }
 
+        Task<User> IUserRepository.RegisterUser(User user)
+        {
+            _userCollection.InsertOneAsync(user);
+            return Task.FromResult(user);
+        }
 
         public Task<User> GetUserByName(string name)
         {
@@ -24,38 +29,16 @@ namespace CarrierPidgeon.Repositories
             return _userCollection.Find(user => user.email == email).FirstOrDefaultAsync();
         }
 
-        Task<User> IUserRepository.RegisterUser(User user)
-        {
-            _userCollection.InsertOneAsync(user);
-            return Task.FromResult(user);
-        }
-
-        // Create a new user
-        public async Task CreateUser(User user)
-        {
-            await _userCollection.InsertOneAsync(user);
-        }
-
-        // Retrieve a user
         public async Task<User> GetUserById(ObjectId userId)
         {
             return await _userCollection.Find(user => user._id == userId).FirstOrDefaultAsync();
         }
 
-        public async Task<User> GetUserIdByName(string name)
+        Task<User> IUserRepository.UpdateUserById(ObjectId userId, User user)
         {
-            
-            return await _userCollection.Find(user => user.name == name).FirstOrDefaultAsync();
+            var filter = Builders<User>.Filter.Eq(user => user._id, userId);
+            _userCollection.ReplaceOneAsync(filter, user);
+            return Task.FromResult(user);
         }
-
-        // Update an existing user
-        public async Task UpdateUser(ObjectId userId, User user)
-        {
-            var filter = Builders<User>.Filter.Eq(u => u._id, userId);
-            ReplaceOneResult result = await _userCollection.ReplaceOneAsync(filter, user);
-
-        }
-
-
     }
 }
