@@ -2,11 +2,11 @@
   "profiles": {
     "CarrierPidgeon": {
       "commandName": "Project",
-      "launchBrowser": true,
+      "launchBrowser": false,
+      "applicationUrl": "http://localhost:4000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "https://localhost:4000;http://localhost:4000"
+      }
     }
   }
 }
