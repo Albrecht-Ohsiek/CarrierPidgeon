@@ -16,9 +16,9 @@ namespace CarrierPidgeon.Repositories{
             return await _orderCollection.Find(order => order._id == _id).FirstOrDefaultAsync();
         }
 
-        public async Task<Order> GetOrderByStatus(string status)
+        public async Task<List<Order>> GetOrderByStatus(string status)
         {
-            return await _orderCollection.Find(order => order.status == status).FirstOrDefaultAsync();
+            return await _orderCollection.Find(order => order.status == status).ToListAsync();
         }
 
         public async Task<Order> GetOrderByUserID(string userId)

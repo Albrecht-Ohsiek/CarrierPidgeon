@@ -5,41 +5,41 @@ using MongoDB.Driver;
 using MongoDB.Bson;
 using System.Threading.Tasks;
 using Route = CarrierPidgeon.Models.Route;
+using System.Collections;
 
 namespace CarrierPidgeon.Repositories
 {
-    public class RouteRepository
+    public class RouteRepository : IRouteRepository
     {
-        private readonly IMongoCollection<Route> _routes;
+
+        private readonly IMongoCollection<Route> _routeCollection;
 
         public RouteRepository(DatabaseServices dbContext)
         {
-            _routes = dbContext.GetCollection<Route>("routes");
+            _routeCollection = dbContext.GetCollection<Route>("routes");
         }
 
-        public async Task<List<Route>> GetAllRoutesAsync()
+        public async Task<Route> GetRouteById(ObjectId routeId)
         {
-            return await _routes.Find(route => true).ToListAsync();
+            return await _routeCollection.Find(route => route._id == routeId).FirstOrDefaultAsync();
         }
 
-        public async Task<Route> GetRouteByIdAsync(ObjectId id)
+        public async Task<List<Route>> GetAllRoutes()
         {
-            return await _routes.Find(route => route._id == id).FirstOrDefaultAsync();
+            return await _routeCollection.Find(route => true).ToListAsync();
         }
 
-        public async Task CreateRouteAsync(Route route)
+        Task<Route> IRouteRepository.CreateRoute(Route route)
         {
-            await _routes.InsertOneAsync(route);
+            _routeCollection.InsertOneAsync(route);
+            return Task.FromResult(route);
         }
 
-        public async Task UpdateRouteAsync(ObjectId id, Route route)
+        Task<Route> IRouteRepository.UpdateRoute(ObjectId routeId, Route route)
         {
-            await _routes.ReplaceOneAsync(r => r._id == id, route);
-        }
-
-        public async Task DeleteRouteAsync(ObjectId id)
-        {
-            await _routes.DeleteOneAsync(r => r._id == id);
+            var filter = Builders<Route>.Filter.Eq(route => route._id, routeId);
+            _routeCollection.ReplaceOneAsync(filter, route);
+            return Task.FromResult(route);
         }
     }
 }

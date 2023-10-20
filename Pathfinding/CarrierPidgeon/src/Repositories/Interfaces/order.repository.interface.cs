@@ -5,7 +5,7 @@ namespace CarrierPidgeon.Repositories
 {
     public interface IOrderRepository
     {
-        Task<Order> GetOrderByStatus(string status);
+        Task<List<Order>> GetOrderByStatus(string status);
         Task<Order> GetOrderByUserID(string userId);
         Task<Order> GetOrder(ObjectId _id);
         Task<Order> RegisterOrder(Order order);

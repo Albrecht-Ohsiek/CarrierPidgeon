@@ -1,12 +1,13 @@
-using CarrierPidgeon.Handlers;
+using System.Security.Claims;
+using CarrierPidgeon.Keys;
 using CarrierPidgeon.Models;
-using Route = CarrierPidgeon.Models.Route;
 using CarrierPidgeon.Repositories;
-using CarrierPidgeon.Services;
+using CarrierPidgeon.Services.Responses;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
-using Microsoft.AspNetCore.Cors;
+using Route = CarrierPidgeon.Models.Route;
 
 namespace CarrierPidgeon.Controllers
 {
@@ -15,27 +16,37 @@ namespace CarrierPidgeon.Controllers
     [EnableCors("MyCorsPolicy")]
     public class RouteController : ControllerBase
     {
-        private readonly RouteService _routeService;
+        private readonly IRouteRepository _routeRepository;
         private List<Node> nodes;
 
-        public RouteController(RouteService routeService)
+        public RouteController(IRouteRepository routeRepository)
         {
-            _routeService = routeService;
+            _routeRepository = routeRepository;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Route>>> GetRoutes()
+        public async Task<IActionResult> GetAllRoutes()
         {
-            var routes = await _routeService.GetAllRoutesAsync();
+            if (!ModelState.IsValid)
+            {
+                return BadRequestModelStateResponse.BadRequestModelState(ModelState);
+            }
+
+            List<Route> routes = await _routeRepository.GetAllRoutes();
             return Ok(routes);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Route>> GetRoute(string id)
+        [HttpGet("routeId/{routeId}")]
+        public async Task<IActionResult> GetRouteById(string routeId)
         {
-            if (DatabaseServices.TryParseObjectId(id, out ObjectId objectId))
+            if (!ModelState.IsValid)
             {
-                Route route = await _routeService.GetRouteByIdAsync(objectId);
+                return BadRequestModelStateResponse.BadRequestModelState(ModelState);
+            }
+
+            if (DatabaseServices.TryParseObjectId(routeId, out ObjectId objectId))
+            {
+                Route route = await _routeRepository.GetRouteById(objectId);
                 if (route == null)
                 {
                     return NotFound();
@@ -48,24 +59,48 @@ namespace CarrierPidgeon.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<ActionResult> CreateRoute([FromBody] Route route)
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateRoute([FromBody] AddRouteRequest route)
         {
-            await _routeService.CreateRouteAsync(route);
-            return CreatedAtAction(nameof(GetRoute), new { id = route._id }, route);
+            if (!ModelState.IsValid)
+            {
+                return BadRequestModelStateResponse.BadRequestModelState(ModelState);
+            }
+
+            Route _route = new Route()
+            {
+                status = route.status,
+                path = route.path
+            };
+
+            await _routeRepository.CreateRoute(_route);
+            return Ok(_route);
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateRoute(string id, [FromBody] Route route)
+        [HttpPut("update/{routeId}")]
+        public async Task<IActionResult> UpdateRoute([FromRoute] string routeId, [FromBody] UpdateRouteRequest route)
         {
-            if (DatabaseServices.TryParseObjectId(id, out ObjectId objectId))
+            if (!ModelState.IsValid)
             {
-                Route _route = await _routeService.GetRouteByIdAsync(objectId);
-                if (route == null)
+                return BadRequestModelStateResponse.BadRequestModelState(ModelState);
+            }
+
+            if (DatabaseServices.TryParseObjectId(routeId, out ObjectId objectId))
+            {
+                Route exsistingRoute = await _routeRepository.GetRouteById(objectId);
+                if (exsistingRoute == null)
                 {
-                    return NotFound(new ErrorResponse("Route not found"));
+                    return NotFound(new ErrorResponse("Route does not exist"));
                 }
-                await _routeService.UpdateRouteAsync(objectId, route);
+
+                Route _route = new Route()
+                {
+                    _id = exsistingRoute._id,
+                    status = route.status,
+                    path = exsistingRoute.path
+                };
+
+                await _routeRepository.UpdateRoute(objectId, _route);
                 return Ok(_route);
             }
             else

@@ -1,3 +1,4 @@
+using System.Drawing;
 using CarrierPidgeon.Types;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -8,8 +9,7 @@ namespace CarrierPidgeon.Models
     {
         [BsonId]
         public ObjectId _id {get; set;}
-        public string droneId {get; set;}
         public string status {get; set;}
-        public List<Node> path {get; set;}
+        public List<Point> path {get; set;}
     }
 }

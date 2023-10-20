@@ -73,7 +73,7 @@ namespace CarrierPidgeon.Controllers{
                 return BadRequestModelStateResponse.BadRequestModelState(ModelState);
             }
 
-            Order order = await _orderRepository.GetOrderByStatus(status);
+            List<Order> order = await _orderRepository.GetOrderByStatus(status);
             if (order == null)
             {
                 return NotFound(new ErrorResponse("No orders found"));
