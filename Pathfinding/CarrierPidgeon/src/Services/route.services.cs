@@ -1,8 +1,10 @@
 using CarrierPidgeon.Models;
 using CarrierPidgeon.Repositories;
+using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Route = CarrierPidgeon.Models.Route;
 
 namespace CarrierPidgeon.Services
 {
@@ -20,7 +22,7 @@ namespace CarrierPidgeon.Services
             return await _routeRepository.GetAllRoutesAsync();
         }
 
-        public async Task<Route> GetRouteByIdAsync(string id)
+        public async Task<Route> GetRouteByIdAsync(ObjectId id)
         {
             return await _routeRepository.GetRouteByIdAsync(id);
         }
@@ -30,12 +32,12 @@ namespace CarrierPidgeon.Services
             await _routeRepository.CreateRouteAsync(route);
         }
 
-        public async Task UpdateRouteAsync(string id, Route route)
+        public async Task UpdateRouteAsync(ObjectId id, Route route)
         {
             await _routeRepository.UpdateRouteAsync(id, route);
         }
 
-        public async Task DeleteRouteAsync(string id)
+        public async Task DeleteRouteAsync(ObjectId id)
         {
             await _routeRepository.DeleteRouteAsync(id);
         }

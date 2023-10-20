@@ -4,6 +4,7 @@ using CarrierPidgeon.Models;
 using MongoDB.Driver;
 using MongoDB.Bson;
 using System.Threading.Tasks;
+using Route = CarrierPidgeon.Models.Route;
 
 namespace CarrierPidgeon.Repositories
 {
@@ -11,9 +12,9 @@ namespace CarrierPidgeon.Repositories
     {
         private readonly IMongoCollection<Route> _routes;
 
-        public RouteRepository(IMongoDatabase dbContext)
+        public RouteRepository(DatabaseServices dbContext)
         {
-            _routes = database.GetCollection<Route>("Routes");
+            _routes = dbContext.GetCollection<Route>("routes");
         }
 
         public async Task<List<Route>> GetAllRoutesAsync()
@@ -21,7 +22,7 @@ namespace CarrierPidgeon.Repositories
             return await _routes.Find(route => true).ToListAsync();
         }
 
-        public async Task<Route> GetRouteByIdAsync(string id)
+        public async Task<Route> GetRouteByIdAsync(ObjectId id)
         {
             return await _routes.Find(route => route._id == id).FirstOrDefaultAsync();
         }
@@ -31,12 +32,12 @@ namespace CarrierPidgeon.Repositories
             await _routes.InsertOneAsync(route);
         }
 
-        public async Task UpdateRouteAsync(string id, Route route)
+        public async Task UpdateRouteAsync(ObjectId id, Route route)
         {
             await _routes.ReplaceOneAsync(r => r._id == id, route);
         }
 
-        public async Task DeleteRouteAsync(string id)
+        public async Task DeleteRouteAsync(ObjectId id)
         {
             await _routes.DeleteOneAsync(r => r._id == id);
         }

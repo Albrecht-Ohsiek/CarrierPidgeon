@@ -1,5 +1,6 @@
 using CarrierPidgeon.Handlers;
 using CarrierPidgeon.Models;
+using Route = CarrierPidgeon.Models.Route;
 using CarrierPidgeon.Repositories;
 using CarrierPidgeon.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -30,12 +31,19 @@ namespace CarrierPidgeon.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Route>> GetRoute(string id)
         {
-            var route = await _routeService.GetRouteByIdAsync(id);
-            if (route == null)
+            if (DatabaseServices.TryParseObjectId(id, out ObjectId objectId))
             {
-                return NotFound();
+                Route route = await _routeService.GetRouteByIdAsync(objectId);
+                if (route == null)
+                {
+                    return NotFound();
+                }
+                return Ok(route);
             }
-            return Ok(route);
+            else
+            {
+                return BadRequest(new ErrorResponse("Invalid ObjectId format"));
+            }
         }
 
         [HttpPost]
@@ -48,25 +56,20 @@ namespace CarrierPidgeon.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateRoute(string id, [FromBody] Route route)
         {
-            var existingRoute = await _routeService.GetRouteByIdAsync(id);
-            if (existingRoute == null)
+            if (DatabaseServices.TryParseObjectId(id, out ObjectId objectId))
             {
-                return NotFound();
+                Route _route = await _routeService.GetRouteByIdAsync(objectId);
+                if (route == null)
+                {
+                    return NotFound(new ErrorResponse("Route not found"));
+                }
+                await _routeService.UpdateRouteAsync(objectId, route);
+                return Ok(_route);
             }
-            await _routeService.UpdateRouteAsync(id, route);
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteRoute(string id)
-        {
-            var existingRoute = await _routeService.GetRouteByIdAsync(id);
-            if (existingRoute == null)
+            else
             {
-                return NotFound();
+                return BadRequest(new ErrorResponse("Invalid ObjectId format"));
             }
-            await _routeService.DeleteRouteAsync(id);
-            return NoContent();
         }
     }
 }
