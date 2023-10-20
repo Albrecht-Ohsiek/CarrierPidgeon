@@ -21,6 +21,16 @@ namespace CarrierPidgeon.Handlers
             this.nodes = nodes;
         }
 
+        public IActionResult LoginUser([FromBody] User user)
+        {
+            try{
+                return new OkObjectResult("User Logged in");
+            }
+            catch{
+                return new BadRequestObjectResult("Login failed");
+            }
+        }
+
         public IActionResult SetGridSize([FromBody] Grid grid)
         {
             try

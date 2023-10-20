@@ -2,7 +2,6 @@ using CarrierPidgeon.Models;
 using CarrierPidgeon.Types;
 using CarrierPidgeon.Algorithms;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace CarrierPidgeon.Handlers
 {
@@ -22,7 +21,7 @@ namespace CarrierPidgeon.Handlers
 
             //List<Node> path = AStarAlgorithm.calculatePath(nodes, startNode, endNode);
             List<Node> path = new List<Node>();
-            path.Add(nodes.FirstOrDefault(n => n.properties.Contains(UniqueNodeProperties.End)));
+            path.Add(endNode);
 
             return new OkObjectResult(path);
         }

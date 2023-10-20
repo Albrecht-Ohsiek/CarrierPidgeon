@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using CarrierPidgeon.Services;
 using CarrierPidgeon.Models;
 using CarrierPidgeon.Handlers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CarrierPidgeon.Controllers
 {
@@ -30,6 +31,13 @@ namespace CarrierPidgeon.Controllers
             return Ok("It fucking worked");
         }
 
+        [HttpPost("Login")]
+        public IActionResult LoginUser()
+        {
+            return Ok("login endpoind");
+        }
+
+        //[Authorize]
         [HttpPost("SetGrid")]
         public IActionResult SetGridSize([FromBody] Grid grid)
         {
