@@ -41,6 +41,16 @@ public class Startup
         services.AddScoped<DashboardHandler>();
         services.AddScoped<AuthenticationServices>();
 
+        services.AddCors(options =>
+        {
+            options.AddPolicy("MyCorsPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyHeader()
+                       .AllowAnyMethod();
+            });
+        });
+
         // Add your other services here
 
         List<Node> nodes = GridMiddleware.initGrid();
@@ -62,6 +72,8 @@ public class Startup
 
         app.UseAuthentication();
         app.UseAuthorization();
+
+        app.UseCors("MyCorsPolicy");
 
         app.UseEndpoints(endpoints =>
         {

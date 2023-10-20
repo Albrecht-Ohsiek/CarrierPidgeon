@@ -6,11 +6,13 @@ using CarrierPidgeon.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
+using Microsoft.AspNetCore.Cors;
 
 namespace CarrierPidgeon.Controllers
 {
     [ApiController]
     [Route("api/routes")]
+    [EnableCors("MyCorsPolicy")]
     public class RouteController : ControllerBase
     {
         private readonly RouteService _routeService;

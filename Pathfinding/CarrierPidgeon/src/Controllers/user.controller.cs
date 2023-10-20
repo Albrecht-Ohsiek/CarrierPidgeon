@@ -4,6 +4,7 @@ using CarrierPidgeon.Models;
 using CarrierPidgeon.Repositories;
 using CarrierPidgeon.Services.Responses;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 
@@ -11,6 +12,7 @@ namespace CarrierPidgeon.Config
 {
     [Route("/api/users")]
     [ApiController]
+    [EnableCors("MyCorsPolicy")]
     public class UserController : ControllerBase
     {
         private readonly IUserRepository _userRepository;

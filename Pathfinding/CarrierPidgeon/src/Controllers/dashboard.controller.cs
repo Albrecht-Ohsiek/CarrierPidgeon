@@ -3,11 +3,13 @@ using CarrierPidgeon.Services;
 using CarrierPidgeon.Models;
 using CarrierPidgeon.Handlers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 
 namespace CarrierPidgeon.Controllers
 {
     [ApiController]
     [Route("/dashboard")] // Define the base route for this controller
+    [EnableCors("MyCorsPolicy")]
     public class DashboardController : ControllerBase
     {
 

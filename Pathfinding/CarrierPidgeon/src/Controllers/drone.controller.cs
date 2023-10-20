@@ -3,6 +3,7 @@ using CarrierPidgeon.Models;
 using CarrierPidgeon.Repositories;
 using CarrierPidgeon.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 
@@ -10,6 +11,7 @@ namespace CarrierPidgeon.Controllers
 {
     [ApiController]
     [Route("/api/drones")]
+    [EnableCors("MyCorsPolicy")]
     public class DroneController : ControllerBase
     {
         private readonly DroneServices droneServices;
