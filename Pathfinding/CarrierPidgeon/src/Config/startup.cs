@@ -59,6 +59,7 @@ public class Startup
         services.AddSingleton<Keygen>();
         services.AddSingleton<DatabaseServices>();
         services.AddTransient<IUserRepository, UserRepository>();
+        services.AddTransient<IOrderRepository, OrderRepository>();
         services.AddTransient<DroneRepository>();
 
         var authenticationServices = services.BuildServiceProvider().GetService<AuthenticationServices>();

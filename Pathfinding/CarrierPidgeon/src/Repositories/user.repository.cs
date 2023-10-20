@@ -19,14 +19,14 @@ namespace CarrierPidgeon.Repositories
             return Task.FromResult(user);
         }
 
-        public Task<User> GetUserByName(string name)
+        public async Task<User> GetUserByName(string name)
         {
-            return _userCollection.Find(user => user.name == name).FirstOrDefaultAsync();
+            return await _userCollection.Find(user => user.name == name).FirstOrDefaultAsync();
         }
 
-        public Task<User> GetUserByEmail(string email)
+        public async Task<User> GetUserByEmail(string email)
         {
-            return _userCollection.Find(user => user.email == email).FirstOrDefaultAsync();
+            return await _userCollection.Find(user => user.email == email).FirstOrDefaultAsync();
         }
 
         public async Task<User> GetUserById(ObjectId userId)
