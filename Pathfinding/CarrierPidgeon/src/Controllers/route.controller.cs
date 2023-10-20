@@ -59,6 +59,23 @@ namespace CarrierPidgeon.Controllers
             }
         }
 
+        [Authorize]
+        [HttpGet("/status/{status}")]
+        public async Task<IActionResult> GetSingleRouteByStatus ([FromRoute] string status){
+            if (!ModelState.IsValid)
+            {
+                return BadRequestModelStateResponse.BadRequestModelState(ModelState);
+            }
+
+            Route route = await _routeRepository.GetSingleRouteByStatus(status);
+            if (route == null)
+            {
+                return NotFound(new ErrorResponse("No route found"));
+            }
+
+            return Ok(route);
+        }
+
         [HttpPost("create")]
         public async Task<IActionResult> CreateRoute([FromBody] AddRouteRequest route)
         {

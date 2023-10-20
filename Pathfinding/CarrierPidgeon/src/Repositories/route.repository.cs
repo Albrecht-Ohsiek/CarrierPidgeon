@@ -6,6 +6,7 @@ using MongoDB.Bson;
 using System.Threading.Tasks;
 using Route = CarrierPidgeon.Models.Route;
 using System.Collections;
+using Microsoft.VisualBasic;
 
 namespace CarrierPidgeon.Repositories
 {
@@ -40,6 +41,11 @@ namespace CarrierPidgeon.Repositories
             var filter = Builders<Route>.Filter.Eq(route => route._id, routeId);
             _routeCollection.ReplaceOneAsync(filter, route);
             return Task.FromResult(route);
+        }
+
+        public async Task<Route> GetSingleRouteByStatus(string status)
+        {
+            return await _routeCollection.Find(route => route.status == status).FirstOrDefaultAsync();
         }
     }
 }
