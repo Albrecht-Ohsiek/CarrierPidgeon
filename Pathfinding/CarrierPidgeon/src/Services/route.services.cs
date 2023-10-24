@@ -27,12 +27,29 @@ namespace CarrierPidgeon.Services
 
         private async void calculateRoute()
         {
+            bool locked = false;
             while (true)
             {
-                Order order = await _orderRepository.GetFirstOrderByStatus(status);
-                if (order != null)
+                if (locked != false)
                 {
-                    Console.WriteLine("Hello Thread");
+                    Order order = await _orderRepository.GetFirstOrderByStatus(status);
+                    try
+                    {
+
+                        if (order != null)
+                        {
+                            locked = true;
+
+                            Console.WriteLine("Hello Thread");             
+                        }
+                    }
+                    catch (Exception ex){
+                        Console.WriteLine(ex.Message);
+                    }
+                    finally{
+                        locked = false;
+                    }
+
                 }
 
                 Thread.Sleep(10000);
