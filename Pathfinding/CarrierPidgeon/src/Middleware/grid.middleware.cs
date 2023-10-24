@@ -6,9 +6,20 @@ namespace CarrierPidgeon.Middleware
 {
     public class GridMiddleware
     {
-        public static List<Node> initGrid()
+        private readonly GridConfiguration _configuration;
+
+        public GridMiddleware(GridConfiguration configuration)
         {
-            return GridServices.InitializeNodes();
+            _configuration = configuration;
+        }
+
+        public List<Node> InitializeGrid(){
+            GridServices gridServices = new GridServices(_configuration);
+            return gridServices.InitializeGrid();
+        }
+
+        public static void InitializeNodes(){
+            GridServices.InitializeNodes();
         }
     }
 }

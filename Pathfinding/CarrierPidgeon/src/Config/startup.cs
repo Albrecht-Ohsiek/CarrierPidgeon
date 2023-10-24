@@ -28,15 +28,31 @@ public class Startup
         services.AddSingleton(configuration);
 
         AuthenticationConfiguration authenticationConfiguration = new AuthenticationConfiguration();
+        GridConfiguration gridConfiguration = new GridConfiguration();
         
-        configuration.Bind("JwtAuth", authenticationConfiguration); 
+        configuration.Bind("JwtAuth", authenticationConfiguration);
+        configuration.Bind("Grid", gridConfiguration); 
         services.AddSingleton(authenticationConfiguration);
 
-        services.AddControllers();
         services.AddScoped<GridServices>();
         services.AddScoped<DroneServices>();
         services.AddScoped<DashboardHandler>();
         services.AddScoped<AuthenticationServices>();
+
+        GridMiddleware gridMiddleware = new GridMiddleware(gridConfiguration);
+        List<Node> nodes = gridMiddleware.InitializeGrid();
+        services.AddSingleton(nodes);
+
+        services.AddSingleton<Keygen>();
+        services.AddSingleton<DatabaseServices>();
+
+        services.AddTransient<IUserRepository, UserRepository>();
+        services.AddTransient<IOrderRepository, OrderRepository>();
+        services.AddTransient<IRouteRepository, RouteRepository>();
+        services.AddTransient<DroneRepository>();
+        services.AddTransient<RouteService>();
+
+        services.AddControllers();
 
         services.AddCors(options =>
         {
@@ -49,17 +65,6 @@ public class Startup
         });
 
         // Add your other services here
-
-        List<Node> nodes = GridMiddleware.initGrid();
-        services.AddSingleton(nodes);
-
-        services.AddSingleton<Keygen>();
-        services.AddSingleton<DatabaseServices>();
-        services.AddTransient<IUserRepository, UserRepository>();
-        services.AddTransient<IOrderRepository, OrderRepository>();
-        services.AddTransient<IRouteRepository, RouteRepository>();
-        services.AddTransient<DroneRepository>();
-        services.AddTransient<RouteService>();
 
         var authenticationServices = services.BuildServiceProvider().GetService<AuthenticationServices>();
         authenticationServices.ConfigureAuthentication(services);

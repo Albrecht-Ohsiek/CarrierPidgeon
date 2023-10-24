@@ -1,3 +1,4 @@
+using System.Drawing;
 using CarrierPidgeon.Models;
 
 namespace CarrierPidgeon.Services
@@ -6,12 +7,27 @@ namespace CarrierPidgeon.Services
     {
         public Grid grid {get;} = new Grid();
 
-        public static List<Node> InitializeNodes()
+        private readonly GridConfiguration _configuration;
+
+        public GridServices(GridConfiguration configuration)
         {
-            // Initialize the nodes array with default values
-            int width = 10;
-            int height = 10;
-            return NodeServices.initNodes(width, height);
+            _configuration = configuration;
+        }
+
+        public List<Node> InitializeGrid(){
+            List<Node> nodes = new List<Node>();
+            for (int i = 0; i < _configuration.width; i++){
+                for (int j = 0; j < _configuration.height; j++)
+                {
+                    Point point = new Point(i, j);
+                    nodes.Add(new Node(point));
+                }
+            }
+            return nodes;
+        }
+
+        public static void InitializeNodes(){
+            
         }
     }
 }
