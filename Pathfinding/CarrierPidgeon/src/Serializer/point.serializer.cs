@@ -1,10 +1,10 @@
 using System.Drawing;
 using MongoDB.Bson;
-using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 
-namespace CarrierPidgeon.Serializer{
+namespace CarrierPidgeon.Serializer
+{
     public class PointSerializer : SerializerBase<Point>
 {
 public override Point Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)

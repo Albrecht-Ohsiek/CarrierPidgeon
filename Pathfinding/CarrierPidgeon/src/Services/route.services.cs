@@ -1,10 +1,5 @@
 using CarrierPidgeon.Models;
 using CarrierPidgeon.Repositories;
-using MongoDB.Bson;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Route = CarrierPidgeon.Models.Route;
 
 namespace CarrierPidgeon.Services
 {
@@ -30,12 +25,11 @@ namespace CarrierPidgeon.Services
             bool locked = false;
             while (true)
             {
-                if (locked != false)
+                if (locked == false)
                 {
                     Order order = await _orderRepository.GetFirstOrderByStatus(status);
                     try
                     {
-
                         if (order != null)
                         {
                             locked = true;

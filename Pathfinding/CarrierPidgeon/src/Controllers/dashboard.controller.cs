@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using CarrierPidgeon.Services;
 using CarrierPidgeon.Models;
 using CarrierPidgeon.Handlers;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 
 namespace CarrierPidgeon.Controllers

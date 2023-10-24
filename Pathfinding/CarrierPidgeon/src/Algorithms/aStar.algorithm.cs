@@ -1,22 +1,22 @@
-using CarrierPidgeon.Types;
 using CarrierPidgeon.Models;
 using CarrierPidgeon.Services;
 using CarrierPidgeon.Middleware;
+using System.Drawing;
 
 namespace CarrierPidgeon.Algorithms
 {
     class AStarAlgorithm
     {
-        public static List<Node> calculatePath(List<Node> nodes, Node startNode, Node endNode)
+        public static List<Point> calculatePath(List<Node> nodes, Node startNode, Point endNode)
         {
             List<Node> clearNodes = nodes.Select(n => NodeMiddleware.CloneNode(n)).ToList();
 
             List<Node> openNodes = new List<Node>();
             List<Node> closedNodes = new List<Node>();
 
-            startNode = NodeServices.getNodeCosts(startNode, startNode, endNode);
+            startNode = NodeServices.getNodeCosts(startNode, startNode.cords, endNode, nodes);
 
-            openNodes.Add(nodes.FirstOrDefault(n => n.posX == startNode.posX && n.posY == startNode.posY));
+            openNodes.Add(nodes.FirstOrDefault(n => n.cords.X == startNode.cords.X && n.cords.Y == startNode.cords.Y));
 
             try
             {
@@ -28,7 +28,7 @@ namespace CarrierPidgeon.Algorithms
                     openNodes.Remove(currentNode);
                     closedNodes.Add(currentNode);
 
-                    if (currentNode.properties.Contains(UniqueNodeProperties.End))
+                    if (currentNode.properties.Contains("end"))
                     {
                         return currentNode.origin!;
                     }
@@ -42,15 +42,15 @@ namespace CarrierPidgeon.Algorithms
                             continue;
                         }
 
-                        int gCost = NodeServices.calculateGCost(startNode, neighbor);
+                        int gCost = NodeServices.calculateGCost(startNode.cords, neighbor.cords, nodes);
 
                         if (!openNodes.Contains(neighbor) || gCost < neighbor.gCost)
                         {
                             neighbor.gCost = gCost;
-                            neighbor.hCost = NodeServices.calculateHCost(nodes.FirstOrDefault(n => n.posX == endNode.posX && n.posY == endNode.posY), neighbor);
+                            neighbor.hCost = NodeServices.calculateHCost(endNode, neighbor.cords);
                             neighbor.fCost = NodeServices.calculateFCost(neighbor.gCost, neighbor.hCost);
                             neighbor.origin = currentNode.origin;
-                            neighbor.origin!.Add(currentNode);
+                            neighbor.origin!.Add(currentNode.cords);
 
                             if (!openNodes.Contains(neighbor))
                             {
@@ -65,19 +65,19 @@ namespace CarrierPidgeon.Algorithms
             catch (Exception e)
             {
                 Console.Error.WriteLine(e.Message);
-                return new List<Node>();
+                return new List<Point>();
             }
             finally
             {
                 nodes.Clear();
                 nodes.AddRange(clearNodes);
             }
-            return new List<Node>();
+            return new List<Point>();
         }
 
         private static bool pathFound(Node currentNode)
         {
-            if (currentNode.properties.Contains(UniqueNodeProperties.End))
+            if (currentNode.properties.Contains("end"))
             {
                 return true;
             }
@@ -120,12 +120,12 @@ namespace CarrierPidgeon.Algorithms
 
             foreach (int i in Enumerable.Range(0, 8))
             {
-                int newX = currentNode.posX + dx[i];
-                int newY = currentNode.posY + dy[i];
+                int newX = currentNode.cords.X + dx[i];
+                int newY = currentNode.cords.Y + dy[i];
 
-                Node neighbor = nodes.FirstOrDefault(n => n.posX == newX && n.posY == newY);
+                Node neighbor = nodes.FirstOrDefault(n => n.cords.X == newX && n.cords.Y == newY);
 
-                if (neighbor != null && !neighbor.properties.Contains(NodeProperties.Obstacle))
+                if (neighbor != null && !neighbor.properties.Contains("obstacle"))
                 {
                     neighbors.Add(neighbor);
                 }

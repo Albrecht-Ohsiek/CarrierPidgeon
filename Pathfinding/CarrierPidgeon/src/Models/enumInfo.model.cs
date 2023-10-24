@@ -1,4 +1,3 @@
-using System.Text.Json.Serialization;
 using CarrierPidgeon.Types;
 
 namespace CarrierPidgeon.Models

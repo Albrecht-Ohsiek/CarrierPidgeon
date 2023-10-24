@@ -1,5 +1,4 @@
 using System.Drawing;
-using CarrierPidgeon.Models;
 using MongoDB.Bson;
 
 namespace CarrierPidgeon.Types

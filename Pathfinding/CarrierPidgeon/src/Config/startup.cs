@@ -21,12 +21,6 @@ public class Startup
     {
         BsonSerializer.RegisterSerializer(new PointSerializer());
 
-        services.AddMvc().AddJsonOptions(options =>
-        {
-            options.JsonSerializerOptions.Converters.Add(new NodePropertiesConverter());
-            options.JsonSerializerOptions.Converters.Add(new NodeOriginConverter());
-        });
-
         IConfiguration configuration = new ConfigurationBuilder()
             .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "Properties"))
             .AddJsonFile("appSettings.json")

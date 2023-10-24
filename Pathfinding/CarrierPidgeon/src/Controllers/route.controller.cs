@@ -1,5 +1,3 @@
-using System.Security.Claims;
-using CarrierPidgeon.Keys;
 using CarrierPidgeon.Models;
 using CarrierPidgeon.Repositories;
 using CarrierPidgeon.Services.Responses;
