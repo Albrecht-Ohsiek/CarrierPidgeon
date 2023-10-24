@@ -65,6 +65,7 @@ public class Startup
         services.AddTransient<IOrderRepository, OrderRepository>();
         services.AddTransient<IRouteRepository, RouteRepository>();
         services.AddTransient<DroneRepository>();
+        services.AddTransient<RouteService>();
 
         var authenticationServices = services.BuildServiceProvider().GetService<AuthenticationServices>();
         authenticationServices.ConfigureAuthentication(services);
