@@ -5,6 +5,7 @@ using CarrierPidgeon.Middleware;
 using CarrierPidgeon.Serializer;
 using CarrierPidgeon.Repositories;
 using CarrierPidgeon.Keys;
+using MongoDB.Bson.Serialization;
 namespace CarrierPidgeon.Config;
 
 public class Startup
@@ -18,6 +19,8 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        BsonSerializer.RegisterSerializer(new PointSerializer());
+
         services.AddMvc().AddJsonOptions(options =>
         {
             options.JsonSerializerOptions.Converters.Add(new NodePropertiesConverter());

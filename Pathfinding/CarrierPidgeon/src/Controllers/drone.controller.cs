@@ -27,7 +27,7 @@ namespace CarrierPidgeon.Controllers
 
         [Authorize]
         [HttpPost("create")]
-        public async Task<IActionResult> CreateUser([FromBody] Drone drone)
+        public async Task<IActionResult> CreateDrone([FromBody] Drone drone)
         {
             _droneRepository.addDrone(drone);
             return Ok(drone);
