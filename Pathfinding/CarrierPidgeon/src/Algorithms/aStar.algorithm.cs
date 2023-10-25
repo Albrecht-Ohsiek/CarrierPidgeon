@@ -42,7 +42,7 @@ namespace CarrierPidgeon.Algorithms
                             continue;
                         }
 
-                        int gCost = NodeServices.calculateGCost(startNode.cords, neighbor.cords, nodes);
+                        int gCost = NodeServices.calculateGCost(startNode.cords, neighbor, nodes);
 
                         if (!openNodes.Contains(neighbor) || gCost < neighbor.gCost)
                         {

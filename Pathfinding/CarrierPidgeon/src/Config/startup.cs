@@ -44,6 +44,9 @@ public class Startup
         List<Node> nodes = gridMiddleware.InitializeGrid();
         services.AddSingleton(nodes);
 
+        NodeMiddleware nodeMiddleware = new NodeMiddleware(nodes);
+        nodeMiddleware.setStart(gridConfiguration.start);
+
         services.AddSingleton<Keygen>();
         services.AddSingleton<DatabaseServices>();
 

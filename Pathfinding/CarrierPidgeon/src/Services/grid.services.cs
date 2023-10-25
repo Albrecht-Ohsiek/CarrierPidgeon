@@ -1,4 +1,5 @@
 using System.Drawing;
+using CarrierPidgeon.Middleware;
 using CarrierPidgeon.Models;
 
 namespace CarrierPidgeon.Services
@@ -6,6 +7,8 @@ namespace CarrierPidgeon.Services
     public class GridServices
     {
         public Grid grid {get;} = new Grid();
+        private List<Node> _nodes = new List<Node>();
+        private NodeMiddleware nodeMiddleware;
 
         private readonly GridConfiguration _configuration;
 
@@ -15,19 +18,14 @@ namespace CarrierPidgeon.Services
         }
 
         public List<Node> InitializeGrid(){
-            List<Node> nodes = new List<Node>();
             for (int i = 0; i < _configuration.width; i++){
                 for (int j = 0; j < _configuration.height; j++)
                 {
                     Point point = new Point(i, j);
-                    nodes.Add(new Node(point));
+                    _nodes.Add(new Node(point));
                 }
             }
-            return nodes;
+            return _nodes;
         }
-
-        public static void InitializeNodes(){
-            
-        } 
     }
 }

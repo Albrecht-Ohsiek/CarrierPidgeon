@@ -38,13 +38,6 @@ namespace CarrierPidgeon.Controllers
             return Ok("login endpoind");
         }
 
-        //[Authorize]
-        [HttpPost("SetGrid")]
-        public IActionResult SetGridSize([FromBody] Grid grid)
-        {
-            return dashboardHandler.SetGridSize(grid);
-        }
-
         [HttpPost("SetNode")]
         public IActionResult SetNodes([FromBody] List<Node> nodes)
         {

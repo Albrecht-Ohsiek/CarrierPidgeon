@@ -1,3 +1,4 @@
+using System.Drawing;
 using CarrierPidgeon.Models;
 using CarrierPidgeon.Services;
 
@@ -14,22 +15,22 @@ namespace CarrierPidgeon.Middleware
             nodeServices = new NodeServices(nodes);
         }
 
-        public static List<Node> initNodes(int x, int y)
+        public int GetDistance(Point point1, Point point2)
         {
-            return NodeServices.initNodes(x, y);
+            return NodeServices.getDistance(point1, point2);
         }
 
-        public void setObstacle(Node node)
+        public void setObstacle(Point node)
         {
             nodeServices.setObstacle(node);
         }
 
-        public void setStart(Node node)
+        public void setStart(Point node)
         {
             nodeServices.setStart(node);
         }
 
-        public void setEnd(Node node)
+        public void setEnd(Point node)
         {
             nodeServices.setEnd(node);
         }

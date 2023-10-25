@@ -16,24 +16,10 @@ namespace CarrierPidgeon.Services
             nodeFactory = new NodeFactory(nodes);
         }
 
-        // Create board
-        public static List<Node> initNodes(int width, int bredth)
-        {
-            List<Node> nodes = new List<Node>();
-            for (int i = 0; i < width; i++)
-                for (int j = 0; j < bredth; j++)
-                {
-                    Point point = new Point(i, j);
-                    nodes.Add(new Node(point));
-                }
-
-            return nodes;
-        }
-
         // Calculate costs
         public static Node getNodeCosts(Node currentNode, Point startNode, Point endNode, List<Node> nodes)
         {
-            currentNode.gCost = calculateGCost(startNode, currentNode.cords, nodes);
+            currentNode.gCost = calculateGCost(startNode, currentNode, nodes);
             currentNode.hCost = calculateHCost(endNode, currentNode.cords);
             currentNode.fCost = calculateFCost(currentNode.gCost, currentNode.hCost);
 
@@ -48,19 +34,17 @@ namespace CarrierPidgeon.Services
             return (int)(Vector2.Distance(start, end) * 10);
         }
 
-        public static int calculateGCost(Point startNode, Point currentNode, List<Node> nodes)
+        public static int calculateGCost(Point startNode, Node currentNode, List<Node> nodes)
         {
-            Node currentNodeInfo = nodes.Find(node => node.cords == currentNode);
-
-            if (currentNodeInfo.origin != null && currentNodeInfo.origin.Count > 0)
+            if (currentNode.origin != null && currentNode.origin.Count > 0)
             {
-                Point previousNodeCords = currentNodeInfo.origin.Last();
+                Point previousNodeCords = currentNode.origin.Last();
                 Node previousNode = nodes.Find(node => node.cords == previousNodeCords);
-                return getDistance(previousNodeCords, currentNode) + previousNode.gCost;
+                return getDistance(previousNodeCords, currentNode.cords) + previousNode.gCost;
             }
             else
             {
-                return getDistance(startNode, currentNode);
+                return getDistance(startNode, currentNode.cords);
             }
         }
 
@@ -74,33 +58,32 @@ namespace CarrierPidgeon.Services
             return gCost + hCost;
         }
 
-        // set node properties
-        public void setObstacle(Node node)
+        // Starting Distance from nodes regardless of path taken
+        public static void CalculateAllGCosts (Point start, List<Node> nodes)
         {
-            nodeFactory.CreateObstacleNode(node.cords);
-        }
-
-        public void setStart(Node node)
-        {
-            nodeFactory.CreateStartNode(node.cords);
-        }
-
-        public void setEnd(Node node)
-        {
-            nodeFactory.CreateEndNode(node.cords);
-        }
-
-        public static bool uniquePropertyExists(List<Node> nodes, string property)
-        {
-            foreach (Node item in nodes)
+            foreach (Node node in nodes)
             {
-                if (item.properties.Contains(property))
-                {
-                    return true;
-                }
+                node.gCost = getDistance(start, node.cords);
             }
-            return false;
         }
+
+        // set node properties
+        public void setObstacle(Point node)
+        {
+            nodeFactory.CreateObstacleNode(node);
+        }
+
+        public void setStart(Point node)
+        {
+            nodeFactory.CreateStartNode(node);
+            CalculateAllGCosts(node, nodes);
+        }
+
+        public void setEnd(Point node)
+        {
+            nodeFactory.CreateEndNode(node);
+        }
+
 
         public static Node CloneNode(Node node)
         {

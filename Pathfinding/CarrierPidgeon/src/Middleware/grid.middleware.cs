@@ -17,9 +17,5 @@ namespace CarrierPidgeon.Middleware
             GridServices gridServices = new GridServices(_configuration);
             return gridServices.InitializeGrid();
         }
-
-        public static void InitializeNodes(){
-            GridServices.InitializeNodes();
-        }
     }
 }

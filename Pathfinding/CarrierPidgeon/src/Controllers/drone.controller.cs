@@ -87,21 +87,5 @@ namespace CarrierPidgeon.Controllers
                 return BadRequest("Invalid ObjectId format");
             }
         }
-
-        // TODO
-        [Authorize]
-        [HttpGet("GetPath/{droneId}")]
-        public IActionResult GetDroneInfo([FromRoute] ObjectId droneId)
-        {
-            return DroneHandler.GetPath(nodes);
-        }
-
-        [HttpPost("{Node}")]
-        public IActionResult setObstacle(Node node)
-        {
-            Drone grid = droneServices.drone;
-
-            return Ok("Added Node");
-        }
     }
 }
