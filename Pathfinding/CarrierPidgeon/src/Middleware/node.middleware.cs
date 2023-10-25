@@ -6,10 +6,12 @@ namespace CarrierPidgeon.Middleware
     class NodeMiddleware
     {
         private List<Node> nodes;
+        private NodeServices nodeServices;
 
         public NodeMiddleware(List<Node> nodes)
         {
             this.nodes = nodes;
+            nodeServices = new NodeServices(nodes);
         }
 
         public static List<Node> initNodes(int x, int y)
@@ -17,19 +19,19 @@ namespace CarrierPidgeon.Middleware
             return NodeServices.initNodes(x, y);
         }
 
-        public static Node setObstacle(List<Node> nodes, Node node)
+        public void setObstacle(Node node)
         {
-            return NodeServices.setObstacle(nodes, node);
+            nodeServices.setObstacle(node);
         }
 
-        public static Node setStart(List<Node> nodes, Node node)
+        public void setStart(Node node)
         {
-            return NodeServices.setStart(nodes, node);
+            nodeServices.setStart(node);
         }
 
-        public static Node setEnd(List<Node> nodes, Node node)
+        public void setEnd(Node node)
         {
-            return NodeServices.setEnd(nodes, node);
+            nodeServices.setEnd(node);
         }
 
         public static Node getNodeCosts(Node currentNode, Node startNode, Node endNode, List<Node> nodes)

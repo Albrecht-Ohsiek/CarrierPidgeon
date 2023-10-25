@@ -33,6 +33,7 @@ public class Startup
         configuration.Bind("JwtAuth", authenticationConfiguration);
         configuration.Bind("Grid", gridConfiguration); 
         services.AddSingleton(authenticationConfiguration);
+        services.AddSingleton(gridConfiguration);
 
         services.AddScoped<GridServices>();
         services.AddScoped<DroneServices>();

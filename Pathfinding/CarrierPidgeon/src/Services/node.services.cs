@@ -1,16 +1,19 @@
 using CarrierPidgeon.Models;
 using System.Numerics;
 using System.Drawing;
+using CarrierPidgeon.Models.Factories;
 
 namespace CarrierPidgeon.Services
 {
     public class NodeServices
     {
         private List<Node> nodes;
+        private NodeFactory nodeFactory;
 
         public NodeServices(List<Node> nodes)
         {
             this.nodes = nodes;
+            nodeFactory = new NodeFactory(nodes);
         }
 
         // Create board
@@ -36,7 +39,7 @@ namespace CarrierPidgeon.Services
 
             return currentNode;
         }
-        
+
         public static int getDistance(Point node1, Point node2)
         {
             Vector2 start = new Vector2(node1.X, node1.Y);
@@ -72,57 +75,19 @@ namespace CarrierPidgeon.Services
         }
 
         // set node properties
-        public static Node setObstacle(List<Node> nodes, Node node)
+        public void setObstacle(Node node)
         {
-            return SetNodeProperty(nodes, node, "obstacle");
+            nodeFactory.CreateObstacleNode(node.cords);
         }
 
-        public static Node setStart(List<Node> nodes, Node node)
+        public void setStart(Node node)
         {
-            return SetNodeProperty(nodes, node, "start");
+            nodeFactory.CreateStartNode(node.cords);
         }
 
-        public static Node setEnd(List<Node> nodes, Node node)
+        public void setEnd(Node node)
         {
-            return SetNodeProperty(nodes, node, "end");
-        }
-
-        public static Node SetNodeProperty(List<Node> nodes, Node node, string property)
-        {
-            try
-            {
-                if (Enum.IsDefined(typeof(string), property))
-                {
-                    if (!uniquePropertyExists(nodes, property) && !node.properties.Contains("obstacle") && !node.properties.Any(prop => prop.GetType() == typeof(string)))
-                    {
-                        node.properties.Add(property);
-                        return node;
-                    }
-                    else
-                    {
-                        throw new Exception("Unable to assign unique property");
-                    }
-                }
-                else if (property.Equals("obstacle"))
-                {
-                    if (node.accessible)
-                    {             
-                        node.occupied = true;
-                        node.accessible = false;
-                        node.properties.RemoveAll(prop => prop.GetType().IsEnum && prop.GetType().GetEnumUnderlyingType() == typeof(string));
-                        node.properties.Add(property);
-                        return node;
-                    }
-                }
-                
-                throw new Exception("Unable to assign property");
-
-            }
-            catch (Exception e)
-            {
-                Console.Error.WriteLine(e.Message);
-                return node;
-            }
+            nodeFactory.CreateEndNode(node.cords);
         }
 
         public static bool uniquePropertyExists(List<Node> nodes, string property)
@@ -143,7 +108,7 @@ namespace CarrierPidgeon.Services
             {
                 throw new ArgumentNullException(nameof(node));
             }
-            
+
             Node newNode = new Node
             {
                 cords = node.cords,

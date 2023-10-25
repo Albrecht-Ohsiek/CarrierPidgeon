@@ -1,6 +1,6 @@
 using CarrierPidgeon.Models;
+using CarrierPidgeon.Models.Responses;
 using CarrierPidgeon.Repositories;
-using CarrierPidgeon.Services.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;

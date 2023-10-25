@@ -2,7 +2,7 @@ using System.Security.Claims;
 using CarrierPidgeon.Keys;
 using CarrierPidgeon.Models;
 using CarrierPidgeon.Repositories;
-using CarrierPidgeon.Services.Responses;
+using CarrierPidgeon.Models.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
