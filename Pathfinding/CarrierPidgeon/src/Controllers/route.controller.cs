@@ -37,7 +37,7 @@ namespace CarrierPidgeon.Controllers
 
         [Authorize]
         [HttpGet("routeId/{routeId}")]
-        public async Task<IActionResult> GetRouteById(string routeId)
+        public async Task<IActionResult> GetRouteById([FromRoute] string routeId)
         {
             if (!ModelState.IsValid)
             {
@@ -60,7 +60,7 @@ namespace CarrierPidgeon.Controllers
         }
 
         [Authorize]
-        [HttpGet("/status/{status}")]
+        [HttpGet("status/{status}")]
         public async Task<IActionResult> GetSingleRouteByStatus ([FromRoute] string status){
             if (!ModelState.IsValid)
             {
