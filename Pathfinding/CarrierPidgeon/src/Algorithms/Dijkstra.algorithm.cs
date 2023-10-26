@@ -2,13 +2,16 @@ using System.Drawing;
 using CarrierPidgeon.Middleware;
 using CarrierPidgeon.Models;
 
-namespace CarrierPidgeon.Algorithms{
-    public class Dijkstra{
+namespace CarrierPidgeon.Algorithms
+{
+    public class Dijkstra
+    {
 
-        private readonly List<Node> nodes; 
+        private readonly List<Node> nodes;
         private NodeMiddleware nodeMiddleware;
 
-        public Dijkstra(List<Node> nodes){
+        public Dijkstra(List<Node> nodes)
+        {
             this.nodes = nodes;
             nodeMiddleware = new NodeMiddleware(nodes);
         }
@@ -20,21 +23,28 @@ namespace CarrierPidgeon.Algorithms{
 
             Node start = _clearNodes.FirstOrDefault(n => n.properties.Contains("start"));
 
-            //List<Node> openNodes = _clearNodes.OrderBy(n => n.gCost).ToList();
-            
-            PriorityQueue<Node, int> openNodes = new PriorityQueue<Node, int>();
-            openNodes.Enqueue(start, start.gCost);
+            List<Node> openNodes = _clearNodes.OrderBy(n => n.gCost).ToList();
 
-            while(openNodes.Count > 0)
+            PriorityQueue<Node, int> priorityQueue = new PriorityQueue<Node, int>();
+            priorityQueue.Enqueue(start, start.gCost);
+
+            foreach (var clearNode in _clearNodes)
             {
-                
-                Node currentNode = openNodes.Peek();
-                openNodes.Dequeue();
-                if(currentNode.properties.Contains("end")){
-                    break;
+                if (!clearNode.properties.Contains("start"))
+                {
+                    // Enqueue all clear nodes with their initial cost
+                    clearNode.gCost = int.MaxValue;
+                    priorityQueue.Enqueue(clearNode, clearNode.gCost);
                 }
+            }
 
-                foreach (Node neighbor in GetNeighbors(_clearNodes, currentNode)){
+            while (priorityQueue.Count > 0)
+            {
+                Node currentNode = priorityQueue.Peek();
+                priorityQueue.Dequeue();
+
+                foreach (Node neighbor in GetNeighbors(_clearNodes, currentNode))
+                {
                     int tentativeG = currentNode.gCost + nodeMiddleware.GetDistance(currentNode.cords, neighbor.cords);
 
                     if (tentativeG < neighbor.gCost)
@@ -44,17 +54,22 @@ namespace CarrierPidgeon.Algorithms{
                         neighbor.origin.Clear();
                         neighbor.origin.AddRange(currentNode.origin);
                         neighbor.origin.Add(currentNode.cords);
-                        openNodes.Enqueue(neighbor, neighbor.gCost);
-                        // Reorder openNodes based on the new G score
-                        //openNodes = openNodes.OrderBy(n => n.gCost).ToList();
+                        priorityQueue.Enqueue(neighbor, neighbor.gCost);
                     }
+                }
+
+                if (currentNode.properties.Contains("end"))
+                {
+                    end.origin.Clear();
+                    end.origin.AddRange(currentNode.origin);
+                    break;
                 }
 
             }
 
             List<Point> shortestPath = new List<Point>();
-            
-            if(end != null)
+
+            if (end != null)
             {
                 shortestPath.AddRange(end.origin);
                 shortestPath.Add(end.cords);
