@@ -36,13 +36,13 @@ namespace CarrierPidgeon.Services
                 if (locked == false)
                 {
                     Order order = await _orderRepository.GetFirstOrderByStatus(status);
-                    Node node = nodes.FirstOrDefault(n => n.cords == order.end);
-                    Node endNode = NodeMiddleware.CloneNode(node);
-
                     try
                     {
                         if (order != null)
                         {
+                            Node node = nodes.FirstOrDefault(n => n.cords == order.end);
+                            Node endNode = NodeMiddleware.CloneNode(node);
+
                             locked = true;
                             Dijkstra pathAlgo = new Dijkstra(nodes);
                             List<Point> path = pathAlgo.CalculatePath(endNode);
