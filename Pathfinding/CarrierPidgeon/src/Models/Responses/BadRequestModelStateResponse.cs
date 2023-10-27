@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using CarrierPidgeon.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace CarrierPidgeon.Services.Responses{
+namespace CarrierPidgeon.Models.Responses{
     public class BadRequestModelStateResponse{
         public static IActionResult BadRequestModelState(ModelStateDictionary modelState)
         {

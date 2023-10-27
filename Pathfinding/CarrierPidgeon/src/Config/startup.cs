@@ -5,6 +5,7 @@ using CarrierPidgeon.Middleware;
 using CarrierPidgeon.Serializer;
 using CarrierPidgeon.Repositories;
 using CarrierPidgeon.Keys;
+using MongoDB.Bson.Serialization;
 namespace CarrierPidgeon.Config;
 
 public class Startup
@@ -18,11 +19,7 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddMvc().AddJsonOptions(options =>
-        {
-            options.JsonSerializerOptions.Converters.Add(new NodePropertiesConverter());
-            options.JsonSerializerOptions.Converters.Add(new NodeOriginConverter());
-        });
+        BsonSerializer.RegisterSerializer(new PointSerializer());
 
         IConfiguration configuration = new ConfigurationBuilder()
             .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "Properties"))
@@ -31,15 +28,35 @@ public class Startup
         services.AddSingleton(configuration);
 
         AuthenticationConfiguration authenticationConfiguration = new AuthenticationConfiguration();
+        GridConfiguration gridConfiguration = new GridConfiguration();
         
-        configuration.Bind("JwtAuth", authenticationConfiguration); 
+        configuration.Bind("JwtAuth", authenticationConfiguration);
+        configuration.Bind("Grid", gridConfiguration); 
         services.AddSingleton(authenticationConfiguration);
+        services.AddSingleton(gridConfiguration);
 
-        services.AddControllers();
         services.AddScoped<GridServices>();
         services.AddScoped<DroneServices>();
         services.AddScoped<DashboardHandler>();
         services.AddScoped<AuthenticationServices>();
+
+        GridMiddleware gridMiddleware = new GridMiddleware(gridConfiguration);
+        List<Node> nodes = gridMiddleware.InitializeGrid();
+        services.AddSingleton(nodes);
+
+        NodeMiddleware nodeMiddleware = new NodeMiddleware(nodes);
+        nodeMiddleware.setStart(gridConfiguration.start);
+
+        services.AddSingleton<Keygen>();
+        services.AddSingleton<DatabaseServices>();
+
+        services.AddTransient<IUserRepository, UserRepository>();
+        services.AddTransient<IOrderRepository, OrderRepository>();
+        services.AddTransient<IRouteRepository, RouteRepository>();
+        services.AddTransient<DroneRepository>();
+        services.AddTransient<RouteService>();
+
+        services.AddControllers();
 
         services.AddCors(options =>
         {
@@ -52,16 +69,6 @@ public class Startup
         });
 
         // Add your other services here
-
-        List<Node> nodes = GridMiddleware.initGrid();
-        services.AddSingleton(nodes);
-
-        services.AddSingleton<Keygen>();
-        services.AddSingleton<DatabaseServices>();
-        services.AddTransient<IUserRepository, UserRepository>();
-        services.AddTransient<IOrderRepository, OrderRepository>();
-        services.AddTransient<IRouteRepository, RouteRepository>();
-        services.AddTransient<DroneRepository>();
 
         var authenticationServices = services.BuildServiceProvider().GetService<AuthenticationServices>();
         authenticationServices.ConfigureAuthentication(services);

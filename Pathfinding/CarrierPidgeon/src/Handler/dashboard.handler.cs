@@ -31,24 +31,6 @@ namespace CarrierPidgeon.Handlers
             }
         }
 
-        public IActionResult SetGridSize([FromBody] Grid grid)
-        {
-            try
-            {
-                int width = grid.sizeX;
-                int bredth = grid.sizeY;
-
-                nodes.Clear();
-                nodes.AddRange(NodeMiddleware.initNodes(width, bredth));
-
-                return new OkObjectResult("Set grid size seccessfully");
-            }
-            catch (Exception e)
-            {
-                return new BadRequestObjectResult("Failed to set grid size: " + e.Message);
-            }
-        }
-
         // TODO List<Enum> Properties From body
         public IActionResult SetNodes([FromBody] List<Node> updatedNodes)
         {
@@ -56,12 +38,11 @@ namespace CarrierPidgeon.Handlers
             {
                 foreach (Node updatedNode in updatedNodes)
                 {
-                    Node node = nodes.FirstOrDefault(n => n.posX == updatedNode.posX && n.posY == updatedNode.posY);
+                    Node node = nodes.FirstOrDefault(n => n.cords.X == updatedNode.cords.X && n.cords.Y == updatedNode.cords.Y);
 
                     if (node != null)
                     {
-                        node.posX = updatedNode.posX;
-                        node.posY = updatedNode.posY;
+                        node.cords = updatedNode.cords;
                         node.occupied = updatedNode.occupied;
                         node.accessible = updatedNode.accessible;
                         node.gCost = updatedNode.gCost;

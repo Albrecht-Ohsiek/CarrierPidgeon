@@ -1,9 +1,8 @@
-using CarrierPidgeon.Models;
-using Microsoft.VisualBasic;
 using MongoDB.Bson;
 using Route = CarrierPidgeon.Models.Route;
 
-namespace CarrierPidgeon.Repositories{
+namespace CarrierPidgeon.Repositories
+{
     public interface IRouteRepository{
         Task<List<Route>> GetAllRoutes();
 

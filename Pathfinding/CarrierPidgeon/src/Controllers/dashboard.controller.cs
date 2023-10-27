@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using CarrierPidgeon.Services;
 using CarrierPidgeon.Models;
 using CarrierPidgeon.Handlers;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 
 namespace CarrierPidgeon.Controllers
@@ -37,13 +36,6 @@ namespace CarrierPidgeon.Controllers
         public IActionResult LoginUser()
         {
             return Ok("login endpoind");
-        }
-
-        //[Authorize]
-        [HttpPost("SetGrid")]
-        public IActionResult SetGridSize([FromBody] Grid grid)
-        {
-            return dashboardHandler.SetGridSize(grid);
         }
 
         [HttpPost("SetNode")]

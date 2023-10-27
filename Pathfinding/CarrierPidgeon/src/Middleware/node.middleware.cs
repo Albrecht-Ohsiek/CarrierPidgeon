@@ -1,3 +1,4 @@
+using System.Drawing;
 using CarrierPidgeon.Models;
 using CarrierPidgeon.Services;
 
@@ -5,29 +6,38 @@ namespace CarrierPidgeon.Middleware
 {
     class NodeMiddleware
     {
-        public static List<Node> initNodes(int x, int y)
+        private List<Node> nodes;
+        private NodeServices nodeServices;
+
+        public NodeMiddleware(List<Node> nodes)
         {
-            return NodeServices.initNodes(x, y);
+            this.nodes = nodes;
+            nodeServices = new NodeServices(nodes);
         }
 
-        public static Node setObstacle(List<Node> nodes, Node node)
+        public int GetDistance(Point point1, Point point2)
         {
-            return NodeServices.setObstacle(nodes, node);
+            return NodeServices.getDistance(point1, point2);
         }
 
-        public static Node setStart(List<Node> nodes, Node node)
+        public void setObstacle(Point node)
         {
-            return NodeServices.setStart(nodes, node);
+            nodeServices.setObstacle(node);
         }
 
-        public static Node setEnd(List<Node> nodes, Node node)
+        public void setStart(Point node)
         {
-            return NodeServices.setEnd(nodes, node);
+            nodeServices.setStart(node);
         }
 
-        public static Node getNodeCosts(Node currentNode, Node startNode, Node endNode)
+        public void setEnd(Point node)
         {
-            return NodeServices.getNodeCosts(currentNode, startNode, endNode);
+            nodeServices.setEnd(node);
+        }
+
+        public static Node getNodeCosts(Node currentNode, Node startNode, Node endNode, List<Node> nodes)
+        {
+            return NodeServices.getNodeCosts(currentNode, startNode.cords, endNode.cords, nodes);
         }
 
         public static Node CloneNode(Node node)

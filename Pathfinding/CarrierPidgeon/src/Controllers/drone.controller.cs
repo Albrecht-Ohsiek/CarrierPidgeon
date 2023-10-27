@@ -27,7 +27,7 @@ namespace CarrierPidgeon.Controllers
 
         [Authorize]
         [HttpPost("create")]
-        public async Task<IActionResult> CreateUser([FromBody] Drone drone)
+        public async Task<IActionResult> CreateDrone([FromBody] Drone drone)
         {
             _droneRepository.addDrone(drone);
             return Ok(drone);
@@ -86,22 +86,6 @@ namespace CarrierPidgeon.Controllers
             {
                 return BadRequest("Invalid ObjectId format");
             }
-        }
-
-        // TODO
-        [Authorize]
-        [HttpGet("GetPath/{droneId}")]
-        public IActionResult GetDroneInfo([FromRoute] ObjectId droneId)
-        {
-            return DroneHandler.GetPath(nodes);
-        }
-
-        [HttpPost("{Node}")]
-        public IActionResult setObstacle(Node node)
-        {
-            Drone grid = droneServices.drone;
-
-            return Ok("Added Node");
         }
     }
 }

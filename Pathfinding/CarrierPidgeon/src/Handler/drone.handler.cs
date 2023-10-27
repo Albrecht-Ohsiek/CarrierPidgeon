@@ -1,6 +1,4 @@
 using CarrierPidgeon.Models;
-using CarrierPidgeon.Types;
-using CarrierPidgeon.Algorithms;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarrierPidgeon.Handlers
@@ -16,8 +14,8 @@ namespace CarrierPidgeon.Handlers
 
         internal static IActionResult GetPath(List<Node> nodes)
         {
-            Node startNode = nodes.FirstOrDefault(n => n.properties.Contains(UniqueNodeProperties.Start));
-            Node endNode = nodes.FirstOrDefault(n => n.properties.Contains(UniqueNodeProperties.End));
+            Node startNode = nodes.FirstOrDefault(n => n.properties.Contains("start"));
+            Node endNode = nodes.FirstOrDefault(n => n.properties.Contains("end"));
 
             //List<Node> path = AStarAlgorithm.calculatePath(nodes, startNode, endNode);
             List<Node> path = new List<Node>();

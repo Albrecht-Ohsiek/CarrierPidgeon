@@ -1,8 +1,6 @@
-using System.Security.Claims;
-using CarrierPidgeon.Keys;
 using CarrierPidgeon.Models;
+using CarrierPidgeon.Models.Responses;
 using CarrierPidgeon.Repositories;
-using CarrierPidgeon.Services.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -39,7 +37,7 @@ namespace CarrierPidgeon.Controllers
 
         [Authorize]
         [HttpGet("routeId/{routeId}")]
-        public async Task<IActionResult> GetRouteById(string routeId)
+        public async Task<IActionResult> GetRouteById([FromRoute] string routeId)
         {
             if (!ModelState.IsValid)
             {
@@ -62,7 +60,7 @@ namespace CarrierPidgeon.Controllers
         }
 
         [Authorize]
-        [HttpGet("/status/{status}")]
+        [HttpGet("status/{status}")]
         public async Task<IActionResult> GetSingleRouteByStatus ([FromRoute] string status){
             if (!ModelState.IsValid)
             {

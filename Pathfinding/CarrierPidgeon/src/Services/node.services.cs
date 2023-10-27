@@ -1,56 +1,54 @@
-using CarrierPidgeon.Types;
 using CarrierPidgeon.Models;
 using System.Numerics;
+using System.Drawing;
+using CarrierPidgeon.Models.Factories;
 
 namespace CarrierPidgeon.Services
 {
     public class NodeServices
     {
-        // Create board
-        public static List<Node> initNodes(int width, int bredth)
-        {
-            List<Node> nodes = new List<Node>();
-            for (int i = 0; i < width; i++)
-                for (int j = 0; j < bredth; j++)
-                {
-                    nodes.Add(new Node(i, j));
-                }
+        private List<Node> nodes;
+        private NodeFactory nodeFactory;
 
-            return nodes;
+        public NodeServices(List<Node> nodes)
+        {
+            this.nodes = nodes;
+            nodeFactory = new NodeFactory(nodes);
         }
 
         // Calculate costs
-        public static Node getNodeCosts(Node currentNode, Node startNode, Node endNode)
+        public static Node getNodeCosts(Node currentNode, Point startNode, Point endNode, List<Node> nodes)
         {
-            currentNode.gCost = calculateGCost(startNode, currentNode);
-            currentNode.hCost = calculateHCost(endNode, currentNode);
+            currentNode.gCost = calculateGCost(startNode, currentNode, nodes);
+            currentNode.hCost = calculateHCost(endNode, currentNode.cords);
             currentNode.fCost = calculateFCost(currentNode.gCost, currentNode.hCost);
 
             return currentNode;
         }
-        
-        public static int getDistance(Node node1, Node node2)
+
+        public static int getDistance(Point node1, Point node2)
         {
-            Vector2 start = new Vector2(node1.posX, node1.posY);
-            Vector2 end = new Vector2(node2.posX, node2.posY);
+            Vector2 start = new Vector2(node1.X, node1.Y);
+            Vector2 end = new Vector2(node2.X, node2.Y);
 
             return (int)(Vector2.Distance(start, end) * 10);
         }
 
-        public static int calculateGCost(Node startNode, Node currentNode)
+        public static int calculateGCost(Point startNode, Node currentNode, List<Node> nodes)
         {
-            if (currentNode.origin != null && currentNode.origin.Any())
+            if (currentNode.origin != null && currentNode.origin.Count > 0)
             {
-                Node previousNode = currentNode.origin.Last();
-                return getDistance(previousNode, currentNode) + previousNode.gCost;
+                Point previousNodeCords = currentNode.origin.Last();
+                Node previousNode = nodes.Find(node => node.cords == previousNodeCords);
+                return getDistance(previousNodeCords, currentNode.cords) + previousNode.gCost;
             }
             else
             {
-                return getDistance(startNode, currentNode);
+                return getDistance(startNode, currentNode.cords);
             }
         }
 
-        public static int calculateHCost(Node endNode, Node currentNode)
+        public static int calculateHCost(Point endNode, Point currentNode)
         {
             return getDistance(endNode, currentNode);
         }
@@ -60,71 +58,32 @@ namespace CarrierPidgeon.Services
             return gCost + hCost;
         }
 
+        // Starting Distance from nodes regardless of path taken
+        public static void CalculateAllGCosts (Point start, List<Node> nodes)
+        {
+            foreach (Node node in nodes)
+            {
+                node.gCost = getDistance(start, node.cords);
+            }
+        }
+
         // set node properties
-        public static Node setObstacle(List<Node> nodes, Node node)
+        public void setObstacle(Point node)
         {
-            return SetNodeProperty(nodes, node, NodeProperties.Obstacle);
+            nodeFactory.CreateObstacleNode(node);
         }
 
-        public static Node setStart(List<Node> nodes, Node node)
+        public void setStart(Point node)
         {
-            return SetNodeProperty(nodes, node, UniqueNodeProperties.Start);
+            nodeFactory.CreateStartNode(node);
+            CalculateAllGCosts(node, nodes);
         }
 
-        public static Node setEnd(List<Node> nodes, Node node)
+        public void setEnd(Point node)
         {
-            return SetNodeProperty(nodes, node, UniqueNodeProperties.End);
+            nodeFactory.CreateEndNode(node);
         }
 
-        public static Node SetNodeProperty(List<Node> nodes, Node node, Enum property)
-        {
-            try
-            {
-                if (Enum.IsDefined(typeof(UniqueNodeProperties), property))
-                {
-                    if (!uniquePropertyExists(nodes, property) && !node.properties.Contains(NodeProperties.Obstacle) && !node.properties.Any(prop => prop.GetType() == typeof(UniqueNodeProperties)))
-                    {
-                        node.properties.Add(property);
-                        return node;
-                    }
-                    else
-                    {
-                        throw new Exception("Unable to assign unique property");
-                    }
-                }
-                else if (property.Equals(NodeProperties.Obstacle))
-                {
-                    if (node.accessible)
-                    {             
-                        node.occupied = true;
-                        node.accessible = false;
-                        node.properties.RemoveAll(prop => prop.GetType().IsEnum && prop.GetType().GetEnumUnderlyingType() == typeof(UniqueNodeProperties));
-                        node.properties.Add(property);
-                        return node;
-                    }
-                }
-                
-                throw new Exception("Unable to assign property");
-
-            }
-            catch (Exception e)
-            {
-                Console.Error.WriteLine(e.Message);
-                return node;
-            }
-        }
-
-        public static bool uniquePropertyExists(List<Node> nodes, Enum property)
-        {
-            foreach (Node item in nodes)
-            {
-                if (item.properties.Contains(property))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
 
         public static Node CloneNode(Node node)
         {
@@ -132,16 +91,15 @@ namespace CarrierPidgeon.Services
             {
                 throw new ArgumentNullException(nameof(node));
             }
-            
+
             Node newNode = new Node
             {
-                posX = node.posX,
-                posY = node.posY,
+                cords = node.cords,
                 fCost = node.fCost,
                 gCost = node.gCost,
                 hCost = node.hCost,
-                properties = new List<Enum>(node.properties),
-                origin = new List<Node>(node.origin),
+                properties = new List<string>(node.properties),
+                origin = new List<Point>(node.origin),
             };
 
             return newNode;
