@@ -1,5 +1,4 @@
 using CarrierPidgeon.Services;
-using CarrierPidgeon.Handlers;
 using CarrierPidgeon.Models;
 using CarrierPidgeon.Middleware;
 using CarrierPidgeon.Serializer;
@@ -31,13 +30,12 @@ public class Startup
         GridConfiguration gridConfiguration = new GridConfiguration();
         
         configuration.Bind("JwtAuth", authenticationConfiguration);
-        configuration.Bind("Grid", gridConfiguration); 
+        configuration.Bind("Grid", gridConfiguration);  
         services.AddSingleton(authenticationConfiguration);
         services.AddSingleton(gridConfiguration);
 
         services.AddScoped<GridServices>();
         services.AddScoped<DroneServices>();
-        services.AddScoped<DashboardHandler>();
         services.AddScoped<AuthenticationServices>();
 
         GridMiddleware gridMiddleware = new GridMiddleware(gridConfiguration);
@@ -46,6 +44,7 @@ public class Startup
 
         NodeMiddleware nodeMiddleware = new NodeMiddleware(nodes);
         nodeMiddleware.setStart(gridConfiguration.start);
+        nodeMiddleware.setObstacle(gridConfiguration.obstacles);
 
         services.AddSingleton<Keygen>();
         services.AddSingleton<DatabaseServices>();

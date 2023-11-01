@@ -1,4 +1,3 @@
-using CarrierPidgeon.Handlers;
 using CarrierPidgeon.Models;
 using CarrierPidgeon.Repositories;
 using CarrierPidgeon.Services;
@@ -24,7 +23,7 @@ namespace CarrierPidgeon.Controllers
             this.droneServices = droneServices;
             _droneRepository = droneRepository;
         }
-
+        
         [Authorize]
         [HttpPost("create")]
         public async Task<IActionResult> CreateDrone([FromBody] Drone drone)
@@ -59,7 +58,7 @@ namespace CarrierPidgeon.Controllers
                 Drone drone = await _droneRepository.GetDroneByUserId(userId);
                 if (drone == null)
                 {
-                    return NotFound(); // Return a 404 Not Found response if the drone is not found.
+                    return NotFound();
                 }
                 return Ok(drone);
         }
