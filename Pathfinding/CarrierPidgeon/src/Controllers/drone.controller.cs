@@ -23,7 +23,7 @@ namespace CarrierPidgeon.Controllers
             this.droneServices = droneServices;
             _droneRepository = droneRepository;
         }
-
+        
         [Authorize]
         [HttpPost("create")]
         public async Task<IActionResult> CreateDrone([FromBody] Drone drone)

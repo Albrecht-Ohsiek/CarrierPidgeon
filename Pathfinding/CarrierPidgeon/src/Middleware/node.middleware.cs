@@ -20,9 +20,12 @@ namespace CarrierPidgeon.Middleware
             return NodeServices.getDistance(point1, point2);
         }
 
-        public void setObstacle(Point node)
+        public void setObstacle(List<Point> points)
         {
-            nodeServices.setObstacle(node);
+            foreach (Point point in points)
+            {
+                nodeServices.setObstacle(point);
+            }
         }
 
         public void setStart(Point node)

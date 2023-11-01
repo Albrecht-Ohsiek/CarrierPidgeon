@@ -95,6 +95,8 @@ namespace CarrierPidgeon.Services
             Node newNode = new Node
             {
                 cords = node.cords,
+                occupied = node.occupied,
+                accessible = node.accessible,
                 fCost = node.fCost,
                 gCost = node.gCost,
                 hCost = node.hCost,
