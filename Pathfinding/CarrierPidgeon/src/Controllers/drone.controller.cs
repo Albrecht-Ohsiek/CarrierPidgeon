@@ -1,4 +1,3 @@
-using CarrierPidgeon.Handlers;
 using CarrierPidgeon.Models;
 using CarrierPidgeon.Repositories;
 using CarrierPidgeon.Services;
@@ -24,10 +23,10 @@ namespace CarrierPidgeon.Controllers
             this.droneServices = droneServices;
             _droneRepository = droneRepository;
         }
-
+        
         [Authorize]
         [HttpPost("create")]
-        public async Task<IActionResult> CreateUser([FromBody] Drone drone)
+        public async Task<IActionResult> CreateDrone([FromBody] Drone drone)
         {
             _droneRepository.addDrone(drone);
             return Ok(drone);
@@ -59,7 +58,7 @@ namespace CarrierPidgeon.Controllers
                 Drone drone = await _droneRepository.GetDroneByUserId(userId);
                 if (drone == null)
                 {
-                    return NotFound(); // Return a 404 Not Found response if the drone is not found.
+                    return NotFound();
                 }
                 return Ok(drone);
         }
@@ -86,22 +85,6 @@ namespace CarrierPidgeon.Controllers
             {
                 return BadRequest("Invalid ObjectId format");
             }
-        }
-
-        // TODO
-        [Authorize]
-        [HttpGet("GetPath/{droneId}")]
-        public IActionResult GetDroneInfo([FromRoute] ObjectId droneId)
-        {
-            return DroneHandler.GetPath(nodes);
-        }
-
-        [HttpPost("{Node}")]
-        public IActionResult setObstacle(Node node)
-        {
-            Drone grid = droneServices.drone;
-
-            return Ok("Added Node");
         }
     }
 }

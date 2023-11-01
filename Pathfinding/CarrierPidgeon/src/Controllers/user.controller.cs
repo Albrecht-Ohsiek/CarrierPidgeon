@@ -2,7 +2,7 @@ using System.Security.Claims;
 using CarrierPidgeon.Keys;
 using CarrierPidgeon.Models;
 using CarrierPidgeon.Repositories;
-using CarrierPidgeon.Services.Responses;
+using CarrierPidgeon.Models.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -66,7 +66,7 @@ namespace CarrierPidgeon.Config
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> loginUSer([FromBody] LoginRequest user)
+        public async Task<IActionResult> loginUser([FromBody] LoginRequest user)
         {
             if (!ModelState.IsValid)
             {
