@@ -58,7 +58,7 @@ namespace CarrierPidgeon.Controllers
                 Drone drone = await _droneRepository.GetDroneByUserId(userId);
                 if (drone == null)
                 {
-                    return NotFound(); // Return a 404 Not Found response if the drone is not found.
+                    return NotFound();
                 }
                 return Ok(drone);
         }

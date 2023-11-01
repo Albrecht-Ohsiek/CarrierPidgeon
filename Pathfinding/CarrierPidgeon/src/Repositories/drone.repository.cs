@@ -29,8 +29,7 @@ namespace CarrierPidgeon.Repositories
 
         public async Task<Drone> GetDroneByUserId(string userId)
         {
-            
-            return await _droneCollection.Find(user => user.userId == userId).FirstOrDefaultAsync();
+            return await _droneCollection.Find(drone => drone.userId == userId).FirstOrDefaultAsync();
         }
 
         // Update an existing drone
