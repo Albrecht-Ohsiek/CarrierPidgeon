@@ -18,10 +18,16 @@ namespace CarrierPidgeon.Controllers
             this.nodes = nodes;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetGrid(){
+        public IActionResult GetGrid(){
             return Ok(GridHandler.GetGrid(nodes));
+        }
+
+        [Authorize]
+        [HttpGet("crucials")]
+        public IActionResult GetGridCrucial(){
+            return Ok(GridHandler.GetGridCrucial(nodes));
         }
 
     }

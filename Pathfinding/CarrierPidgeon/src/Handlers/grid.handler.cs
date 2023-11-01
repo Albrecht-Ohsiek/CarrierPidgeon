@@ -1,5 +1,6 @@
 using CarrierPidgeon.Middleware;
 using CarrierPidgeon.Models;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CarrierPidgeon.Handlers
 {
@@ -23,7 +24,24 @@ namespace CarrierPidgeon.Handlers
                 accessible = node.accessible,
                 properties = node.properties
             }).ToList();
-            
+
+            return gridInfoList;
+        }
+
+        public static List<GridInfoResponse> GetGridCrucial(List<Node> nodes)
+        {
+            List<Node> clonedNodes = nodes.Select(n => NodeMiddleware.CloneNode(n)).ToList();
+            List<GridInfoResponse> gridInfoList = clonedNodes
+                .Where(node => !node.properties.IsNullOrEmpty())
+                .Select(node => new GridInfoResponse
+                    {
+                        cords = node.cords,
+                        occupied = node.occupied,
+                        accessible = node.accessible,
+                        properties = node.properties
+                    })
+                    .ToList();
+
             return gridInfoList;
         }
     }
