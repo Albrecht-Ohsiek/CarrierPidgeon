@@ -66,7 +66,7 @@ namespace CarrierPidgeon.Config
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> loginUSer([FromBody] LoginRequest user)
+        public async Task<IActionResult> loginUser([FromBody] LoginRequest user)
         {
             if (!ModelState.IsValid)
             {

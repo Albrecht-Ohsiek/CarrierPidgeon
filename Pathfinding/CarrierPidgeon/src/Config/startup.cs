@@ -1,5 +1,4 @@
 using CarrierPidgeon.Services;
-using CarrierPidgeon.Handlers;
 using CarrierPidgeon.Models;
 using CarrierPidgeon.Middleware;
 using CarrierPidgeon.Serializer;
@@ -37,7 +36,6 @@ public class Startup
 
         services.AddScoped<GridServices>();
         services.AddScoped<DroneServices>();
-        services.AddScoped<DashboardHandler>();
         services.AddScoped<AuthenticationServices>();
 
         GridMiddleware gridMiddleware = new GridMiddleware(gridConfiguration);
