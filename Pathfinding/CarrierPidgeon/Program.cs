@@ -24,7 +24,7 @@ namespace CarrierPidgeon
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                    webBuilder.UseUrls("http://localhost:4000");
+                    webBuilder.UseUrls("http://0.0.0.0:4000");
                 });
     }
 }
