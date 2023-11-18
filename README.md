@@ -1,4 +1,5 @@
-# Final_Year_Project_Group3
+# Creating and starting up docker container
+docker compose up -d
 
-This project contains multiple different applications that will work together
-Please check their individual Readme's if required
+# If its not working due to a port conflict try
+docker run --rm -it -p 8080:4000/tcp carrierpidgeon:latest

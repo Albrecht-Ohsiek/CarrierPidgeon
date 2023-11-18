@@ -1,6 +1,18 @@
-## IDE and Virtual Enviroment Files
-venv/
+# Visual Studio Code
 .vscode/
 
-## Envirromental Variables
-.env
+# .NET
+bin/
+obj/
+.vs/
+.DS_Store
+
+# NuGet
+*.nuget.props
+*.nuget.targets
+
+# User-specific files
+*.suo
+*.user
+*.userprefs
+*.sln.docstates
