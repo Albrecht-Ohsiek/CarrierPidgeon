@@ -32,7 +32,8 @@ jobs:
         - name: Configure Docker Client
           run: |
             gcloud auth configure-docker --quiet
-
+            echo "${{ secrets.SERVICE_ACCOUNT_KEY }}" | base64 --decode | docker login -u _json_key --password-stdin https://gcr.io
+          
         - name: Push Docker Image to Container Registry (GCR)
           env: 
             GIT_TAG: v0.1.0
