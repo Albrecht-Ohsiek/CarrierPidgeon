@@ -66,6 +66,12 @@ public class Startup
                        .AllowAnyMethod();
             });
         });
+
+        // Add your other services here
+
+        var authenticationServices = services.BuildServiceProvider().GetService<AuthenticationServices>();
+        authenticationServices.ConfigureAuthentication(services);
+
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment environment)
