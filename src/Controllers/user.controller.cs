@@ -92,7 +92,7 @@ namespace CarrierPidgeon.Config
             });
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("userId/{userId}")]
         public async Task<IActionResult> GetUserById([FromRoute] string userId)
         {
@@ -116,7 +116,7 @@ namespace CarrierPidgeon.Config
             }
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("email/{email}")]
         public async Task<IActionResult> GetUserByEmail([FromRoute] string email)
         {
@@ -134,7 +134,7 @@ namespace CarrierPidgeon.Config
             return Ok(user);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("name/{name}")]
         public async Task<IActionResult> GetUserByName([FromRoute] string name)
         {
@@ -152,7 +152,7 @@ namespace CarrierPidgeon.Config
             return Ok(user);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPut("update/user/{userId}")]
         public async Task<IActionResult> UpdateUserById([FromRoute] string userId, [FromBody] UpdateUserRequest user)
         {

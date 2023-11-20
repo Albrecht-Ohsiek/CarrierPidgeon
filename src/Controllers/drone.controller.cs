@@ -24,7 +24,7 @@ namespace CarrierPidgeon.Controllers
             _droneRepository = droneRepository;
         }
         
-        [Authorize]
+        //[Authorize]
         [HttpPost("create")]
         public async Task<IActionResult> CreateDrone([FromBody] Drone drone)
         {
@@ -32,7 +32,7 @@ namespace CarrierPidgeon.Controllers
             return Ok(drone);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("droneId/{droneId}")]
         public async Task<IActionResult> GetDroneByDroneId(string droneId)
         {
@@ -51,7 +51,7 @@ namespace CarrierPidgeon.Controllers
             }
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("userId/{userId}")]
         public async Task<IActionResult> GetDroneByUserId(string userId)
         {
@@ -63,7 +63,7 @@ namespace CarrierPidgeon.Controllers
                 return Ok(drone);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPut("update/{droneId}")]
         public async Task<IActionResult> UpdateDrone([FromRoute] string droneId, [FromBody] Drone drone)
         {

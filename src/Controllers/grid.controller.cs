@@ -18,13 +18,13 @@ namespace CarrierPidgeon.Controllers
             this.nodes = nodes;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public IActionResult GetGrid(){
             return Ok(GridHandler.GetGrid(nodes));
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("crucials")]
         public IActionResult GetGridCrucial(){
             return Ok(GridHandler.GetGridCrucial(nodes));

@@ -21,7 +21,7 @@ namespace CarrierPidgeon.Controllers
             _orderRepository = orderRepository;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost("create")]
         public async Task<IActionResult> RegisterOrder([FromBody] AddOrderRequest order)
         {
@@ -42,7 +42,7 @@ namespace CarrierPidgeon.Controllers
             return Ok();
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPut("update/{orderId}")]
         public async Task<IActionResult> UpdateStatus([FromRoute] string orderId, [FromBody] UpdateOrderRequest order)
         {
@@ -78,7 +78,7 @@ namespace CarrierPidgeon.Controllers
             }
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("get/status/{status}")]
         public async Task<IActionResult> GetOrderByStatus([FromRoute] string status)
         {
@@ -96,7 +96,7 @@ namespace CarrierPidgeon.Controllers
             return Ok(order);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("get/user/{userId}")]
         public async Task<IActionResult> GetOrderByUserID([FromRoute] string userId)
         {
@@ -114,7 +114,7 @@ namespace CarrierPidgeon.Controllers
             return Ok(order);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("get/order/{orderId}")]
         public async Task<IActionResult> GetOrder([FromRoute] string orderId)
         {
