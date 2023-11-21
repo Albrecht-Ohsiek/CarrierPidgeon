@@ -43,14 +43,14 @@ namespace CarrierPidgeon.Controllers
                 {
                     return NotFound(); // Return a 404 Not Found response if the drone is not found.
                 }
-                DroneResponse droneDTO = new DroneResponse
+                DroneResponse droneResponse = new DroneResponse
                 {
                     _id = objectId.ToString(),
                     userId = drone.userId,
                     status = drone.status,
                     routeId = drone.routeId
                 };
-                return Ok(drone);
+                return Ok(droneResponse);
             }
             else
             {
