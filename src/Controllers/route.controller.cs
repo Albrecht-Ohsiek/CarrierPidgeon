@@ -32,7 +32,24 @@ namespace CarrierPidgeon.Controllers
             }
 
             List<Route> routes = await _routeRepository.GetAllRoutes();
-            return Ok(routes);
+            if (routes == null)
+            {
+                return NotFound(new ErrorResponse("No routes found"));
+            }
+
+            List<RouteResponse> routeResponses = new List<RouteResponse>();
+            foreach (Route route in routes)
+            {
+                RouteResponse routeResponse = new RouteResponse
+                {
+                    _id = route._id.ToString(),
+                    status = route.status,
+                    path = route.path
+                };
+                routeResponses.Add(routeResponse);
+            }
+
+            return Ok(routeResponses);
         }
 
         //[Authorize]
@@ -51,7 +68,14 @@ namespace CarrierPidgeon.Controllers
                 {
                     return NotFound();
                 }
-                return Ok(route);
+
+                RouteResponse routeResponse = new RouteResponse
+                {
+                    _id = objectId.ToString(),
+                    status = route.status,
+                    path = route.path
+                };
+                return Ok(routeResponse);
             }
             else
             {
@@ -61,7 +85,8 @@ namespace CarrierPidgeon.Controllers
 
         //[Authorize]
         [HttpGet("status/{status}")]
-        public async Task<IActionResult> GetSingleRouteByStatus ([FromRoute] string status){
+        public async Task<IActionResult> GetSingleRouteByStatus([FromRoute] string status)
+        {
             if (!ModelState.IsValid)
             {
                 return BadRequestModelStateResponse.BadRequestModelState(ModelState);
@@ -72,8 +97,13 @@ namespace CarrierPidgeon.Controllers
             {
                 return NotFound(new ErrorResponse("No route found"));
             }
-
-            return Ok(route);
+            RouteResponse routeResponse = new RouteResponse
+            {
+                _id = route._id.ToString(),
+                status = route.status,
+                path = route.path
+            };
+            return Ok(routeResponse);
         }
 
         //[Authorize]

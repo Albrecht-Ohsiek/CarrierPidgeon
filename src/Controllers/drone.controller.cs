@@ -23,7 +23,7 @@ namespace CarrierPidgeon.Controllers
             this.droneServices = droneServices;
             _droneRepository = droneRepository;
         }
-        
+
         //[Authorize]
         [HttpPost("create")]
         public async Task<IActionResult> CreateDrone([FromBody] Drone drone)
@@ -43,7 +43,14 @@ namespace CarrierPidgeon.Controllers
                 {
                     return NotFound(); // Return a 404 Not Found response if the drone is not found.
                 }
-                return Ok(drone);
+                DroneResponse droneResponse = new DroneResponse
+                {
+                    _id = objectId.ToString(),
+                    userId = drone.userId,
+                    status = drone.status,
+                    routeId = drone.routeId
+                };
+                return Ok(droneResponse);
             }
             else
             {
@@ -55,12 +62,19 @@ namespace CarrierPidgeon.Controllers
         [HttpGet("userId/{userId}")]
         public async Task<IActionResult> GetDroneByUserId(string userId)
         {
-                Drone drone = await _droneRepository.GetDroneByUserId(userId);
-                if (drone == null)
-                {
-                    return NotFound();
-                }
-                return Ok(drone);
+            Drone drone = await _droneRepository.GetDroneByUserId(userId);
+            if (drone == null)
+            {
+                return NotFound();
+            }
+            DroneResponse droneResponse = new DroneResponse
+            {
+                _id = drone._id.ToString(),
+                userId = drone.userId,
+                status = drone.status,
+                routeId = drone.routeId
+            };
+            return Ok(droneResponse);
         }
 
         //[Authorize]
