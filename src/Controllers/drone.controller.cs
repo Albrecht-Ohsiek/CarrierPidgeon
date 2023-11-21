@@ -67,7 +67,14 @@ namespace CarrierPidgeon.Controllers
             {
                 return NotFound();
             }
-            return Ok(drone);
+            DroneResponse droneResponse = new DroneResponse
+            {
+                _id = drone._id.ToString(),
+                userId = drone.userId,
+                status = drone.status,
+                routeId = drone.routeId
+            };
+            return Ok(droneResponse);
         }
 
         //[Authorize]

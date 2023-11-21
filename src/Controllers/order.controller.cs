@@ -59,7 +59,6 @@ namespace CarrierPidgeon.Controllers
                     return NotFound(new ErrorResponse("Order not found"));
                 }
 
-
                 Order _order = new Order()
                 {
                     _id = existingOrder._id,
@@ -67,7 +66,6 @@ namespace CarrierPidgeon.Controllers
                     end = existingOrder.end,
                     status = order.status
                 };
-
 
                 await _orderRepository.RegisterOrder(_order);
                 return Ok(_order);
@@ -87,13 +85,27 @@ namespace CarrierPidgeon.Controllers
                 return BadRequestModelStateResponse.BadRequestModelState(ModelState);
             }
 
-            List<Order> order = await _orderRepository.GetOrderByStatus(status);
-            if (order == null)
+            List<Order> orders = await _orderRepository.GetOrderByStatus(status);
+            if (orders == null)
             {
                 return NotFound(new ErrorResponse("No orders found"));
             }
 
-            return Ok(order);
+            List<OrderResponse> orderResponses = new List<OrderResponse>();
+            foreach (Order order in orders)
+            {
+                OrderResponse orderResponse = new OrderResponse
+                {
+                    _id = order._id.ToString(),
+                    userId = order.userId,
+                    start = order.start,
+                    end = order.end,
+                    status = order.status
+                };
+                orderResponses.Add(orderResponse);
+            }
+
+            return Ok(orderResponses);
         }
 
         //[Authorize]
@@ -110,8 +122,16 @@ namespace CarrierPidgeon.Controllers
             {
                 return NotFound(new ErrorResponse("No orders found"));
             }
+            OrderResponse orderResponse = new OrderResponse
+            {
+                _id = order._id.ToString(),
+                userId = order.userId,
+                start = order.start,
+                end = order.end,
+                status = order.status
+            };
 
-            return Ok(order);
+            return Ok(orderResponse);
         }
 
         //[Authorize]
@@ -131,7 +151,6 @@ namespace CarrierPidgeon.Controllers
                     return NotFound(new ErrorResponse("Order not found"));
                 }
                 
-                // Map Order to OrderResponse
                 OrderResponse orderResponse = new OrderResponse
                 {
                     _id = objectId.ToString(),
