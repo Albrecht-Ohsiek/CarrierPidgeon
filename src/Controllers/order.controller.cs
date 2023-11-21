@@ -130,8 +130,18 @@ namespace CarrierPidgeon.Controllers
                 {
                     return NotFound(new ErrorResponse("Order not found"));
                 }
+                
+                // Map Order to OrderResponse
+                OrderResponse orderResponse = new OrderResponse
+                {
+                    _id = objectId.ToString(),
+                    userId = order.userId,
+                    start = order.start,
+                    end = order.end,
+                    status = order.status
+                };
 
-                return Ok(order);
+                return Ok(orderResponse);
             }
             else
             {

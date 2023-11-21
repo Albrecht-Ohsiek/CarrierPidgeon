@@ -51,7 +51,15 @@ namespace CarrierPidgeon.Controllers
                 {
                     return NotFound();
                 }
-                return Ok(route);
+
+                // Map Route to RouteResponse
+                RouteResponse routeResponse = new RouteResponse
+                {
+                    _id = objectId.ToString(),
+                    status = route.status,
+                    path = route.path
+                };
+                return Ok(routeResponse);
             }
             else
             {
