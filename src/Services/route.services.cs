@@ -44,22 +44,38 @@ namespace CarrierPidgeon.Services
                             Node endNode = NodeMiddleware.CloneNode(node);
 
                             locked = true;
-                            Dijkstra pathAlgo = new Dijkstra(nodes);
-                            List<Point> path = pathAlgo.CalculatePath(endNode);
 
-                            if (path.Count > 0)
+                            if (!node.properties.Contains("obstacle"))
                             {
-                                Route route = new Route
+                                Dijkstra pathAlgo = new Dijkstra(nodes);
+                                List<Point> path = pathAlgo.CalculatePath(endNode);
+
+                                if (path.Count > 0)
                                 {
-                                    status = "open",
-                                    path = path
+                                    Route route = new Route
+                                    {
+                                        status = "open",
+                                        path = path
+                                    };
+                                    await _routeRepository.CreateRoute(route);
+
+                                    order.status = "pending";
+                                    await _orderRepository.UpdateStatus(order._id, order);
+
+                                    Console.WriteLine("Order route calculated");
+                                }
+                            }
+                            else
+                            {
+                                Order updateOrder = new Order
+                                {
+                                    _id = order._id,
+                                    userId = order.userId,
+                                    start = order.start,
+                                    end = order.end,
+                                    status = "closed"
                                 };
-                                await _routeRepository.CreateRoute(route);
-
-                                order.status = "pending";
-                                await _orderRepository.UpdateStatus(order._id, order);
-
-                                Console.WriteLine("Order route calculated");
+                                await _orderRepository.UpdateStatus(order._id, updateOrder);
                             }
                         }
                     }
