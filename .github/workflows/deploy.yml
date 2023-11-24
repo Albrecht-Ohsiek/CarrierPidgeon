@@ -53,6 +53,7 @@ jobs:
             docker push gcr.io/${{env.PROJECT_ID}}/${{env.IMAGE_NAME}}:latest
             docker push gcr.io/${{env.PROJECT_ID}}/${{env.IMAGE_NAME}}:${{env.GIT_TAG}}
 
+    # Container Registry is depricated and will be discontinued in 2024, switch over to Artifact Registry when applicable.
         # - name: Push Docker Image to Artifact Registry (GCA)
         #   env: 
         #     GIT_TAG: ${{ steps.increment-git-tag.outputs.git-tag }}

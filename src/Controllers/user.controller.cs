@@ -58,7 +58,7 @@ namespace CarrierPidgeon.Config
             {
                 name = user.name,
                 email = user.email,
-                password = user.password //hashed in frontend
+                password = PasswordHashing.HashPassword(user.password)
             };
 
             await _userRepository.RegisterUser(_User);
@@ -79,7 +79,7 @@ namespace CarrierPidgeon.Config
                 return Unauthorized(new ErrorResponse("Username does not exist"));
             }
 
-            if (user.password != _user.password)
+            if (PasswordHashing.HashPassword(user.password) != _user.password)
             {
                 return Unauthorized(new ErrorResponse("Passwords do not match"));
             }
