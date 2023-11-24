@@ -22,7 +22,7 @@ namespace CarrierPidgeon.Controllers
             _routeRepository = routeRepository;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAllRoutes()
         {
@@ -52,7 +52,7 @@ namespace CarrierPidgeon.Controllers
             return Ok(routeResponses);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("routeId/{routeId}")]
         public async Task<IActionResult> GetRouteById([FromRoute] string routeId)
         {
@@ -83,7 +83,7 @@ namespace CarrierPidgeon.Controllers
             }
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("status/{status}")]
         public async Task<IActionResult> GetSingleRouteByStatus([FromRoute] string status)
         {
@@ -106,7 +106,7 @@ namespace CarrierPidgeon.Controllers
             return Ok(routeResponse);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost("create")]
         public async Task<IActionResult> CreateRoute([FromBody] AddRouteRequest route)
         {
@@ -125,7 +125,7 @@ namespace CarrierPidgeon.Controllers
             return Ok(_route);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPut("update/{routeId}")]
         public async Task<IActionResult> UpdateRoute([FromRoute] string routeId, [FromBody] UpdateRouteRequest route)
         {
